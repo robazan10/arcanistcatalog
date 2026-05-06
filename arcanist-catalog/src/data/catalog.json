@@ -1,0 +1,406 @@
+{
+  "generatedAt": "2026-05-06T07:05:06.410Z",
+  "products": [
+    {
+      "id": "voldemort",
+      "name": "Voldemort",
+      "brand": "Tanuki",
+      "category": "Tanuki",
+      "tags": [
+        "harrypotter",
+        "potter",
+        "hp",
+        "malo",
+        "bad",
+        "magic",
+        "wizard"
+      ],
+      "images": [
+        {
+          "filename": "Voldemort_TanukiFigures_06.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1Y4swEs1A7NP_mx7zzA_NjZNAxFhoz3sp"
+        },
+        {
+          "filename": "Voldemort_TanukiFigures_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/15HQxrQaSXy1YS_vp2kT82QvgwkGx-5E-"
+        },
+        {
+          "filename": "Voldemort_TanukiFigures_05.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1DkJTF7_Xz8QD06btqZFE_JVx9F-gCozb"
+        },
+        {
+          "filename": "Voldemort_TanukiFigures_04.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1_vI7d0opCPnvnCBxXEfRKiNCvrRnYNfQ"
+        },
+        {
+          "filename": "Voldemort_TanukiFigures_03.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1upCgOEcEBZ3sG0c2d0Iumurqcztgra2u"
+        },
+        {
+          "filename": "Voldemort_TanukiFigures_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1Mm0k1GxdFYSGYxf7XbMD_t3jupHO1Xdw"
+        }
+      ]
+    },
+    {
+      "id": "agumon",
+      "name": "Agumon",
+      "brand": "Tanuki",
+      "category": "Tanuki",
+      "tags": [
+        "digimon",
+        "amarillo",
+        "yellow",
+        "anime"
+      ],
+      "images": [
+        {
+          "filename": "Agumon_5.png",
+          "url": "https://lh3.googleusercontent.com/d/1YyGyI7PGa_V3mDKVwvc3QQ--Ra5CM6Of"
+        },
+        {
+          "filename": "Agumon_4.png",
+          "url": "https://lh3.googleusercontent.com/d/1Wc-y0vFI7HlYCOCzgFIEgNNis6liyQTM"
+        },
+        {
+          "filename": "Agumon_3.png",
+          "url": "https://lh3.googleusercontent.com/d/1iIjRMRWN8Epm_ux5Rax7y390PlBAGUf4"
+        },
+        {
+          "filename": "Agumon_2.png",
+          "url": "https://lh3.googleusercontent.com/d/1QKahChzmH2qzq99aKf1qKmv_eujXk9Js"
+        },
+        {
+          "filename": "Agumon_1.png",
+          "url": "https://lh3.googleusercontent.com/d/1AnoymsnkB5COgOQOq3ME63CFvS3wVa-1"
+        }
+      ]
+    },
+    {
+      "id": "iroh-avatar",
+      "name": "Iroh Avatar",
+      "brand": "NomNom",
+      "category": "Nomnom",
+      "tags": [
+        "anime",
+        "avatar"
+      ],
+      "images": [
+        {
+          "filename": "Colored_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1HKhmDPW0OijisbCRUGRUSyVvOvRgKiZ_"
+        },
+        {
+          "filename": "Colored_03.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1Fb2dr2XdYmZWqcufz9iX7kWbpJ4Eg17E"
+        },
+        {
+          "filename": "Colored_04.jpg",
+          "url": "https://lh3.googleusercontent.com/d/10HpdS3s9z4CYFjs3jA_FKUcqDaQALxUQ"
+        },
+        {
+          "filename": "Beautyshot_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1ov8bxV-1TyCbp-phPGckAcJGgkk-P7IR"
+        },
+        {
+          "filename": "Colored_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1Sc_lbOZCdfloiTXNpszlM3WCj4lRE4m8"
+        },
+        {
+          "filename": "Beautyshot_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1T_6QGdE_wVJSfOx2JH8zoRkdA5Q2TPhl"
+        },
+        {
+          "filename": "Bust.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1KzgAJf-7Tx0BSFmK8us-Wr_MDBYkS45t"
+        },
+        {
+          "filename": "Turntable_04.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1OZqxQBvFXQ8VLdzPeRoKz_206sIDhFr7"
+        },
+        {
+          "filename": "Turntable_03.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1wsferz8nihCWvWOxOcY-LO-PZfQZBTpl"
+        },
+        {
+          "filename": "Turntable_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1MOV-Lh2xEtH6Os2tBnJ41_840FQ2FaH1"
+        },
+        {
+          "filename": "Turntable_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/15lLJ8AeBO-kLFEDtUkpOY7_fDojPmF6r"
+        },
+        {
+          "filename": "Scaleparts.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1mTOcIUVvt-cRGBMItJEuXkfX53WDgKGd"
+        }
+      ]
+    },
+    {
+      "id": "zoey",
+      "name": "Zoey",
+      "brand": "NomNom",
+      "category": "Nomnom",
+      "tags": [
+        "kpop",
+        "demon",
+        "kpdh",
+        "huntrix"
+      ],
+      "images": [
+        {
+          "filename": "Beautyshot_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1Z611VDa6FcX1g5GxA-wMOkiLQ57WgkhL"
+        },
+        {
+          "filename": "Beautyshot_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/15lsu2joYc3CzrnizfCmhPR6hFhWESNPE"
+        },
+        {
+          "filename": "Colored_04.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1oceQVoPrMxdpvtWKt6BH-fMUS7EKqTNN"
+        },
+        {
+          "filename": "Colored_03.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1KGnaguJWIqQmv615zuLwFbjm1rHqo1h6"
+        },
+        {
+          "filename": "Colored_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1PErWOLfb5xrglRrrlLPix4zllM_K9xOU"
+        },
+        {
+          "filename": "Colored_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1ghhlw1OfLDJyDpAPCSPz3GN_-bdPGLXT"
+        },
+        {
+          "filename": "Scaleparts.jpg",
+          "url": "https://lh3.googleusercontent.com/d/11Lddv-unxcWiPhMJ9Onv17Iqzu1Pzram"
+        },
+        {
+          "filename": "Turntable_04.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1kOsh-yd0ot-UBEZtD92uhFG-deH1wlmW"
+        },
+        {
+          "filename": "Turntable_03.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1MOZKdKLxV2Jhn4_iiKFvAiWpXtunmbRQ"
+        },
+        {
+          "filename": "Turntable_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1am2JYsrkZeg0TiL9NattnedRIzPqGEoo"
+        },
+        {
+          "filename": "Turntable_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/11yaODpk19DwUg4xAVy0bhtEvte2CSKj9"
+        },
+        {
+          "filename": "Bust 02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1z41dhbFSgj99rWyaQotnuvNfnjavQNsY"
+        },
+        {
+          "filename": "Bust 01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/14m_8s9RAQX1OCeJ2yAbtBeDfEiHOwpxQ"
+        }
+      ]
+    },
+    {
+      "id": "rumi",
+      "name": "Rumi",
+      "brand": "NomNom",
+      "category": "Nomnom",
+      "tags": [
+        "huntrix",
+        "kpdh",
+        "kpop",
+        "demon"
+      ],
+      "images": [
+        {
+          "filename": "Beautyshot_02 (2).jpg",
+          "url": "https://lh3.googleusercontent.com/d/1vrH5TW7fGCx9jFsc63eT8IKu28SiFiFx"
+        },
+        {
+          "filename": "Beautyshot_01 (2).jpg",
+          "url": "https://lh3.googleusercontent.com/d/1PO7ks_bovs_y_6mMA8b0Yi1sMOUpqDB8"
+        },
+        {
+          "filename": "Colored_04.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1UWON-6CQQKthc-2I_cz0igvsXq6pgL3N"
+        },
+        {
+          "filename": "Colored_03.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1eN_tR7GbUtGEepQwYBR6gKsp9ev9yRB1"
+        },
+        {
+          "filename": "Colored_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1J3ETfWqoPjHJJJbkeSHNaaslcPislhJc"
+        },
+        {
+          "filename": "Colored_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/16K76Kg4oDeFNqGeQuVqi2bQ-76xLil30"
+        },
+        {
+          "filename": "Scaleparts.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1UpR2XKwE_pFFCu9G6avclXMLKxZHk70R"
+        },
+        {
+          "filename": "Bust.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1iODapf-tYJJZbFqUxSFcbOc2qZyIkegz"
+        },
+        {
+          "filename": "Turntable_04.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1sLGXJxf4hXXf6i0sZs0KnXqamffz59nf"
+        },
+        {
+          "filename": "Turntable_03.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1NW1TAJcpKvmTmUwmNCve2zzynAVq6TLP"
+        },
+        {
+          "filename": "Turntable_02.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1TBcXv7wJuo9g5CR_ydUZSjnRvBkoHAeZ"
+        },
+        {
+          "filename": "Turntable_01.jpg",
+          "url": "https://lh3.googleusercontent.com/d/1qayPQtlcV8qiqFLUqjVCWubA-4xeBHsX"
+        }
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": "tanuki",
+      "name": "Tanuki",
+      "productIds": [
+        "voldemort",
+        "agumon"
+      ]
+    },
+    {
+      "id": "nomnom",
+      "name": "Nomnom",
+      "productIds": [
+        "iroh-avatar",
+        "zoey",
+        "rumi"
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "id": "harrypotter",
+      "name": "harrypotter",
+      "productIds": [
+        "voldemort"
+      ]
+    },
+    {
+      "id": "potter",
+      "name": "potter",
+      "productIds": [
+        "voldemort"
+      ]
+    },
+    {
+      "id": "hp",
+      "name": "hp",
+      "productIds": [
+        "voldemort"
+      ]
+    },
+    {
+      "id": "malo",
+      "name": "malo",
+      "productIds": [
+        "voldemort"
+      ]
+    },
+    {
+      "id": "bad",
+      "name": "bad",
+      "productIds": [
+        "voldemort"
+      ]
+    },
+    {
+      "id": "magic",
+      "name": "magic",
+      "productIds": [
+        "voldemort"
+      ]
+    },
+    {
+      "id": "wizard",
+      "name": "wizard",
+      "productIds": [
+        "voldemort"
+      ]
+    },
+    {
+      "id": "digimon",
+      "name": "digimon",
+      "productIds": [
+        "agumon"
+      ]
+    },
+    {
+      "id": "amarillo",
+      "name": "amarillo",
+      "productIds": [
+        "agumon"
+      ]
+    },
+    {
+      "id": "yellow",
+      "name": "yellow",
+      "productIds": [
+        "agumon"
+      ]
+    },
+    {
+      "id": "anime",
+      "name": "anime",
+      "productIds": [
+        "agumon",
+        "iroh-avatar"
+      ]
+    },
+    {
+      "id": "avatar",
+      "name": "avatar",
+      "productIds": [
+        "iroh-avatar"
+      ]
+    },
+    {
+      "id": "kpop",
+      "name": "kpop",
+      "productIds": [
+        "zoey",
+        "rumi"
+      ]
+    },
+    {
+      "id": "demon",
+      "name": "demon",
+      "productIds": [
+        "zoey",
+        "rumi"
+      ]
+    },
+    {
+      "id": "kpdh",
+      "name": "kpdh",
+      "productIds": [
+        "zoey",
+        "rumi"
+      ]
+    },
+    {
+      "id": "huntrix",
+      "name": "huntrix",
+      "productIds": [
+        "zoey",
+        "rumi"
+      ]
+    }
+  ]
+}

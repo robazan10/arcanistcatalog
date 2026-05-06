@@ -1,0 +1,12 @@
+{
+  "name": "arcanist-manifest-generator",
+  "version": "1.0.0",
+  "description": "Genera el catalogo de productos desde Google Drive",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node index.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}
