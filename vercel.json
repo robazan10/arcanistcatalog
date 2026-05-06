@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "installCommand": "echo skip",
+  "buildCommand": "cd arcanist-catalog && npm install && npm run build",
+  "outputDirectory": "arcanist-catalog/out"
+}
