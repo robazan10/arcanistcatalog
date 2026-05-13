@@ -1,45 +1,38 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import type { Product, Category, Tag } from '@/lib/types';
+import type { Product, Category } from '@/lib/types';
 import ProductCard from './ProductCard';
 import ProductModal from './ProductModal';
 
 interface Props {
   products: Product[];
   categories: Category[];
-  tags: Tag[];
 }
 
-export default function CatalogClient({ products, categories, tags }: Props) {
+export default function CatalogClient({ products, categories }: Props) {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('todos');
-  const [activeTags, setActiveTags] = useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const filteredProducts = useMemo(() => {
+    const q = search.toLowerCase();
     return products.filter(p => {
       const matchesSearch =
-        !search || p.name.toLowerCase().includes(search.toLowerCase());
+        !search ||
+        p.name.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        p.tags.some(tag => tag.toLowerCase().includes(q));
 
       const matchesCategory =
         activeCategory === 'todos' ||
         categories.find(c => c.id === activeCategory)?.productIds.includes(p.id);
 
-      const matchesTags =
-        activeTags.length === 0 || activeTags.some(tag => p.tags.includes(tag));
-
-      return matchesSearch && matchesCategory && matchesTags;
+      return matchesSearch && matchesCategory;
     });
-  }, [products, search, activeCategory, activeTags, categories]);
+  }, [products, search, activeCategory, categories]);
 
-  function toggleTag(tagName: string) {
-    setActiveTags(prev =>
-      prev.includes(tagName) ? prev.filter(t => t !== tagName) : [...prev, tagName]
-    );
-  }
-
-  const isFiltering = search || activeTags.length > 0 || activeCategory !== 'todos';
+  const isFiltering = search || activeCategory !== 'todos';
 
   return (
     <>
@@ -49,7 +42,7 @@ export default function CatalogClient({ products, categories, tags }: Props) {
           Catalogo
         </h2>
         <p className="text-silver/60 text-sm sm:text-base">
-          Dados artesanales impresos en resina y pintados a mano
+          Dados artesanales hechos con resina y pintados a mano
         </p>
       </div>
 
@@ -63,33 +56,6 @@ export default function CatalogClient({ products, categories, tags }: Props) {
           className="w-full bg-arcane-card border border-arcane-border rounded-xl px-4 py-3 text-white placeholder-silver/30 focus:outline-none focus:border-teal transition-colors"
         />
       </div>
-
-      {/* Filtros por etiqueta */}
-      {tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-6">
-          {tags.map(tag => (
-            <button
-              key={tag.id}
-              onClick={() => toggleTag(tag.name)}
-              className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
-                activeTags.includes(tag.name)
-                  ? 'bg-teal text-arcane-bg border-teal font-semibold'
-                  : 'bg-arcane-card text-silver/70 border-arcane-border hover:border-teal/50 hover:text-silver'
-              }`}
-            >
-              {tag.name}
-            </button>
-          ))}
-          {activeTags.length > 0 && (
-            <button
-              onClick={() => setActiveTags([])}
-              className="text-xs px-3 py-1.5 rounded-full border border-red-500/40 text-red-400 hover:border-red-400 transition-colors"
-            >
-              Limpiar
-            </button>
-          )}
-        </div>
-      )}
 
       {/* Tabs de categoria */}
       <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide">

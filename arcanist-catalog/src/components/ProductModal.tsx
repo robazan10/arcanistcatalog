@@ -130,20 +130,6 @@ export default function ProductModal({ product, onClose }: Props) {
               <p className="text-white font-medium">{product.brand}</p>
             </div>
 
-            <div>
-              <p className="text-silver/50 text-xs uppercase tracking-widest mb-2">Etiquetas</p>
-              <div className="flex flex-wrap gap-2">
-                {product.tags.map(tag => (
-                  <span
-                    key={tag}
-                    className="text-xs bg-primary/30 text-silver px-3 py-1 rounded-full border border-arcane-border"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-
             <div className="mt-auto pt-4 flex flex-col gap-3">
               <a
                 href={whatsappUrl}

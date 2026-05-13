@@ -39,20 +39,7 @@ export default function ProductCard({ product, onClick }: Props) {
         <h3 className="font-cinzel font-semibold text-white text-sm leading-tight mb-1 truncate">
           {product.name}
         </h3>
-        <p className="text-teal text-xs mb-2 truncate">{product.category}</p>
-        <div className="flex flex-wrap gap-1">
-          {product.tags.slice(0, 3).map(tag => (
-            <span
-              key={tag}
-              className="text-xs bg-primary/30 text-silver/80 px-2 py-0.5 rounded-full border border-arcane-border"
-            >
-              {tag}
-            </span>
-          ))}
-          {product.tags.length > 3 && (
-            <span className="text-xs text-silver/40 self-center">+{product.tags.length - 3}</span>
-          )}
-        </div>
+        <p className="text-teal text-xs truncate">{product.category}</p>
       </div>
     </button>
   );
