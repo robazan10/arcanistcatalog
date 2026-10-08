@@ -2,5 +2,10 @@
   "framework": null,
   "installCommand": "echo skip",
   "buildCommand": "cd arcanist-catalog && npm install && npm run build",
-  "outputDirectory": "arcanist-catalog/out"
+  "outputDirectory": "arcanist-catalog/out",
+  "redirects": [{ "source": "/forge", "destination": "/forge/", "permanent": false }],
+  "rewrites": [
+    { "source": "/forge/", "destination": "https://d4-stat-forge.vercel.app/forge/" },
+    { "source": "/forge/:path*", "destination": "https://d4-stat-forge.vercel.app/forge/:path*" }
+  ]
 }
