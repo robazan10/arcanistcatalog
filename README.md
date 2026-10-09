@@ -58,6 +58,7 @@ El script va a:
 - Incluir los productos sin fotos; el sitio los muestra como "Fotos pronto"
 - Hacer publicas las imagenes en Google Drive automaticamente
 - Generar `arcanist-catalog/src/data/catalog.json`
+- Generar `docs/catalog-status.md`: productos sin fotos, sin `cover` y carpetas omitidas
 
 ### Formato de `meta.txt`
 

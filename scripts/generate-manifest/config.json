@@ -2,5 +2,6 @@
   "rootFolderId": "1X4d0UnWh11CBaZUIlWhKOrcI9M6Y1hmH",
   "serviceAccountKeyPath": "./service-account-key.json",
   "outputPath": "../../arcanist-catalog/src/data/catalog.json",
+  "reportPath": "../../docs/catalog-status.md",
   "setPublicPermissions": true
 }
