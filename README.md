@@ -54,6 +54,8 @@ El script va a:
 - Explorar la carpeta raiz en Google Drive (ROOT > BRAND > PRODUCTO)
 - Leer el `meta.txt` de cada carpeta de producto
 - Omitir productos que no tengan `meta.txt`
+- Poner primero la imagen `cover` de cada producto (ver abajo)
+- Incluir los productos sin fotos; el sitio los muestra como "Fotos pronto"
 - Hacer publicas las imagenes en Google Drive automaticamente
 - Generar `arcanist-catalog/src/data/catalog.json`
 
@@ -74,6 +76,16 @@ images=Image_1.jpg, Image_3.jpg
 | category | Si        | Categoria (agrupa los tabs del catalogo)                           |
 | tags     | No        | Etiquetas separadas por coma                                       |
 | images   | No        | Imagenes especificas a mostrar. Si se omite, se usan todas        |
+
+### Imagen de portada (`cover`)
+
+En cada carpeta de producto, la imagen llamada `cover` (o `Cover`, con cualquier extension: `cover.jpg`, `Cover.png`...) es la que se muestra en la tarjeta del catalogo y la primera al abrir el producto. Las demas van en orden de nombre (`_01`, `_02`, ..., `_10`).
+
+Si una carpeta no tiene `cover`, se usa la primera por nombre y el script muestra una advertencia. Al final indica cuantos productos no tienen `cover`.
+
+### Identificadores
+
+El id de cada producto es marca + nombre (`tanuki-voldemort`), porque hay personajes con el mismo nombre en dos marcas.
 
 ---
 

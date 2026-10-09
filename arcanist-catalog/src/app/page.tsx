@@ -1,8 +1,8 @@
-import { getAllProducts, getCategories } from '@/lib/catalog';
+import { getProductSummaries, getCategories } from '@/lib/catalog';
 import CatalogClient from '@/components/CatalogClient';
 
 export default function Home() {
-  const products = getAllProducts();
+  const products = getProductSummaries();
   const categories = getCategories();
 
   return (

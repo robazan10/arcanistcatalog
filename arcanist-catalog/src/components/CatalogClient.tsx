@@ -1,20 +1,20 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import type { Product, Category } from '@/lib/types';
+import type { ProductSummary, Category } from '@/lib/types';
 import ProductCard from './ProductCard';
 import ProductModal from './ProductModal';
 import { SearchIcon } from './icons';
 
 interface Props {
-  products: Product[];
+  products: ProductSummary[];
   categories: Category[];
 }
 
 export default function CatalogClient({ products, categories }: Props) {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('todos');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<ProductSummary | null>(null);
 
   const filteredProducts = useMemo(() => {
     const q = search.toLowerCase();

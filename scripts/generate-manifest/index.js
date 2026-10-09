@@ -91,8 +91,17 @@ async function processProductFolder(drive, folder, brandName) {
     selectedImages = allImages.filter(f => wanted.has(f.name.toLowerCase()));
   }
 
+  // La imagen llamada "cover" (cualquier mayuscula/extension) va primero; el resto en orden de nombre
+  const isCover = f => path.parse(f.name).name.toLowerCase() === 'cover';
+  selectedImages = [...selectedImages].sort(
+    (a, b) =>
+      isCover(b) - isCover(a) || a.name.localeCompare(b.name, undefined, { numeric: true })
+  );
+
   if (selectedImages.length === 0) {
-    console.warn(`    Advertencia: sin imagenes para "${meta.name}"`);
+    console.log(`    Sin fotos todavia (se muestra como "Fotos pronto")`);
+  } else if (!isCover(selectedImages[0])) {
+    console.warn(`    Advertencia: sin imagen "cover", se usa ${selectedImages[0].name}`);
   }
 
   const images = [];
@@ -107,7 +116,8 @@ async function processProductFolder(drive, folder, brandName) {
   }
 
   return {
-    id: slugify(meta.name),
+    // Marca + nombre: hay personajes con el mismo nombre en dos marcas (ej. Nezuko)
+    id: slugify(`${brandName} ${meta.name}`),
     name: meta.name,
     brand: brandName,
     category: meta.category,
@@ -180,7 +190,12 @@ async function main() {
   fs.writeFileSync(outputPath, JSON.stringify(manifest, null, 2), 'utf8');
 
   console.log('\n=== Resultado ===');
-  console.log(`Productos:  ${products.length}`);
+  const withPhotos = products.filter(p => p.images.length > 0);
+  const withoutCover = withPhotos.filter(
+    p => path.parse(p.images[0].filename).name.toLowerCase() !== 'cover'
+  );
+  console.log(`Productos:  ${products.length} (${withPhotos.length} con fotos, ${products.length - withPhotos.length} sin fotos)`);
+  console.log(`Sin cover:  ${withoutCover.length}`);
   console.log(`Categorias: ${categoriesMap.size}`);
   console.log(`Etiquetas:  ${tagsMap.size}`);
   console.log(`Archivo:    ${outputPath}`);

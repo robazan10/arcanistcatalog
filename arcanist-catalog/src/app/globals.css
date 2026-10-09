@@ -66,6 +66,15 @@
   .badge {
     @apply inline-block rounded-full bg-brand-violet/25 px-2 py-0.5 text-[11px] font-bold text-[#CDB8FF];
   }
+
+  .badge-mint {
+    @apply inline-block rounded-full bg-brand-mint/[0.18] px-2 py-0.5 text-[11px] font-bold text-brand-mint;
+  }
+
+  /* Striped placeholder for products still waiting for photos */
+  .bg-coming-soon {
+    background: repeating-linear-gradient(135deg, #25277c 0 14px, #2a2c86 14px 28px);
+  }
 }
 
 @layer utilities {

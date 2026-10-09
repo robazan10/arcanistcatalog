@@ -30,3 +30,14 @@ export interface Catalog {
   categories: Category[];
   tags: Tag[];
 }
+
+// What the grid needs; the full photo list loads when a product opens
+export interface ProductSummary {
+  id: string;
+  name: string;
+  brand: string;
+  category: string;
+  tags: string[];
+  cover: string | null;
+  photoCount: number;
+}
