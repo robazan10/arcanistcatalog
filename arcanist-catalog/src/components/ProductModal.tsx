@@ -10,6 +10,7 @@ import { ArrowIcon, InstagramIcon, WhatsAppMark } from './icons';
 interface Props {
   product: ProductSummary | null;
   onClose: () => void;
+  onTagClick: (tag: string) => void;
 }
 
 const VISIBLE_TAGS = 5;
@@ -19,7 +20,7 @@ const MAX_DOTS = 8;
 // Photo lists already fetched in this visit, by product id
 const imageCache = new Map<string, string[]>();
 
-export default function ProductModal({ product, onClose }: Props) {
+export default function ProductModal({ product, onClose, onTagClick }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState<string[]>([]);
   const [showAllTags, setShowAllTags] = useState(false);
@@ -223,12 +224,14 @@ export default function ProductModal({ product, onClose }: Props) {
             {product.tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {tags.map(tag => (
-                  <span
+                  <button
                     key={tag}
-                    className="text-xs text-brand-lavender border-1.5 border-brand-line rounded-full px-2 py-0.5"
+                    onClick={() => onTagClick(tag)}
+                    aria-label={`Buscar "${tag}"`}
+                    className="text-xs text-brand-lavender border-1.5 border-brand-line rounded-full px-2 py-0.5 transition-colors duration-150 hover:border-brand-mint hover:text-white"
                   >
                     {tag}
-                  </span>
+                  </button>
                 ))}
                 {hiddenTags > 0 && !showAllTags && (
                   <button

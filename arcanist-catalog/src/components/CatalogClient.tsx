@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import type { ProductSummary, Category } from '@/lib/types';
 import ProductCard from './ProductCard';
 import ProductModal from './ProductModal';
 import { SearchIcon } from './icons';
+import { normalize, readQueryFromUrl, writeQueryToUrl } from '@/lib/search';
 
 interface Props {
   products: ProductSummary[];
@@ -16,22 +17,47 @@ export default function CatalogClient({ products, categories }: Props) {
   const [activeCategory, setActiveCategory] = useState('todos');
   const [selectedProduct, setSelectedProduct] = useState<ProductSummary | null>(null);
 
+  const searchRef = useRef<HTMLLabelElement>(null);
+
+  // Start from ?q= in the address, and follow it when the visitor goes Back/Forward
+  useEffect(() => {
+    const syncFromUrl = () => {
+      setSearch(readQueryFromUrl());
+      setSelectedProduct(null);
+    };
+    setSearch(readQueryFromUrl());
+    window.addEventListener('popstate', syncFromUrl);
+    return () => window.removeEventListener('popstate', syncFromUrl);
+  }, []);
+
+  const updateSearch = (value: string, options?: { push?: boolean }) => {
+    setSearch(value);
+    writeQueryToUrl(value.trim(), options);
+  };
+
+  // Tapping a tag in the product view searches the whole catalog for it
+  const searchTag = (tag: string) => {
+    setSelectedProduct(null);
+    setActiveCategory('todos');
+    updateSearch(tag, { push: true });
+    requestAnimationFrame(() => searchRef.current?.scrollIntoView({ block: 'start' }));
+  };
+
+  // Name, category and tags of each product, normalized once
+  const searchTexts = useMemo(
+    () => products.map(p => normalize([p.name, p.category, ...p.tags].join('\n'))),
+    [products]
+  );
+
   const filteredProducts = useMemo(() => {
-    const q = search.toLowerCase();
-    return products.filter(p => {
-      const matchesSearch =
-        !search ||
-        p.name.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.tags.some(tag => tag.toLowerCase().includes(q));
-
-      const matchesCategory =
-        activeCategory === 'todos' ||
-        categories.find(c => c.id === activeCategory)?.productIds.includes(p.id);
-
+    const q = normalize(search.trim());
+    const categoryIds = categories.find(c => c.id === activeCategory)?.productIds;
+    return products.filter((p, i) => {
+      const matchesSearch = !q || searchTexts[i].includes(q);
+      const matchesCategory = activeCategory === 'todos' || categoryIds?.includes(p.id);
       return matchesSearch && matchesCategory;
     });
-  }, [products, search, activeCategory, categories]);
+  }, [products, searchTexts, search, activeCategory, categories]);
 
   const isFiltering = search || activeCategory !== 'todos';
 
@@ -61,14 +87,16 @@ export default function CatalogClient({ products, categories }: Props) {
       </div>
 
       {/* Busqueda */}
-      <label className="mt-5 flex items-center gap-2 bg-brand-field border-1.5 border-brand-line rounded-card px-3.5 text-brand-lavender transition-colors duration-150 focus-within:border-brand-mint">
+      <label
+        ref={searchRef}
+        className="mt-5 scroll-mt-20 flex items-center gap-2 bg-brand-field border-1.5 border-brand-line rounded-card px-3.5 text-brand-lavender transition-colors duration-150 focus-within:border-brand-mint">
         <SearchIcon className="w-[18px] h-[18px] flex-shrink-0 opacity-70" />
         <span className="sr-only">Buscar producto</span>
         <input
           type="search"
           placeholder="Buscar producto..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => updateSearch(e.target.value)}
           className="w-full bg-transparent py-3 text-[16px] text-white placeholder-brand-lavender/70 focus:outline-none focus-visible:outline-none"
         />
       </label>
@@ -124,7 +152,11 @@ export default function CatalogClient({ products, categories }: Props) {
       )}
 
       {/* Modal */}
-      <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+      <ProductModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onTagClick={searchTag}
+      />
     </>
   );
 }
