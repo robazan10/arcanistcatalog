@@ -9,5 +9,5 @@ export const SITE = {
   tagline: 'Dados artesanales · El Salvador',
   description:
     'Catalogo de dados artesanales y accesorios impresos en resina y pintados a mano. El Salvador.',
-  url: 'https://arcanistsdice.com',
+  url: 'https://www.arcanistsdice.com',
 };
