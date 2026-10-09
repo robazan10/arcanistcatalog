@@ -1,5 +1,6 @@
 const { getDriveClient } = require('./drive-client');
 const { parseMetaTxt } = require('./parser');
+const { writeStatusReport } = require('./report');
 const config = require('./config.json');
 const fs = require('fs');
 const path = require('path');
@@ -131,6 +132,7 @@ async function main() {
 
   const drive = getDriveClient();
   const products = [];
+  const skipped = [];
 
   console.log('Explorando carpeta raiz...');
   const rootContents = await listFolder(drive, config.rootFolderId);
@@ -149,7 +151,9 @@ async function main() {
     for (const productFolder of productFolders) {
       console.log(`  Procesando: ${productFolder.name}`);
       const product = await processProductFolder(drive, productFolder, brand.name);
-      if (product) {
+      if (!product) {
+        skipped.push({ brand: brand.name, folder: productFolder.name });
+      } else {
         products.push(product);
         console.log(`    OK: "${product.name}" (${product.images.length} imagen(es))`);
       }
@@ -189,6 +193,9 @@ async function main() {
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(manifest, null, 2), 'utf8');
 
+  const reportPath = path.resolve(__dirname, config.reportPath);
+  writeStatusReport({ generatedAt: manifest.generatedAt, products, skipped }, reportPath);
+
   console.log('\n=== Resultado ===');
   const withPhotos = products.filter(p => p.images.length > 0);
   const withoutCover = withPhotos.filter(
@@ -199,6 +206,7 @@ async function main() {
   console.log(`Categorias: ${categoriesMap.size}`);
   console.log(`Etiquetas:  ${tagsMap.size}`);
   console.log(`Archivo:    ${outputPath}`);
+  console.log(`Reporte:    ${reportPath}`);
   console.log('\nCatalogo generado exitosamente.');
 }
 

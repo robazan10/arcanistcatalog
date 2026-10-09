@@ -11,9 +11,11 @@ export function getProduct(id: string): Product | undefined {
   return catalog.products.find(p => p.id === id);
 }
 
-// Products with photos first; those still waiting for photos go last, keeping their order
+// A→Z by name (Drive's listing order isn't meaningful); products still waiting for photos go last
 export function getProductSummaries(): ProductSummary[] {
-  const summaries = catalog.products.map(p => ({
+  const byName = (a: Product, b: Product) =>
+    a.name.localeCompare(b.name, 'es', { sensitivity: 'base', numeric: true });
+  const summaries = [...catalog.products].sort(byName).map(p => ({
     id: p.id,
     name: p.name,
     brand: p.brand,
