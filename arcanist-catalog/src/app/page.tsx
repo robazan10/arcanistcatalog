@@ -6,7 +6,7 @@ export default function Home() {
   const categories = getCategories();
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
       <CatalogClient products={products} categories={categories} />
     </main>
   );
