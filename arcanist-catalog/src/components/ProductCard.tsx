@@ -1,16 +1,15 @@
 import Image from 'next/image';
-import type { Product } from '@/lib/types';
+import type { ProductSummary } from '@/lib/types';
+import { CARD_WIDTH, sizedImage } from '@/lib/images';
 import { PhotosIcon } from './icons';
 
 interface Props {
-  product: Product;
+  product: ProductSummary;
   alt?: boolean;
-  onClick: (product: Product) => void;
+  onClick: (product: ProductSummary) => void;
 }
 
 export default function ProductCard({ product, alt = false, onClick }: Props) {
-  const mainImage = product.images[0];
-
   return (
     <button
       onClick={() => onClick(product)}
@@ -19,27 +18,32 @@ export default function ProductCard({ product, alt = false, onClick }: Props) {
       }`}
     >
       <div className="relative aspect-square bg-brand-field">
-        {mainImage ? (
+        {product.cover ? (
           <Image
-            src={mainImage.url}
+            src={sizedImage(product.cover, CARD_WIDTH)}
             alt={product.name}
             fill
             className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-brand-lavender/40 font-display text-5xl">
-            ?
+          <div className="bg-coming-soon w-full h-full grid place-items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/isotype-white.svg" alt="" className="w-[46%] h-auto opacity-30" />
           </div>
         )}
-        {product.images.length > 1 && (
-          <span
-            className="absolute bottom-1.5 right-1.5 flex items-center gap-1 rounded-full border border-brand-line bg-brand-deep/80 px-[7px] py-0.5 text-[11px] font-bold"
-            aria-label={`${product.images.length} fotos`}
-          >
-            <PhotosIcon />
-            {product.images.length}
-          </span>
+        {product.photoCount === 0 ? (
+          <span className="badge-mint absolute bottom-1.5 left-1.5">Fotos pronto</span>
+        ) : (
+          product.photoCount > 1 && (
+            <span
+              className="absolute bottom-1.5 right-1.5 flex items-center gap-1 rounded-full border border-brand-line bg-brand-deep/80 px-[7px] py-0.5 text-[11px] font-bold"
+              aria-label={`${product.photoCount} fotos`}
+            >
+              <PhotosIcon />
+              {product.photoCount}
+            </span>
+          )
         )}
       </div>
 
