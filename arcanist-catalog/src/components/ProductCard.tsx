@@ -1,15 +1,17 @@
 import Image from 'next/image';
 import type { ProductSummary } from '@/lib/types';
+import type { Dictionary } from '@/i18n/dictionaries';
 import { CARD_WIDTH, sizedImage } from '@/lib/images';
 import { PhotosIcon } from './icons';
 
 interface Props {
   product: ProductSummary;
   alt?: boolean;
+  t: Dictionary;
   onClick: (product: ProductSummary) => void;
 }
 
-export default function ProductCard({ product, alt = false, onClick }: Props) {
+export default function ProductCard({ product, alt = false, t, onClick }: Props) {
   return (
     <button
       onClick={() => onClick(product)}
@@ -33,12 +35,12 @@ export default function ProductCard({ product, alt = false, onClick }: Props) {
           </div>
         )}
         {product.photoCount === 0 ? (
-          <span className="badge-mint absolute bottom-1.5 left-1.5">Fotos pronto</span>
+          <span className="badge-mint absolute bottom-1.5 left-1.5">{t.comingSoon}</span>
         ) : (
           product.photoCount > 1 && (
             <span
               className="absolute bottom-1.5 right-1.5 flex items-center gap-1 rounded-full border border-brand-line bg-brand-deep/80 px-[7px] py-0.5 text-[11px] font-bold"
-              aria-label={`${product.photoCount} fotos`}
+              aria-label={t.photos(product.photoCount)}
             >
               <PhotosIcon />
               {product.photoCount}

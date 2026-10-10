@@ -7,6 +7,7 @@ import ProductRow from './ProductRow';
 import ProductModal from './ProductModal';
 import { GridIcon, ListIcon, SearchIcon } from './icons';
 import { normalize, readQueryFromUrl, writeQueryToUrl } from '@/lib/search';
+import { getDictionary, type Lang } from '@/i18n/dictionaries';
 
 type View = 'grid' | 'list';
 
@@ -16,9 +17,11 @@ const VIEW_KEY = 'catalog-view';
 interface Props {
   products: ProductSummary[];
   categories: Category[];
+  lang: Lang;
 }
 
-export default function CatalogClient({ products, categories }: Props) {
+export default function CatalogClient({ products, categories, lang }: Props) {
+  const t = getDictionary(lang);
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('todos');
   const [selectedProduct, setSelectedProduct] = useState<ProductSummary | null>(null);
@@ -104,9 +107,9 @@ export default function CatalogClient({ products, categories }: Props) {
           height={158}
           className="mx-auto mb-2.5 w-[118px] sm:w-[150px] h-auto"
         />
-        <h1 className="text-gradient text-[44px] sm:text-5xl leading-none">Catálogo</h1>
+        <h1 className="text-gradient text-[44px] sm:text-5xl leading-none">{t.heroTitle}</h1>
         <p className="text-brand-lavender text-sm sm:text-base mt-1.5">
-          Dados artesanales hechos con resina y pintados a mano
+          {t.heroSubtitle}
         </p>
       </div>
 
@@ -115,10 +118,10 @@ export default function CatalogClient({ products, categories }: Props) {
         ref={searchRef}
         className="mt-5 scroll-mt-20 flex items-center gap-2 bg-brand-field border-1.5 border-brand-line rounded-card px-3.5 text-brand-lavender transition-colors duration-150 focus-within:border-brand-mint">
         <SearchIcon className="w-[18px] h-[18px] flex-shrink-0 opacity-70" />
-        <span className="sr-only">Buscar producto</span>
+        <span className="sr-only">{t.searchLabel}</span>
         <input
           type="search"
-          placeholder="Buscar producto..."
+          placeholder={t.searchPlaceholder}
           value={search}
           onChange={e => updateSearch(e.target.value)}
           className="w-full bg-transparent py-3 text-[16px] text-white placeholder-brand-lavender/70 focus:outline-none focus-visible:outline-none"
@@ -126,13 +129,13 @@ export default function CatalogClient({ products, categories }: Props) {
       </label>
 
       {/* Chips de categoria */}
-      <div className="flex gap-2 overflow-x-auto mt-3.5 -mx-4 px-4 pb-1 scrollbar-hide" role="group" aria-label="Categorías">
+      <div className="flex gap-2 overflow-x-auto mt-3.5 -mx-4 px-4 pb-1 scrollbar-hide" role="group" aria-label={t.categories}>
         <button
           onClick={() => setActiveCategory('todos')}
           aria-pressed={activeCategory === 'todos'}
           className={chipClass(activeCategory === 'todos')}
         >
-          Todos <span className="font-extrabold opacity-70 ml-0.5">{products.length}</span>
+          {t.all} <span className="font-extrabold opacity-70 ml-0.5">{products.length}</span>
         </button>
         {categories.map(cat => (
           <button
@@ -149,13 +152,12 @@ export default function CatalogClient({ products, categories }: Props) {
       {/* Contador y selector de vista */}
       <div className="flex items-center justify-between gap-3 mt-4">
         <p className="text-brand-lavender text-sm" aria-live="polite">
-          {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
-          {isFiltering && ` encontrado${filteredProducts.length !== 1 ? 's' : ''}`}
+          {t.productCount(filteredProducts.length, Boolean(isFiltering))}
         </p>
-        <div className="flex gap-0.5 p-[3px] rounded-card border-1.5 border-brand-line bg-white/[0.07]" role="group" aria-label="Vista">
+        <div className="flex gap-0.5 p-[3px] rounded-card border-1.5 border-brand-line bg-white/[0.07]" role="group" aria-label={t.view}>
           {([
-            ['grid', 'Cuadrícula', GridIcon],
-            ['list', 'Lista', ListIcon],
+            ['grid', t.grid, GridIcon],
+            ['list', t.list, ListIcon],
           ] as const).map(([value, label, Icon]) => (
             <button
               key={value}
@@ -177,13 +179,13 @@ export default function CatalogClient({ products, categories }: Props) {
       {filteredProducts.length === 0 ? (
         <div className="text-center py-20 text-brand-lavender">
           <div className="text-5xl mb-4">🎲</div>
-          <p className="font-display text-xl text-white tracking-[0.02em]">No se encontraron productos</p>
-          <p className="text-sm mt-2">Intenta con otros términos o filtros</p>
+          <p className="font-display text-xl text-white tracking-[0.02em]">{t.noResults}</p>
+          <p className="text-sm mt-2">{t.noResultsHint}</p>
         </div>
       ) : view === 'list' ? (
         <div className="grid lg:grid-cols-2 gap-2 mt-3">
           {filteredProducts.map((product, i) => (
-            <ProductRow key={product.id} product={product} alt={i % 2 === 1} onClick={setSelectedProduct} />
+            <ProductRow key={product.id} product={product} alt={i % 2 === 1} t={t} onClick={setSelectedProduct} />
           ))}
         </div>
       ) : (
@@ -192,6 +194,7 @@ export default function CatalogClient({ products, categories }: Props) {
             <ProductCard
               key={product.id}
               product={product}
+              t={t}
               // Checkerboard on the 2-column phone grid
               alt={(i + Math.floor(i / 2)) % 2 === 1}
               onClick={setSelectedProduct}
@@ -205,6 +208,7 @@ export default function CatalogClient({ products, categories }: Props) {
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
         onTagClick={searchTag}
+        t={t}
       />
     </>
   );

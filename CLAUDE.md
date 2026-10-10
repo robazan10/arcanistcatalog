@@ -2,7 +2,7 @@
 
 Static product catalog for **Arcanist's Dice** (El Salvador): hand-painted resin dice and accessories, shown without prices. Visitors contact the shop through WhatsApp and Instagram.
 
-Live at https://www.arcanistsdice.com. The site's copy is in **Spanish** (`<html lang="es">`); keep new UI text in Spanish.
+Live at https://www.arcanistsdice.com. The site is in **Spanish** at `/` and **English** at `/en/`. Every UI text lives in `arcanist-catalog/src/i18n/dictionaries.ts`; add new text there in both languages, never hard-coded in a component. Product names, brands and tags come from Drive as they are (tags are already bilingual).
 
 ## How it works
 
