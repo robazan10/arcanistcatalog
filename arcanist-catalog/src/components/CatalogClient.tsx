@@ -3,9 +3,15 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import type { ProductSummary, Category } from '@/lib/types';
 import ProductCard from './ProductCard';
+import ProductRow from './ProductRow';
 import ProductModal from './ProductModal';
-import { SearchIcon } from './icons';
+import { GridIcon, ListIcon, SearchIcon } from './icons';
 import { normalize, readQueryFromUrl, writeQueryToUrl } from '@/lib/search';
+
+type View = 'grid' | 'list';
+
+// Each visitor's choice of grid or list, remembered on their device
+const VIEW_KEY = 'catalog-view';
 
 interface Props {
   products: ProductSummary[];
@@ -17,7 +23,25 @@ export default function CatalogClient({ products, categories }: Props) {
   const [activeCategory, setActiveCategory] = useState('todos');
   const [selectedProduct, setSelectedProduct] = useState<ProductSummary | null>(null);
 
+  const [view, setView] = useState<View>('grid');
   const searchRef = useRef<HTMLLabelElement>(null);
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(VIEW_KEY) === 'list') setView('list');
+    } catch {
+      // Storage blocked (private mode): stay on the grid
+    }
+  }, []);
+
+  const changeView = (next: View) => {
+    setView(next);
+    try {
+      localStorage.setItem(VIEW_KEY, next);
+    } catch {
+      // Not remembered, but the view still changes
+    }
+  };
 
   // Start from ?q= in the address, and follow it when the visitor goes Back/Forward
   useEffect(() => {
@@ -122,17 +146,48 @@ export default function CatalogClient({ products, categories }: Props) {
         ))}
       </div>
 
-      {/* Contador de resultados */}
-      {isFiltering && (
-        <p className="text-brand-lavender text-sm mt-4" aria-live="polite">
-          {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''} encontrado
-          {filteredProducts.length !== 1 ? 's' : ''}
+      {/* Contador y selector de vista */}
+      <div className="flex items-center justify-between gap-3 mt-4">
+        <p className="text-brand-lavender text-sm" aria-live="polite">
+          {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+          {isFiltering && ` encontrado${filteredProducts.length !== 1 ? 's' : ''}`}
         </p>
-      )}
+        <div className="flex gap-0.5 p-[3px] rounded-card border-1.5 border-brand-line bg-white/[0.07]" role="group" aria-label="Vista">
+          {([
+            ['grid', 'Cuadrícula', GridIcon],
+            ['list', 'Lista', ListIcon],
+          ] as const).map(([value, label, Icon]) => (
+            <button
+              key={value}
+              onClick={() => changeView(value)}
+              aria-pressed={view === value}
+              aria-label={label}
+              title={label}
+              className={`grid place-items-center w-[38px] h-8 rounded-[9px] transition-colors duration-150 ${
+                view === value ? 'bg-brand-gradient text-brand-indigo' : 'text-brand-lavender hover:text-white'
+              }`}
+            >
+              <Icon />
+            </button>
+          ))}
+        </div>
+      </div>
 
-      {/* Grid de productos */}
-      {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mt-4">
+      {/* Productos */}
+      {filteredProducts.length === 0 ? (
+        <div className="text-center py-20 text-brand-lavender">
+          <div className="text-5xl mb-4">🎲</div>
+          <p className="font-display text-xl text-white tracking-[0.02em]">No se encontraron productos</p>
+          <p className="text-sm mt-2">Intenta con otros términos o filtros</p>
+        </div>
+      ) : view === 'list' ? (
+        <div className="grid lg:grid-cols-2 gap-2 mt-3">
+          {filteredProducts.map((product, i) => (
+            <ProductRow key={product.id} product={product} alt={i % 2 === 1} onClick={setSelectedProduct} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mt-3">
           {filteredProducts.map((product, i) => (
             <ProductCard
               key={product.id}
@@ -142,12 +197,6 @@ export default function CatalogClient({ products, categories }: Props) {
               onClick={setSelectedProduct}
             />
           ))}
-        </div>
-      ) : (
-        <div className="text-center py-20 text-brand-lavender">
-          <div className="text-5xl mb-4">🎲</div>
-          <p className="font-display text-xl text-white tracking-[0.02em]">No se encontraron productos</p>
-          <p className="text-sm mt-2">Intenta con otros términos o filtros</p>
         </div>
       )}
 

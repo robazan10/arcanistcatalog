@@ -52,3 +52,24 @@ export function ArrowIcon({ className = 'w-5 h-5', dir }: IconProps & { dir: 'le
     </svg>
   );
 }
+
+export function GridIcon({ className = 'w-[18px] h-[18px]' }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className={className} aria-hidden="true">
+      <rect x="3.5" y="3.5" width="7" height="7" rx="2" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="2" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="2" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="2" />
+    </svg>
+  );
+}
+
+export function ListIcon({ className = 'w-[18px] h-[18px]' }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className={className} aria-hidden="true">
+      <rect x="3.5" y="4" width="5" height="5" rx="1.5" />
+      <rect x="3.5" y="15" width="5" height="5" rx="1.5" />
+      <path d="M12 6.5h8.5M12 17.5h8.5" />
+    </svg>
+  );
+}
