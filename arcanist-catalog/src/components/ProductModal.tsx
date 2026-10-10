@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import type { ProductSummary } from '@/lib/types';
-import { SOCIAL } from '@/lib/config';
+import { SOCIAL, whatsappLink } from '@/lib/config';
+import type { Dictionary } from '@/i18n/dictionaries';
 import { VIEWER_WIDTH, productDataUrl, sizedImage } from '@/lib/images';
 import { ArrowIcon, InstagramIcon, WhatsAppMark } from './icons';
 
@@ -11,6 +12,7 @@ interface Props {
   product: ProductSummary | null;
   onClose: () => void;
   onTagClick: (tag: string) => void;
+  t: Dictionary;
 }
 
 const VISIBLE_TAGS = 5;
@@ -20,7 +22,7 @@ const MAX_DOTS = 8;
 // Photo lists already fetched in this visit, by product id
 const imageCache = new Map<string, string[]>();
 
-export default function ProductModal({ product, onClose, onTagClick }: Props) {
+export default function ProductModal({ product, onClose, onTagClick, t }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState<string[]>([]);
   const [showAllTags, setShowAllTags] = useState(false);
@@ -90,9 +92,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
 
   if (!product) return null;
 
-  const whatsappUrl = `${SOCIAL.whatsapp}?text=${encodeURIComponent(
-    `Hola! Me interesa el producto: ${product.name}`
-  )}`;
+  const whatsappUrl = whatsappLink(t.whatsappProductMessage(product.name));
   const total = product.photoCount;
   const hasMany = total > 1;
   const hiddenTags = product.tags.length - VISIBLE_TAGS;
@@ -104,7 +104,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
     <button
       ref={closeRef}
       onClick={onClose}
-      aria-label="Cerrar"
+      aria-label={t.close}
       className="absolute top-2.5 right-2.5 grid place-items-center w-9 h-9 rounded-card border-1.5 border-brand-line bg-brand-deep/80 text-xl leading-none transition-colors duration-150 hover:border-brand-mint"
     >
       &times;
@@ -138,7 +138,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
                 <div key={url} className="relative aspect-square w-full flex-none snap-center">
                   <Image
                     src={sizedImage(url, VIEWER_WIDTH)}
-                    alt={`${product.name} - imagen ${i + 1} de ${total}`}
+                    alt={`${product.name} - ${t.imageOf(i + 1, total)}`}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 60vw"
@@ -155,7 +155,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
                 {currentIndex > 0 && (
                   <button
                     onClick={() => goTo(currentIndex - 1)}
-                    aria-label="Imagen anterior"
+                    aria-label={t.previousImage}
                     className="hidden md:grid absolute left-3 top-1/2 -translate-y-1/2 place-items-center w-10 h-10 rounded-full border-1.5 border-brand-line bg-brand-deep/80 transition-colors duration-150 hover:border-brand-mint"
                   >
                     <ArrowIcon dir="left" />
@@ -164,7 +164,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
                 {currentIndex < images.length - 1 && (
                   <button
                     onClick={() => goTo(currentIndex + 1)}
-                    aria-label="Imagen siguiente"
+                    aria-label={t.nextImage}
                     className="hidden md:grid absolute right-3 top-1/2 -translate-y-1/2 place-items-center w-10 h-10 rounded-full border-1.5 border-brand-line bg-brand-deep/80 transition-colors duration-150 hover:border-brand-mint"
                   >
                     <ArrowIcon dir="right" />
@@ -190,7 +190,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
                   </div>
                 )}
                 <p className="sr-only" aria-live="polite">
-                  Imagen {currentIndex + 1} de {total}
+                  {t.imageOf(currentIndex + 1, total)}
                 </p>
               </>
             )}
@@ -200,9 +200,9 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
             <div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/brand/isotype-white.svg" alt="" className="w-[110px] h-auto opacity-35 mx-auto mb-2.5" />
-              <p className="font-display text-[22px] tracking-[0.02em]">Fotos pronto</p>
+              <p className="font-display text-[22px] tracking-[0.02em]">{t.comingSoon}</p>
               <p className="text-brand-lavender text-sm max-w-[250px] mx-auto">
-                Aún no tenemos fotos de esta pieza. Escríbenos y te contamos los detalles.
+                {t.comingSoonText}
               </p>
             </div>
             {closeButton}
@@ -218,7 +218,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
             <span className="badge mt-2">{product.category}</span>
             {product.brand !== product.category && (
               <p className="text-brand-lavender text-sm mt-2">
-                Marca: <span className="text-white font-semibold">{product.brand}</span>
+                {t.brand}: <span className="text-white font-semibold">{product.brand}</span>
               </p>
             )}
             {product.tags.length > 0 && (
@@ -227,7 +227,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
                   <button
                     key={tag}
                     onClick={() => onTagClick(tag)}
-                    aria-label={`Buscar "${tag}"`}
+                    aria-label={t.searchTag(tag)}
                     className="text-xs text-brand-lavender border-1.5 border-brand-line rounded-full px-2 py-0.5 transition-colors duration-150 hover:border-brand-mint hover:text-white"
                   >
                     {tag}
@@ -236,7 +236,7 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
                 {hiddenTags > 0 && !showAllTags && (
                   <button
                     onClick={() => setShowAllTags(true)}
-                    aria-label={`Ver ${hiddenTags} etiquetas más`}
+                    aria-label={t.moreTags(hiddenTags)}
                     className="text-xs font-bold text-brand-mint border-1.5 border-brand-mint rounded-full px-2 py-0.5"
                   >
                     +{hiddenTags}
@@ -249,11 +249,11 @@ export default function ProductModal({ product, onClose, onTagClick }: Props) {
           <div className="mt-auto flex flex-col gap-2.5 px-4 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:p-5">
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn-main py-3">
               <WhatsAppMark />
-              Consultar este producto
+              {t.askProduct}
             </a>
             <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" className="btn-secondary">
               <InstagramIcon className="w-[18px] h-[18px]" />
-              Ver en Instagram
+              {t.seeInstagram}
             </a>
           </div>
         </div>

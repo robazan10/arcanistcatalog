@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import type { ProductSummary } from '@/lib/types';
+import type { Dictionary } from '@/i18n/dictionaries';
 import { ROW_WIDTH, sizedImage } from '@/lib/images';
 import { ArrowIcon, PhotosIcon } from './icons';
 
 interface Props {
   product: ProductSummary;
   alt?: boolean;
+  t: Dictionary;
   onClick: (product: ProductSummary) => void;
 }
 
@@ -13,7 +15,7 @@ interface Props {
 const MODEL_TYPES = ['chibi', 'toon', 'extra', 'bust', 'fullsize', 'diorama'];
 
 // List view row: small cover, name, brand, model type and photo count
-export default function ProductRow({ product, alt = false, onClick }: Props) {
+export default function ProductRow({ product, alt = false, t, onClick }: Props) {
   const modelTypes = product.tags.filter(tag => MODEL_TYPES.includes(tag.toLowerCase()));
 
   return (
@@ -44,12 +46,12 @@ export default function ProductRow({ product, alt = false, onClick }: Props) {
             </span>
           )}
           {product.photoCount > 0 ? (
-            <span className="flex items-center gap-1 text-xs font-bold text-brand-lavender" aria-label={`${product.photoCount} fotos`}>
+            <span className="flex items-center gap-1 text-xs font-bold text-brand-lavender" aria-label={t.photos(product.photoCount)}>
               <PhotosIcon />
               {product.photoCount}
             </span>
           ) : (
-            <span className="badge-mint">Fotos pronto</span>
+            <span className="badge-mint">{t.comingSoon}</span>
           )}
         </div>
       </div>
