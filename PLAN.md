@@ -1,5 +1,7 @@
 # Plan de Implementacion: Arcanist's Dice Catalog
 
+> **Historico (mayo 2026).** Este es el plan original y ya no esta al dia: los colores, la fuente y varios detalles cambiaron. El estado actual y lo que sigue estan en [`docs/roadmap.md`](docs/roadmap.md); las decisiones, en [`docs/decisions.md`](docs/decisions.md).
+
 ## Resumen del Proyecto
 
 Catalogo web estatico para **Arcanist's Dice** (El Salvador), tienda de dados y accesorios
