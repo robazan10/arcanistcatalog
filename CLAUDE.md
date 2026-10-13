@@ -4,13 +4,18 @@ Static product catalog for **Arcanist's Dice** (El Salvador): hand-painted resin
 
 Live at https://www.arcanistsdice.com. The site is in **Spanish** at `/` and **English** at `/en/`. Every UI text lives in `arcanist-catalog/src/i18n/dictionaries.ts`; add new text there in both languages, never hard-coded in a component. Product names, brands and tags come from Drive as they are (tags are already bilingual).
 
+## Start here
+
+**Read "Next up / how to resume" in [docs/roadmap.md](docs/roadmap.md) first.** [docs/README.md](docs/README.md) indexes the rest: decisions, architecture, development rules and setup, the screen guide and the agreed mockups. Every PR keeps them current (checklist in `docs/development-rules.md`).
+
 ## How it works
 
-- `scripts/generate-manifest/` reads the shop's Google Drive folder and writes `arcanist-catalog/src/data/catalog.json`. It runs by hand. Its service account key (`service-account-key.json`) is git-ignored and must never be committed; this repo is public.
-- `arcanist-catalog/` is a Next.js 15 site exported as static pages (`output: 'export'`), styled with Tailwind 3.
-- `vercel.json` at the repo root builds the site and deploys it on Vercel.
-- **[docs/drive-images-schema.md](docs/drive-images-schema.md)** describes the Drive `Images` folder the script reads: folder layout, `meta.txt` format, tag and naming conventions, and the 2026-10-09 reorganization. Read it before changing the script or the Drive data.
-- `PLAN.md` (Spanish) has the original implementation plan; `README.md` explains how to regenerate the catalog.
+- `scripts/generate-manifest/` reads the shop's Google Drive folder and writes `arcanist-catalog/src/data/catalog.json` and `docs/catalog-status.md` (products without photos or cover, skipped folders). It runs by hand. **Ask the owner before each run:** it makes every listed photo public in Drive.
+- Its service account key (`service-account-key.json`) is git-ignored and must never be committed; this repo is public. Where to get it: setup steps in `docs/development-rules.md`.
+- `arcanist-catalog/` is a Next.js 15 site exported as static pages (`output: 'export'`, `trailingSlash: true`), styled with Tailwind 3. Photos stay in Drive; the site asks Google for resized copies (`=w500`, `=w1000`, `=w200`).
+- `vercel.json` at the repo root builds the site and deploys it on Vercel. If a production deploy fails but the build passes on a fresh clone, the owner redeploys from the Vercel dashboard.
+- **[docs/drive-images-schema.md](docs/drive-images-schema.md)** describes the Drive `Images` folder the script reads. Read it before changing the script or the Drive data. Cover photos are the images named `cover`/`Cover`.
+- `README.md` (Spanish) explains how to regenerate the catalog and run the site. `PLAN.md` is the original May 2026 plan, kept for history.
 
 ## Do not break: /forge
 
@@ -18,16 +23,17 @@ Live at https://www.arcanistsdice.com. The site is in **Spanish** at `/` and **E
 
 ## UI and brand
 
-The site is being redesigned to follow the **Arcanist's Dice brand guide**. D4 Stat Forge already uses it, so it's the reference implementation. Before any UI work, read **[docs/brand-ui.md](docs/brand-ui.md)**: palette and roles, fonts and their licenses, logo files, component patterns, and Tailwind tokens.
+The site follows the **Arcanist's Dice brand guide** (redesign done in PR #3; D4 Stat Forge uses the same guide). Before any UI work, read **[docs/brand-ui.md](docs/brand-ui.md)** (palette, fonts and licenses, logos, component patterns, Tailwind tokens) and **[docs/ui.md](docs/ui.md)** (the screens as built).
 
 Key rules:
-- Follow the brand guide, not the current site. The current colors (`#3D35B5`, `#40E0C8`, `#0F0D2E`...) are older shades that are being replaced.
-- Chinese Rocks can't be served as a web font under its license. See the font section in `docs/brand-ui.md`.
-- Mobile first: most visitors come from Instagram and WhatsApp on their phones.
+- Use the brand tokens only; the old colors (`#3D35B5`, `#40E0C8`, `#0F0D2E`...) are gone and must not come back.
+- Chinese Rocks can't be served as a web font under its license. Its old files are still in git history (commit `2a28cc6`); the owner decides between a web license and a history rewrite.
+- Mobile first: most visitors come from Instagram and WhatsApp on their phones. UI changes start with a phone mockup, saved in `docs/mockups/`.
 
 ## Workflow
 
-- The owner reviews every change before it's committed. Show what changed, then commit only when asked.
+- Nothing changes without the owner's approval: before editing files, switching branches, committing, pushing or opening a PR, show what will be done and wait. Read-only checks are fine.
+- Before every commit, show the files, the full commit message (with a "Docs updated:" line) and the PR title and description.
 - Work on a branch, push, and open a PR. The owner merges it; never merge or enable auto-merge.
 - Commits are authored as Rodrigo Bazan <ro.bazan10@gmail.com> (already set for this repo).
-- After a change that affects what visitors see, check it in the browser at phone width before calling it done.
+- After a change that affects what visitors see, check it in the browser at phone width (390px), in both languages, before calling it done.
