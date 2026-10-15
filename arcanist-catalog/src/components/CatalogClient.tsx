@@ -97,26 +97,28 @@ export default function CatalogClient({ products, categories, lang }: Props) {
 
   return (
     <>
-      {/* Hero */}
-      <div className="text-center pt-2 pb-2 sm:pt-6">
+      {/* Hero: compact row on phones so the first products show on the first screen; big centered logo from sm up */}
+      <div className="flex items-center gap-3 pt-1 sm:flex-col sm:gap-0 sm:pt-6 sm:pb-2 sm:text-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/brand/logo-dark-bg.svg"
           alt="Arcanist's Dice"
-          width={118}
-          height={158}
-          className="mx-auto mb-2.5 w-[118px] sm:w-[150px] h-auto"
+          width={150}
+          height={201}
+          className="w-16 sm:w-[150px] sm:mb-2.5 h-auto flex-shrink-0"
         />
-        <h1 className="text-gradient text-[44px] sm:text-5xl leading-none">{t.heroTitle}</h1>
-        <p className="text-brand-lavender text-sm sm:text-base mt-1.5">
-          {t.heroSubtitle}
-        </p>
+        <div className="min-w-0">
+          <h1 className="text-gradient text-[32px] sm:text-5xl leading-none">{t.heroTitle}</h1>
+          <p className="text-brand-lavender text-[13px] leading-snug sm:text-base mt-1 sm:mt-1.5">
+            {t.heroSubtitle}
+          </p>
+        </div>
       </div>
 
       {/* Busqueda */}
       <label
         ref={searchRef}
-        className="mt-5 scroll-mt-20 flex items-center gap-2 bg-brand-field border-1.5 border-brand-line rounded-card px-3.5 text-brand-lavender transition-colors duration-150 focus-within:border-brand-mint">
+        className="mt-3 sm:mt-5 scroll-mt-20 flex items-center gap-2 bg-brand-field border-1.5 border-brand-line rounded-card px-3.5 text-brand-lavender transition-colors duration-150 focus-within:border-brand-mint">
         <SearchIcon className="w-[18px] h-[18px] flex-shrink-0 opacity-70" />
         <span className="sr-only">{t.searchLabel}</span>
         <input

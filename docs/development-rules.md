@@ -20,7 +20,7 @@ Every PR updates, in the same change:
 - [`ui.md`](ui.md): any screen or component change.
 - [`../CLAUDE.md`](../CLAUDE.md): anything that became wrong, and new key facts.
 
-Every commit message has a **"Docs updated:"** line listing the docs changed, or saying why none were needed.
+Every PR description has a **"Docs updated:"** line listing the docs changed, or saying why none were needed. Commit messages don't repeat it.
 
 ## Checks
 

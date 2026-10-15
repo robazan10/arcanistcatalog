@@ -5,7 +5,9 @@ The site is one catalog page in two languages (`/` and `/en/`), designed for pho
 ## Page, top to bottom
 
 1. **Header** (sticky): white book symbol, "Arcanist's Dice" in Staatliches, a lavender tagline, then the **ES | EN** pill (current language in the gradient; switching keeps `?q=`) and an Instagram button.
-2. **Top section:** the full dark-background logo, the title ("Catálogo" / "Catalog") in Staatliches with the gradient fill, and a one-line subtitle.
+2. **Top section:** the full dark-background logo, the title ("Catálogo" / "Catalog") in Staatliches with the gradient fill, and a short subtitle.
+   - **Phones (under 640px):** a compact row: the logo at 64px on the left, the 32px title and the subtitle beside it, aligned left. At an iPhone's visible size in Safari (390 × 664) the products start at 369px, so the first row's photos and names show above the WhatsApp bar.
+   - **640px and wider:** the big centered logo (150px) with the 48px title and the subtitle below.
 3. **Search box:** `field` background, search icon, mint border on focus. Typing filters instantly and updates `?q=`; accents and case are ignored.
 4. **Category chips:** pills that scroll sideways. "Todos"/"All" plus one per category (today the brands, Tanuki and NomNom), each with its count; the selected one has the gradient.
 5. **Count and view toggle:** "355 productos" ("… encontrados" while filtering) on the left; on the right two icon buttons, Cuadrícula/Grid and Lista/List, the selected one in the gradient.
@@ -49,3 +51,4 @@ The agreed phone mockups are in [`mockups/`](mockups/). Open them in a browser f
 | [`2026-10-09-photos-coming-soon.html`](mockups/2026-10-09-photos-coming-soon.html) | "Fotos pronto" card and banner, "3 / 24" counter, "+N" tags | Panel 3 uses a stand-in photo |
 | [`2026-10-10-list-view.html`](mockups/2026-10-10-list-view.html) | Grid/list toggle and list rows | Rows also show the model type, added after the mockup |
 | [`2026-10-10-languages.html`](mockups/2026-10-10-languages.html) | ES \| EN switch, English page and product view | None |
+| [`2026-10-14-compact-top.html`](mockups/2026-10-14-compact-top.html) | Compact top section on phones: today vs options A, B, C at 390 × 664; B chosen | Logo at 64px instead of the mockup's 54px; the real page has a little more spacing, so products start at 369px instead of 337px |
