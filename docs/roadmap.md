@@ -2,18 +2,21 @@
 
 What's done, what's next, and how to pick the work up. Decisions behind each step are in [`decisions.md`](decisions.md).
 
-## Next up / how to resume (2026-10-14)
+## Next up / how to resume (2026-10-15)
 
-- **State:** `main` has everything through PR #10 and is live at www.arcanistsdice.com. Work in progress: branch `feat/compact-top` (compact top section on phones, see the PR list). After it merges, check the live site at 390 × 664 in both languages.
-- **Next step:** phase 4, the side menu by product type. It can't start until the owner:
-  1. reorganizes Drive into one folder per type (see the agreed scope below), and
-  2. sends the menu names and their order.
-  Then: phone mockup first, then build.
+- **State:** `main` has everything through PR #11 and is live at www.arcanistsdice.com (checked on 2026-10-15 at 390 × 664: cards start at 369px). Apart from this roadmap update (`docs/roadmap-analytics`), no branch is open.
+- **Next step: the owner's Drive work** (agreed order, 2026-10-15). Nothing to build until it's done:
+  1. Reorganize Drive into one folder per type (see the phase 4 scope below), adding the other categories (Keycaps, Dados, Deckboxes…).
+  2. Fill in photos (147 products without any) and correct covers (202 without a `Cover` image); add `meta.txt` to the myAnimate and Keycaps folders. Lists in [`catalog-status.md`](catalog-status.md).
+- **Then, in order:**
+  1. Update the catalog script for the new type level (part of phase 4), then rerun it (ask the owner first, see [`development-rules.md`](development-rules.md)). **Don't run the current script after the Drive reorganization:** it would read the type folders as brands and the brand folders as products, and skip almost every product. The live site is unaffected until a new `catalog.json` is committed.
+  2. Phase 4, the side menu by type: phone mockup first, then build.
+  3. Phase 6, usage analytics and sharing (scope below): mockup of the share buttons first, then build.
 - **Decisions waiting on the owner:**
-  - Phase 4 menu names and order (above).
+  - Phase 4 menu names and order.
+  - Phase 6: create the Umami Cloud account and share the site ID (not a secret).
   - Chinese Rocks in the git history: buy a Typodermic web license or rewrite the history (see the backlog).
   - The English wording was accepted "for now"; review it in `arcanist-catalog/src/i18n/dictionaries.ts` whenever convenient.
-- **Data work for the owner in Drive** (lists in [`catalog-status.md`](catalog-status.md)): photos for 147 products, a `Cover` image for 202, `meta.txt` for the myAnimate and Keycaps folders. After changes, rerun the catalog script (ask the owner first, see [`development-rules.md`](development-rules.md)).
 
 ## Status
 
@@ -24,7 +27,9 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | 2 · Tag search | Tap a tag to search, search in the address (`?q=`), accent-insensitive, two-line names | Done (#7) |
 | 3 · Grid / list | View toggle, list rows with model type, choice remembered on the device | Done (#8) |
 | 5 · Spanish and English | `/` Spanish, `/en/` English, ES \| EN switch, all texts in one dictionary | Done (#9). Done before phase 4 at the owner's request |
+| Compact top on phones | Logo 64px beside the title on phones; big logo kept on desktop | Done (#11) |
 | 4 · Side menu by type | Menu of product types (Figuras, Dados, Keycaps, Deckboxes…) | Waiting on the owner (Drive reorganization + names and order) |
+| 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Planned, after phase 4 |
 
 ## Pull requests
 
@@ -40,7 +45,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#8](https://github.com/robazan10/arcanistcatalog/pull/8) | 2026-10-10 | List view and grid/list toggle |
 | [#9](https://github.com/robazan10/arcanistcatalog/pull/9) | 2026-10-10 | Spanish and English |
 | [#10](https://github.com/robazan10/arcanistcatalog/pull/10) | 2026-10-13 | Handoff docs (`docs/README.md`, roadmap, decisions, architecture, development rules, screen guide) and the saved mockups |
-| `feat/compact-top` | open | Compact top section on phones (logo 64px beside the title); big logo kept from 640px up |
+| [#11](https://github.com/robazan10/arcanistcatalog/pull/11) | 2026-10-15 | Compact top section on phones (logo 64px beside the title); big logo kept from 640px up |
+| `docs/roadmap-analytics` | open | Roadmap: agreed order (Drive work, phase 4, phase 6) and the phase 6 scope |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -53,6 +59,31 @@ Agreed on 2026-10-09 and 2026-10-10; names and order still to come from the owne
 - **Languages:** menu labels and type names go in `src/i18n/dictionaries.ts` in both languages; Drive folder names stay in Spanish.
 - **Keycaps** currently sits next to the brands in Drive; it becomes a type in this layout.
 - Mockup first, then build.
+
+## Agreed scope: phase 6 · usage analytics and sharing
+
+Agreed on 2026-10-15; to start after phase 4. Goal: data to evaluate which products are viewed and asked about most.
+
+- **Tool: Umami Cloud.** The owner creates the account and shares the site ID (not a secret). Before building, check the current free-plan limits and data retention; export the data periodically if retention is short.
+- **Code:** one `track(event, data)` function in `src/lib/analytics.ts`, so the tool can be swapped without touching components. The Umami script loads only on the live site (not in local builds or Vercel previews).
+- **Events:**
+
+  | Event | Data | Answers |
+  |---|---|---|
+  | `product_view` | product id, name, brand, category, language | Most viewed products |
+  | `whatsapp_click` | product id (or "general"), language | Most asked-about products (closest signal to a sale) |
+  | `search` | search text, result count | What people look for; searches with 0 results show demand |
+  | `tag_click`, `category_click` | tag or category | Interest by series and brand |
+  | `photo_swipe` | product id, photos seen | Engagement with each product's photos |
+  | `instagram_click`, `language_switch`, `view_toggle` | — | General behavior |
+
+  No personal data. Umami adds referrer, device and country on its own; the owner adds `utm_source` / `utm_campaign` to links posted on Instagram.
+- **Shareable product links:** `?p=<product id>` (for example `/?p=tanuki-gojo`, `/en/?p=tanuki-gojo`) opens that product directly; closing it removes `p` from the address.
+- **Share buttons** (UI, mockup first):
+  - Next to the results: shares the current search. `?q=` links already work since #7; the button just makes them easy to get.
+  - In the product view: shares the product's `?p=` link.
+  - On phones the button opens the phone's share menu (Web Share API); on desktop it copies the link. Labels in both languages in the dictionary.
+- **First report** after 2–4 weeks of data: products ranked by views and by WhatsApp clicks, and searches with no results.
 
 ## Backlog
 
