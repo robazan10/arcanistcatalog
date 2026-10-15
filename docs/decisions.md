@@ -94,3 +94,12 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 ## 2026-10-12 · Handoff docs
 
 **The repo carries the handoff docs** (`docs/README.md`, `roadmap.md`, `decisions.md`, `architecture.md`, `development-rules.md`, `ui.md`) and the agreed mockups in `docs/mockups/`, following the owner's general instructions: another chat or machine must be able to continue from the repo alone. Same structure as the boardgame-scoring repo.
+
+## 2026-10-14 · Compact top section on phones
+
+**On phones, the logo shrinks to 64px and sits beside the title and subtitle; tablets and desktop keep the big centered logo.**
+- Why: at an iPhone's visible size in Safari (390 × 664), the big logo, title and subtitle took about 45% of the first screen; only 43px of products showed above the WhatsApp bar. Now the products start at 369px (was 545px) and the first row's photos and names are visible.
+- 64px instead of the mockup's 54px, so the "Arcanist's Dice" lettering stays readable.
+- Alternatives: (A) remove the big logo on phones, since the header already shows the book symbol and the name; most room for products after C. (C) remove the top section on phones, keeping the title only for screen readers and search engines; most room, but loses the title and the description new visitors read. The owner chose B to keep the full logo on the first screen.
+
+**The "Docs updated:" line moves from commit messages to PR descriptions,** following the owner's updated general instructions.

@@ -33,7 +33,7 @@ Key rules:
 ## Workflow
 
 - Nothing changes without the owner's approval: before editing files, switching branches, committing, pushing or opening a PR, show what will be done and wait. Read-only checks are fine.
-- Before every commit, show the files, the full commit message (with a "Docs updated:" line) and the PR title and description.
+- Before every commit, show the files, the full commit message and the PR title and description. The PR description has a "Docs updated:" line (commit messages don't repeat it).
 - Work on a branch, push, and open a PR. The owner merges it; never merge or enable auto-merge.
 - Commits are authored as Rodrigo Bazan <ro.bazan10@gmail.com> (already set for this repo).
 - After a change that affects what visitors see, check it in the browser at phone width (390px), in both languages, before calling it done.

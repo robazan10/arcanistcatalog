@@ -2,9 +2,9 @@
 
 What's done, what's next, and how to pick the work up. Decisions behind each step are in [`decisions.md`](decisions.md).
 
-## Next up / how to resume (2026-10-12)
+## Next up / how to resume (2026-10-14)
 
-- **State:** `main` has everything through PR #9 and is live at www.arcanistsdice.com (`/`, `/en/` and `/forge` checked on 2026-10-12). No feature branch is open. This docs PR (`docs/handoff`) is the only work in progress.
+- **State:** `main` has everything through PR #10 and is live at www.arcanistsdice.com. Work in progress: branch `feat/compact-top` (compact top section on phones, see the PR list). After it merges, check the live site at 390 × 664 in both languages.
 - **Next step:** phase 4, the side menu by product type. It can't start until the owner:
   1. reorganizes Drive into one folder per type (see the agreed scope below), and
   2. sends the menu names and their order.
@@ -39,7 +39,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#7](https://github.com/robazan10/arcanistcatalog/pull/7) | 2026-10-09 | Tag search, `?q=`, accent-insensitive search, two-line card names |
 | [#8](https://github.com/robazan10/arcanistcatalog/pull/8) | 2026-10-10 | List view and grid/list toggle |
 | [#9](https://github.com/robazan10/arcanistcatalog/pull/9) | 2026-10-10 | Spanish and English |
-| `docs/handoff` | open | These handoff docs and the saved mockups |
+| [#10](https://github.com/robazan10/arcanistcatalog/pull/10) | 2026-10-13 | Handoff docs (`docs/README.md`, roadmap, decisions, architecture, development rules, screen guide) and the saved mockups |
+| `feat/compact-top` | open | Compact top section on phones (logo 64px beside the title); big logo kept from 640px up |
 
 ## Agreed scope: phase 4 · side menu by type
 
