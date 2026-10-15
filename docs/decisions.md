@@ -103,3 +103,19 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 - Alternatives: (A) remove the big logo on phones, since the header already shows the book symbol and the name; most room for products after C. (C) remove the top section on phones, keeping the title only for screen readers and search engines; most room, but loses the title and the description new visitors read. The owner chose B to keep the full logo on the first screen.
 
 **The "Docs updated:" line moves from commit messages to PR descriptions,** following the owner's updated general instructions.
+
+## 2026-10-15 · Order of the next work, and usage analytics
+
+**Order: the owner's Drive work first, then phase 4 (side menu), then phase 6 (analytics and sharing).** Drive gets reorganized by type, the other categories added, photos filled in and covers corrected before more site work.
+- Why: phase 4 depends on the new Drive structure, and analytics are more useful once the catalog is complete.
+- Alternatives: phase 6 first (it doesn't depend on Drive).
+
+**Usage analytics with Umami Cloud,** through one `track()` function and custom events (product views, WhatsApp clicks per product, searches including those with 0 results, tag and category clicks, photo swipes).
+- Why: the site is one page, so page views alone can't say which products are viewed; Umami takes events with details like the product name, uses no cookies (no consent banner on phones), and is free at this traffic.
+- Alternatives: PostHog (deeper analysis and SQL, more complex, heavier script); Google Analytics 4 (free, BigQuery export, but complex and cookie-based); Vercel Web Analytics (custom events need a paid plan); an own database (needs a server; the site is static).
+
+**Shareable product links (`?p=`) and share buttons** for a product and for a search.
+- Why: a product link can be posted on Instagram on its own, and gives each product its own address. Search links (`?q=`) already worked since #7; the buttons make both easy to get.
+- Alternatives: `?p=` links without buttons.
+
+**Phase 6 stays a plan until the Drive updates are done.**
