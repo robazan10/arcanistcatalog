@@ -2,6 +2,21 @@
 
 The site is one catalog page in two languages (`/` and `/en/`), designed for phones first (most visitors come from Instagram and WhatsApp). Visual rules come from [`brand-ui.md`](brand-ui.md); texts come from `src/i18n/dictionaries.ts`. Every screen below was checked at 390px.
 
+## UX principles
+
+The ideas behind every screen. Each one comes from a decision in [`decisions.md`](decisions.md) (date in brackets); follow them in new work, and record a decision when one changes.
+
+- **Mobile first.** Most visitors arrive from Instagram and WhatsApp on a phone. Design at 390px first, and check at an iPhone's visible size in Safari (390 × 664): the first screen must show products, not just the brand (2026-10-14).
+- **Photos sell the pieces.** The grid with big covers is the default; the list is an option for scanning many products. The owner picks each product's cover in Drive (2026-10-09, 2026-10-10).
+- **One main action: WhatsApp.** There are no prices or cart; sales happen in a WhatsApp chat. The gradient WhatsApp button is always within reach, and in a product view its message already names the product. Instagram is secondary (2026-10-09).
+- **Fast on phone data.** Photos come resized from Google, the grid loads lazily, and a product's full photo list loads only when it opens (2026-10-09).
+- **Find things fast, in any language.** Search ignores accents and case and lives in the address; tags are tappable searches; chips filter by category (2026-10-09).
+- **Honest about what's missing.** Products without photos stay visible as "Fotos pronto", with the WhatsApp button, instead of being hidden (2026-10-09).
+- **Same experience in Spanish and English.** Every text exists in both; no automatic redirect, so a shared link opens exactly what was shared (2026-10-10).
+- **One brand, one visual language** with D4 Stat Forge: the patterns in [`brand-ui.md`](brand-ui.md), with no one-off styles (2026-10-09).
+- **Accessible by default.** Visible mint focus outline, labels for screen readers in both languages, no information by color alone, and respect for reduced motion.
+- **Mockup before building.** UI changes start with a phone mockup the owner approves, saved in [`mockups/`](mockups/).
+
 ## Page, top to bottom
 
 1. **Header** (sticky): white book symbol, "Arcanist's Dice" in Staatliches, a lavender tagline, then the **ES | EN** pill (current language in the gradient; switching keeps `?q=`) and an Instagram button.

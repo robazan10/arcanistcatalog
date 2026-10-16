@@ -4,7 +4,7 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-15)
 
-- **State:** `main` has everything through PR #11 and is live at www.arcanistsdice.com (checked on 2026-10-15 at 390 × 664: cards start at 369px). Apart from this roadmap update (`docs/roadmap-analytics`), no branch is open.
+- **State:** `main` has everything through PR #11 and is live at www.arcanistsdice.com (checked on 2026-10-15 at 390 × 664: cards start at 369px). Apart from the docs update `docs/ux-principles`, no branch is open.
 - **Next step: the owner's Drive work** (agreed order, 2026-10-15). Nothing to build until it's done:
   1. Reorganize Drive into one folder per type (see the phase 4 scope below), adding the other categories (Keycaps, Dados, Deckboxes…).
   2. Fill in photos (147 products without any) and correct covers (202 without a `Cover` image); add `meta.txt` to the myAnimate and Keycaps folders. Lists in [`catalog-status.md`](catalog-status.md).
@@ -46,7 +46,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#9](https://github.com/robazan10/arcanistcatalog/pull/9) | 2026-10-10 | Spanish and English |
 | [#10](https://github.com/robazan10/arcanistcatalog/pull/10) | 2026-10-13 | Handoff docs (`docs/README.md`, roadmap, decisions, architecture, development rules, screen guide) and the saved mockups |
 | [#11](https://github.com/robazan10/arcanistcatalog/pull/11) | 2026-10-15 | Compact top section on phones (logo 64px beside the title); big logo kept from 640px up |
-| `docs/roadmap-analytics` | open | Roadmap: agreed order (Drive work, phase 4, phase 6) and the phase 6 scope |
+| [#12](https://github.com/robazan10/arcanistcatalog/pull/12) | 2026-10-15 | Roadmap: agreed order (Drive work, phase 4, phase 6) and the phase 6 scope |
+| `docs/ux-principles` | open | UX principles in `ui.md`; `brand-ui.md` brought up to date |
 
 ## Agreed scope: phase 4 · side menu by type
 

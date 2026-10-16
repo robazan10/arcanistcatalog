@@ -1,6 +1,6 @@
 # Arcanist's Dice: brand and UI guide
 
-How to apply the Arcanist's Dice brand guide to the website. These decisions were made while building D4 Stat Forge (`robazan10/d4-stat-forge`, live at www.arcanistsdice.com/forge), which already follows them; open it to see every pattern below working.
+How the Arcanist's Dice brand guide is applied to the website. These decisions were made while building D4 Stat Forge (`robazan10/d4-stat-forge`, live at www.arcanistsdice.com/forge), and the catalog follows them since the redesign in PR #3. For the screens as built and the UX principles behind them, see [`ui.md`](ui.md).
 
 Source of truth: the brand guide PDF `ArcanistsDice_D.pdf` (11 pages: logo versions, palette, typography), on the owner's computer in `Desktop/Arcanist's Dice/Branding/Editables Original/ILLUSTRATOR/`.
 
@@ -37,7 +37,7 @@ Page background: `radial-gradient(ellipse at top, #3a3db0 0%, #2E3192 40%, #1F21
 | Body text, buttons, forms | **Nunito** 400/600/700/800 (Google Fonts) | Open (OFL), free for websites |
 | Logo wordmark | Chinese Rocks, already outlined in the logo SVGs | Not needed as a font |
 
-**Chinese Rocks (the brand font) can't be used as a web font.** Its Typodermic Desktop EULA (in `Branding/chinese_rocks/`) allows commercial use on a computer (logos, images, print, PDFs) but forbids distributing the font file. A website serving `.otf`/`.ttf` files via `@font-face` distributes it. This site currently does: `arcanist-catalog/public/chinese-rocks-rg.otf` and `.ttf` are committed to this public repo and loaded in `globals.css`. Replace them with Staatliches, delete the files, and stop tracking them, unless the owner buys a Typodermic web license. (This is a reading of the license, not legal advice.)
+**Chinese Rocks (the brand font) can't be used as a web font.** Its Typodermic Desktop EULA (in `Branding/chinese_rocks/`) allows commercial use on a computer (logos, images, print, PDFs) but forbids distributing the font file. A website serving `.otf`/`.ttf` files via `@font-face` distributes it. Until PR #3 this site did (`public/chinese-rocks-rg.otf` and `.ttf`); those files were deleted and headings now use Staatliches. They're still in the git history of this public repo (commit `2a28cc6`): the owner decides between a Typodermic web license and a history rewrite (see the backlog in [`roadmap.md`](roadmap.md)). (This is a reading of the license, not legal advice.)
 
 Staatliches is uppercase-only by design, like Chinese Rocks: use it for short display text, never for paragraphs.
 
@@ -52,9 +52,16 @@ Brand SVGs live in `Desktop/Arcanist's Dice/Branding/Editables Original/SVG/`:
 | `Isotype/ArcanistsDice-Icon03.svg` | Book symbol, white | Compact header, app icon on the gradient |
 | `Isotype/ArcanistsDice-Icon04.svg` | Book symbol, indigo | Favicon on light, small marks |
 
-Copy the ones you need into `arcanist-catalog/public/brand/` and reference them as files (`<img>` or `next/image`), not inlined, since several SVGs reuse the same CSS class names (`.cls-1`...) and would clash on one page. The wordmark in these SVGs is drawn as shapes, so it doesn't depend on the font license.
+The site uses copies in `arcanist-catalog/public/brand/`:
 
-D4 Stat Forge's app icon (`d4-stat-forge/public/icon.svg`) is the white book symbol on the mint→violet gradient, full bleed; reuse that recipe for this site's favicon and social image.
+| Site file | Copy of | Used in |
+|---|---|---|
+| `logo-dark-bg.svg` | `Imagotype/DarkBackground/ArcanistsDice-DB.svg` | Top section (64px on phones, 150px from 640px up) |
+| `isotype-white.svg` | `Isotype/ArcanistsDice-Icon03.svg` | Header, "Fotos pronto" placeholders |
+
+Add others the same way and reference them as files (`<img>` or `next/image`), not inlined, since several SVGs reuse the same CSS class names (`.cls-1`...) and would clash on one page. The wordmark in these SVGs is drawn as shapes, so it doesn't depend on the font license.
+
+D4 Stat Forge's app icon (`d4-stat-forge/public/icon.svg`) is the white book symbol on the mint→violet gradient, full bleed. The catalog uses the same recipe: its favicon files (`src/app/icon.svg`, `favicon.ico`, `apple-icon.png`) are copied from D4 Stat Forge, and the link-preview image `public/og-image.png` (1200 × 630) is the white book symbol on the gradient.
 
 ## Component patterns
 
@@ -74,7 +81,7 @@ One visual language, used across D4 Stat Forge:
 
 ## Tailwind tokens
 
-Drop-in replacement for the `colors` and `fontFamily` in `arcanist-catalog/tailwind.config.ts`:
+These are in `arcanist-catalog/tailwind.config.ts` (`theme.extend`):
 
 ```ts
 colors: {
@@ -89,13 +96,17 @@ colors: {
     field: '#25277C',
     danger: '#FF7A9A',
   },
+  whatsapp: '#25D366', // only for the WhatsApp logo
 },
 fontFamily: {
-  display: ['Staatliches', 'Impact', 'Arial Narrow', 'sans-serif'],
-  sans: ['Nunito', 'Segoe UI', 'system-ui', 'sans-serif'],
+  display: ['var(--font-display)', 'Staatliches', 'Impact', 'Arial Narrow', 'sans-serif'],
+  sans: ['var(--font-sans)', 'Nunito', 'Segoe UI', 'system-ui', 'sans-serif'],
 },
 borderRadius: {
   card: '12px',
+},
+borderWidth: {
+  1.5: '1.5px',
 },
 backgroundImage: {
   'brand-gradient': 'linear-gradient(90deg, #3FFFB1, #A57FFF)',
@@ -103,7 +114,7 @@ backgroundImage: {
 },
 ```
 
-Load the fonts with `next/font/google` (`Staatliches`, and `Nunito` with weights 400, 600, 700 and 800). It self-hosts them at build time, which works with the static export.
+Beyond the guide's palette, the site adds the WhatsApp green (only for its logo), the 1.5px border width, and font families that read the `next/font` variables. The fonts load with `next/font/google` in `src/lib/fonts.ts` (Staatliches, and Nunito 400/600/700/800), which self-hosts them at build time. Shared component classes (`.panel`, `.btn-main`, `.btn-secondary`, `.badge`, `.badge-mint`, `.text-gradient`, `.bg-coming-soon`) are in `src/app/globals.css`.
 
 ## Where to see it
 
