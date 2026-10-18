@@ -91,7 +91,7 @@ export default function CatalogClient({ products, categories, lang }: Props) {
   const chipClass = (active: boolean) =>
     `flex-shrink-0 rounded-full px-3.5 py-2 text-sm font-bold border-1.5 transition-colors duration-150 ${
       active
-        ? 'bg-brand-gradient text-brand-indigo border-transparent'
+        ? 'bg-brand-gradient bg-origin-border text-brand-indigo border-transparent'
         : 'bg-white/[0.07] text-brand-lavender border-brand-line hover:border-brand-mint'
     }`;
 

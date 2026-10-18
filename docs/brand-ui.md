@@ -72,6 +72,7 @@ One visual language, used across D4 Stat Forge:
 - **Main button:** the gradient as background, indigo text, weight 800. Only one per screen.
 - **Secondary button:** `panel` background, `line` border, white text; border turns mint or violet on hover.
 - **Chips:** pill-shaped toggles (999px radius). The selected chip takes the gradient fill with indigo text. Use them instead of dropdowns for short option lists.
+- **Gradient on an element with a border:** add `bg-origin-border` (CSS `background-origin: border-box`). Otherwise the gradient starts inside the border and repeats under it, leaving a mint strip at the right edge (fixed on the selected category chip in 2026-10).
 - **Badges:** small pills with a tinted background and matching text: violet `rgba(165,127,255,.25)` with `#CDB8FF`, mint `rgba(63,255,177,.18)` with mint, danger `rgba(255,122,154,.22)` with `#FF7A9A`.
 - **Headline numbers or titles:** Staatliches with the gradient as text fill (`background-clip: text`).
 - **Bars:** 6–8px tall, rounded, `field` track with a gradient fill. Prefer bars over pies or rings, so every screen uses the same few shapes.
