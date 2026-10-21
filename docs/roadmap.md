@@ -4,10 +4,11 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-21)
 
-- **State:** `main` has everything through PR #14 and is live at www.arcanistsdice.com. Apart from this docs update (`docs/drive-type-structure`), no branch is open.
-- **Next step: the owner's Drive work** (agreed order, 2026-10-15). Nothing to build until it's done:
-  1. Reorganize Drive into type → brand → product with English type folders (`01 Figures`, `02 Keycaps`, `03 Dice`, `04 Others`), following the target structure in [`drive-images-schema.md`](drive-images-schema.md).
-  2. Fill in photos (147 products without any) and correct covers (202 without a `Cover` image); add `meta.txt` to the myAnimate and Keycaps folders. Lists in [`catalog-status.md`](catalog-status.md).
+- **State:** `main` has everything through PR #15 and is live at www.arcanistsdice.com. Apart from this docs update (`docs/drive-reorganized`), no branch is open.
+- **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/` (32 series, one product per series), `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
+- **Next step: the owner's remaining Drive work.** Nothing to build until it's done:
+  1. Add the missing keycap series from Hiko's unsorted models (one folder per series under `02 Keycaps/Hiko/`), and anything for `03 Dice/` and `04 Others/`.
+  2. Then `meta.txt` for the myAnimate folders and every keycap series (Claude Code can draft them for review: series as the name, characters and bilingual tags), covers, and photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)). Deferred by the owner until the keycap series are complete.
 - **Then, in order:**
   1. Update the catalog script for the new type level (part of phase 4), then rerun it (ask the owner first, see [`development-rules.md`](development-rules.md)). **Don't run the current script after the Drive reorganization:** it would read the type folders as brands and the brand folders as products, and skip almost every product. The live site is unaffected until a new `catalog.json` is committed.
   2. Phase 4, the side menu by type: phone mockup first, then build.
@@ -48,19 +49,20 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#12](https://github.com/robazan10/arcanistcatalog/pull/12) | 2026-10-15 | Roadmap: agreed order (Drive work, phase 4, phase 6) and the phase 6 scope |
 | [#13](https://github.com/robazan10/arcanistcatalog/pull/13) | 2026-10-16 | UX principles in `ui.md`; `brand-ui.md` brought up to date |
 | [#14](https://github.com/robazan10/arcanistcatalog/pull/14) | 2026-10-18 | Selected category chip: gradient runs edge to edge (no mint strip on the right) |
-| `docs/drive-type-structure` | open | Target Drive structure for phase 4 (type → brand → product, English type folders) |
+| [#15](https://github.com/robazan10/arcanistcatalog/pull/15) | 2026-10-21 | Target Drive structure for phase 4 (type → brand → product, English type folders) |
+| `docs/drive-reorganized` | open | Drive reorganized: schema doc, architecture and roadmap describe the new layout and the keycap series |
 
 ## Agreed scope: phase 4 · side menu by type
 
 Agreed on 2026-10-09 and 2026-10-10; Drive structure and type names agreed on 2026-10-21.
 
-- **Drive layout:** `Images/<NN Type>/<Brand>/<Product>/`, with the types `01 Figures`, `02 Keycaps`, `03 Dice`, `04 Others` (full target structure in [`drive-images-schema.md`](drive-images-schema.md)). The script reads the type from the first level and the brand from the second, so `category=` and `brand=` in `meta.txt` are no longer needed; it warns when they don't match the folders, and when two products get the same ID.
+- **Drive layout:** `Images/<NN Type>/<Brand>/<Product>/`, with the types `01 Figures`, `02 Keycaps`, `03 Dice`, `04 Others` (the structure is in place since 2026-10-21; see [`drive-images-schema.md`](drive-images-schema.md)). The script reads the type from the first level and the brand from the second, so `category=` and `brand=` in `meta.txt` are no longer needed; it warns when they don't match the folders, and when two products get the same ID.
 - **Order:** the number prefix on the type folders sets the menu order; the script hides it.
 - **Menu:** a menu button at the left of the header opens a panel from the left: "Todo" plus each type with its count; the selected one in mint. Inside a type, the chips filter by brand. Types with no products are hidden.
 - **Address:** the selected type goes in the URL as `?type=` (for example `/?type=dice`, `/en/?type=dice`) so a section can be linked from Instagram.
 - **Languages:** Drive type folders are in English; the menu labels and type names go in `src/i18n/dictionaries.ts` in both languages (Figures/Figuras, Keycaps/Keycaps, Dice/Dados, Others/Otros). A type without a translation shows its folder name.
-- **Keycaps** becomes a type (`02 Keycaps/Hiko/<product>/`); its loose photos get split into product folders with `meta.txt`.
-- **First step of the build:** update the script for the three levels and update `drive-images-schema.md` (the target structure becomes the current one).
+- **Keycaps** is a type: `02 Keycaps/Hiko/<series>/`, one product per series with the characters as tags.
+- **First step of the build:** update the script for the three levels, and mark in `drive-images-schema.md` that the script reads them.
 - Mockup first, then build.
 
 ## Agreed scope: phase 6 · usage analytics and sharing
