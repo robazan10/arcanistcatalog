@@ -133,3 +133,17 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 **The shop's own products go under an `Arcanist's Dice` brand folder,** so every product has a brand. **Product IDs stay brand + name**, so they don't change when a product moves between types.
 
 **The type goes in the address as `?type=`** (for example `/?type=dice`), not `?tipo=` as first planned, to match the English type folders.
+
+## 2026-10-21 · Drive reorganized, keycaps by series
+
+**Claude Code did the reorganization through the synced Drive folder,** as moves only, checked against Drive's server.
+- Why: Drive keeps a file's ID when it moves, and the live site links photos by ID; verifying every ID before and after made it safe to do in bulk.
+- Alternatives: the owner moving folders by hand in Drive.
+
+**Keycaps are one product per series, anime, movie or game** (`02 Keycaps/Hiko/Demon Slayer/`), not one per character. The characters go in `tags=`.
+- Why: the owner's preference; fewer cards, and a series card shows all its keycaps.
+- Alternatives: one product per character or set (54 folders; the first proposal).
+
+**Volumes stay inside their series** (Dragon Ball Vol I, Vol II and Daima; Chainsaw Man Vol I and II; Pokemon Eeveelutions and Legendaries). **Studio Ghibli is one folder,** because one photo mixes Calcifer (Howl's Moving Castle) and Kaonashi (Spirited Away). Donkey Kong Bananza and Super Mario stay separate, as do Deadpool and Spider-Man.
+
+**`meta.txt` for the keycap series and myAnimate is deferred** until the owner adds the remaining keycap series.

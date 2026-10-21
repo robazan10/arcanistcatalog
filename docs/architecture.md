@@ -5,7 +5,8 @@ A static catalog: product data comes from Google Drive through a script run by h
 ## Data flow
 
 ```
-Google Drive  My Drive/3D Arcanist/Images/<Brand>/<Product>/   (meta.txt + photos)
+Google Drive  My Drive/3D Arcanist/Images/<NN Type>/<Brand>/<Product>/   (meta.txt + photos)
+      │   (since 2026-10-21; the script still reads the old <Brand>/<Product>/ levels until phase 4)
       │   scripts/generate-manifest  (run by hand, Drive API with a service account)
       │     · reads meta.txt and lists photos; "cover" first, then name order
       │     · sets each photo to "anyone with the link can view"

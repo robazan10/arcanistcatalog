@@ -1,61 +1,42 @@
 # 3D Arcanist — `Images` folder schema & change log
 
 Context for any Claude Code session working on the project that reads these Google Drive folders.
-Last reorganized: 2026-10-09 (Cowork session). Synced to the Mac via Google Drive for desktop (streaming mode).
+Last reorganized: 2026-10-21 (type folders added, keycaps sorted by series; see "Changes made on 2026-10-21"). Before that: 2026-10-09 (Cowork session). Synced to the Mac via Google Drive for desktop (streaming mode).
 
 ## Location
 - macOS path: `/Users/arcanist/Library/CloudStorage/GoogleDrive-<account>/My Drive/3D Arcanist/Images`
 - Drive path: `My Drive/3D Arcanist/Images`
 
-## Structure
-```
-Images/
-├── NomNom/            # brand / category
-│   └── <Character folder>/
-│       ├── meta.txt   # metadata (see format below)
-│       └── *.jpg|*.png (+ optional subfolders, e.g. Gumroad/, PaintStickers/)
-├── Tanuki/
-│   └── <Character folder>/ ...same layout...
-├── Keycaps/           # NOT touched yet — no meta.txt generated
-└── myAnimate/         # NOT touched yet — no meta.txt generated
-```
-- Exactly two levels: `Images/<Brand>/<Character>/`. No intermediate grouping folders (the old `Tanuki/ CHIBIS-TOONS/` was flattened and deleted).
-- The brand folder name == `category` == `brand` in every meta.txt of that folder.
-- Some files may be cloud-only (not downloaded); reading them triggers a download.
-
-## Target structure: type → brand → product (agreed 2026-10-21, for phase 4)
-
-The owner is reorganizing `Images/` into three levels. Until phase 4 ships, the script still expects the two-level layout above, so **don't run it after moving folders** (it would read the type folders as brands and skip almost every product). The live site keeps working meanwhile: it uses the committed `catalog.json`, and photos keep their Drive IDs and sharing when moved.
+## Structure: type → brand → product
 
 ```
 Images/
 ├── 01 Figures/
-│   ├── Tanuki/
-│   │   └── Voldemort/            meta.txt + Cover.jpg + photos
-│   ├── NomNom/
-│   │   └── Zoey - KPop Demon Hunters/
-│   └── myAnimate/
+│   ├── NomNom/                    151 product folders
+│   │   └── Zoey - KPop Demon Hunters/   meta.txt + Cover.jpg + photos
+│   ├── Tanuki/                    204 product folders
+│   │   └── Voldemort/
+│   └── myAnimate/                 31 product folders (no meta.txt yet)
 │       └── Ace/
 ├── 02 Keycaps/
-│   └── Hiko/
-│       └── Chainsaw Man Vol I/   one folder per keycap or set
-├── 03 Dice/
-│   └── Arcanist's Dice/          the shop's own designs
-│       └── <Set name>/
-└── 04 Others/
-    └── <Brand>/
-        └── <Product>/            deckboxes, accessories…
+│   └── Hiko/                      32 series folders (no meta.txt yet)
+│       └── Demon Slayer/          one product per series: all its keycaps as photos
+├── 03 Dice/                       empty for now; the shop's own designs go under an `Arcanist's Dice` brand folder
+├── 04 Others/                     empty for now (deckboxes, accessories…)
+└── Keycaps/                       leftover from the move; only a duplicate photo and empty folders; the owner deletes it
 ```
 
 - **Always three levels:** `Images/<NN Type>/<Brand>/<Product>/`. The type becomes the side menu on the site; the brand becomes the chips inside each type.
-- **Type folders are named in English,** with an optional number prefix (`01 `, `02 `…) that sets the menu order; the script hides the number. The site shows each type in the visitor's language through `src/i18n/dictionaries.ts` (Figures → "Figuras" on `/`); a type without a translation shows its folder name as is.
+- **The catalog script still expects the old two levels** (`Images/<Brand>/<Product>/`) until phase 4 updates it. **Don't run it before that:** it would read the type folders as brands and skip almost every product. The live site keeps working meanwhile: it uses the committed `catalog.json`, and every photo kept its Drive ID and sharing in the move.
+- **Type folders are named in English,** with a number prefix (`01 `, `02 `…) that sets the menu order; the script will hide the number. The site shows each type in the visitor's language through `src/i18n/dictionaries.ts` (Figures → "Figuras" on `/`); a type without a translation shows its folder name as is.
 - **New types** are added by creating a folder at the first level (for example `05 Deckboxes`). A more specific name reads better in the menu than "Others".
 - **Brand folders** keep the designer or studio name (Tanuki, NomNom, myAnimate, Hiko). The shop's own products go under `Arcanist's Dice`, so every product has a brand.
-- **Product folders don't change:** `meta.txt` (`name=`, `tags=`), a `Cover` image and the photos directly inside. `category=` and `brand=` become unnecessary because the folders give them; existing `meta.txt` files keep working, and the script will only warn when they don't match the folders.
-- **Product IDs stay brand + name** (`tanuki-voldemort`), so they don't change when a product moves between types; the script will warn if two products ever get the same ID.
-- **To move:** `NomNom/`, `Tanuki/` and `myAnimate/` into `01 Figures/` (myAnimate's 31 folders also need a `meta.txt` each). Keycaps: today `Keycaps/Images/` holds ~66 loose photos plus 5 series folders (Chainsaw, DBZ, Extra, HxH, One Piece); split them into one folder per keycap or set under `02 Keycaps/Hiko/`, each with `meta.txt` and `Cover`.
+- **Product folders:** `meta.txt` (`name=`, `tags=`), a `Cover` image and the photos directly inside; subfolders are ignored. `category=` and `brand=` become unnecessary because the folders give them; existing `meta.txt` files keep working, and the script will only warn when they don't match the folders.
+- **Keycaps are one product per series, anime, movie or game** (owner's choice, 2026-10-21): `02 Keycaps/Hiko/Demon Slayer/` holds every Demon Slayer keycap. Photo file names keep the character names; the characters go in `tags=` so searching a character still finds the series.
+- **Product IDs stay brand + name** (`tanuki-voldemort`, `hiko-demon-slayer`), so they don't change when a product moves between types; the script will warn if two products ever get the same ID.
 - **Keep the root:** `Images/` itself stays where it is (its ID is `rootFolderId` and it's shared with the script's service account; folders created inside inherit that).
 - `3D Arcanist/Hiko Keycaps/` (outside `Images/`) holds Hiko's model files (`.stl`, `.rar`) for printing, not catalog photos; it stays out of the catalog.
+- Some files may be cloud-only (not downloaded); reading them triggers a download.
 
 ## meta.txt format
 UTF-8, 4 lines, `key=value`, no spaces around `=`:
@@ -85,6 +66,52 @@ tags=fullsize,tamaño completo,bust,busto,satoru gojo,gojo,jujutsu kaisen,jjk,st
 - Characters `: / \ ? * " < > |` are never used in names (`:` → ` - `, `/` → `-`).
 - Exception: when a chibi/toon shares a name with a full model, the variant word is kept: `Batman Toon`, `Deadpool Toon`, `Frieren Chibi`, `Goku Chibi`.
 - NomNom keeps its original descriptive names (`<Character> - <Series>`, chibis prefixed `Chibi ...`).
+
+## Changes made on 2026-10-21
+Done by Claude Code through the synced folder, with the owner's approval. Every move was a move (never a copy or delete) and was checked against Drive's server: all moved folders and files kept their Drive IDs, and the 1,734 photos used by the live site were all found in the new structure and still load publicly.
+
+1. Created `01 Figures/`, `02 Keycaps/`, `03 Dice/`, `04 Others/`.
+2. Moved `myAnimate/`, `Tanuki/` and `NomNom/` into `01 Figures/` (2,595 folder and file IDs compared before and after: all identical).
+3. Sorted the keycap photos from `Keycaps/Images/` (76 loose photos + 5 series folders) into `02 Keycaps/Hiko/<series>/`: 85 photos in 32 series folders. Seven set or "portada" images were renamed `Cover.jpg` (marked ✱ below); all other photos kept their file names.
+4. Left in `Keycaps/Images/`: `LUFFYS.jpg` (a byte-for-byte copy of `One Piece/LUFFYS.jpg`) and the 5 old series folders, now empty. Nothing was deleted; the owner deletes the leftover folder.
+
+### Keycap series (`02 Keycaps/Hiko/`)
+| Series folder | Photos | Characters or sets |
+|---|---|---|
+| Arcane | 4 | Caitlyn, Jinx |
+| Berserk | 2 | |
+| Bleach | 3 | Ichigo + Kon ✱, Kon, hollow-mask Ichigo |
+| Chainsaw Man | 2 | Vol I ✱, Vol II |
+| Clair Obscur - Expedition 33 | 2 | Esquie |
+| Dandadan | 7 | Jiji, Jiji Evil Eye, Momo, Turbo Granny |
+| Deadpool | 1 | |
+| Demon Slayer | 9 | set (Tanjiro, Nezuko, Zenitsu, Inosuke) ✱, Akaza, Giyu, Kokushibo, Muzan, Gyomei |
+| Donkey Kong Bananza | 1 | |
+| Dragon Ball | 5 | DBZ Vol I ✱ (+ render, unpainted print), DBZ Vol II, Goku Daima SSJ4 |
+| Evangelion | 2 | |
+| Hollow Knight | 1 | |
+| Hunter x Hunter | 1 | ✱ |
+| JoJo's Bizarre Adventure | 2 | Jotaro |
+| Jujutsu Kaisen | 5 | set, Gojo, Maki Awakened |
+| KPop Demon Hunters | 4 | Mira, Zoey and Rumi; Derpy and Sussie |
+| Kirby | 2 | |
+| Labubu | 1 | |
+| Mortal Kombat | 1 | ninjas |
+| My Hero Academia | 2 | |
+| Naruto | 1 | |
+| One Piece | 3 | Luffy, Zoro and Sanji; Luffys; Shanks |
+| Pokemon | 2 | Eeveelutions Vol I ✱, Legendaries Vol II |
+| Sailor Moon | 1 | |
+| Solo Leveling | 7 | Jin-Woo, Igris, Beru, Tank |
+| Sonic | 2 | |
+| Spider-Man | 1 | Miles Morales and Gwen Stacy |
+| Spy x Family | 1 | ✱ |
+| Stranger Things | 1 | Demogorgon |
+| Studio Ghibli | 5 | Calcifer and Kaonashi, Totoro, San (one folder: one photo mixes two movies) |
+| Super Mario | 1 | Yoshi |
+| The Legend of Zelda | 3 | Zelda, Link |
+
+Several keycap photos are Hiko's promotional renders (Patreon logo or "HIKO" watermark). The owner will add more keycap series later from Hiko's unsorted models.
 
 ## Changes made on 2026-10-09
 1. Generated/replaced `meta.txt` in every character folder that existed at the time (NomNom 94, Tanuki 114). The 11 pre-existing meta.txt files were overwritten.
@@ -205,7 +232,7 @@ tags=fullsize,tamaño completo,bust,busto,satoru gojo,gojo,jujutsu kaisen,jjk,st
 | `CHIBIS-TOONS/Wukong_Chibi` | `Wukong` |
 
 ## Current folders
-Every folder has a meta.txt. Folders marked † were created empty (meta.txt only) and are waiting for images.
+NomNom and Tanuki are now under `01 Figures/` (see the structure above). Every folder has a meta.txt. Folders marked † were created empty (meta.txt only) and are waiting for images.
 
 ### NomNom (151)
 - A friend by the water - Chibi NomNom Original †
@@ -567,6 +594,8 @@ Every folder has a meta.txt. Folders marked † were created empty (meta.txt onl
 - Zodd
 
 ## Known gaps
-- `Keycaps/` and `myAnimate/` have no meta.txt yet.
+- `01 Figures/myAnimate/` (31 folders) and `02 Keycaps/Hiko/` (32 series) have no meta.txt yet; the owner will add them later, after adding more keycap series.
+- 25 of the 32 keycap series and the myAnimate folders have no `Cover` image yet.
+- `Images/Keycaps/` is a leftover (a duplicate photo and empty folders) for the owner to delete.
 - Folders marked † have no images yet. Code reading these folders should tolerate a character folder that contains only meta.txt.
 - A few folder names keep typos from the source list on purpose (e.g. `Ayla - Crono Trigger`, `Malthael - Diablo 3 Repeaer of Souls`); tags use the correct spelling.
