@@ -119,3 +119,17 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 - Alternatives: `?p=` links without buttons.
 
 **Phase 6 stays a plan until the Drive updates are done.**
+
+## 2026-10-21 · Drive structure for product types
+
+**`Images/` becomes three levels: type → brand → product** (`Images/01 Figures/Tanuki/Voldemort/`). The type is the side menu; the brand is the chips inside it. `category=` and `brand=` in `meta.txt` become unnecessary.
+- Why: the catalog grows beyond figures (keycaps, dice, others), and the folders are the simplest place for the owner to manage it.
+- Alternatives: a `type=` key in each `meta.txt` (one more line to keep right in hundreds of files); keeping `category=` as the type.
+
+**Type folders are named in English** (`01 Figures`, `02 Keycaps`, `03 Dice`, `04 Others`), with a number prefix for the menu order. The site translates them through the dictionary.
+- Why: the owner prefers English names in Drive.
+- Alternatives: Spanish folder names (the earlier plan); no numbers (alphabetical order).
+
+**The shop's own products go under an `Arcanist's Dice` brand folder,** so every product has a brand. **Product IDs stay brand + name**, so they don't change when a product moves between types.
+
+**The type goes in the address as `?type=`** (for example `/?type=dice`), not `?tipo=` as first planned, to match the English type folders.

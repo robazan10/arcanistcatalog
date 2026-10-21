@@ -23,6 +23,40 @@ Images/
 - The brand folder name == `category` == `brand` in every meta.txt of that folder.
 - Some files may be cloud-only (not downloaded); reading them triggers a download.
 
+## Target structure: type → brand → product (agreed 2026-10-21, for phase 4)
+
+The owner is reorganizing `Images/` into three levels. Until phase 4 ships, the script still expects the two-level layout above, so **don't run it after moving folders** (it would read the type folders as brands and skip almost every product). The live site keeps working meanwhile: it uses the committed `catalog.json`, and photos keep their Drive IDs and sharing when moved.
+
+```
+Images/
+├── 01 Figures/
+│   ├── Tanuki/
+│   │   └── Voldemort/            meta.txt + Cover.jpg + photos
+│   ├── NomNom/
+│   │   └── Zoey - KPop Demon Hunters/
+│   └── myAnimate/
+│       └── Ace/
+├── 02 Keycaps/
+│   └── Hiko/
+│       └── Chainsaw Man Vol I/   one folder per keycap or set
+├── 03 Dice/
+│   └── Arcanist's Dice/          the shop's own designs
+│       └── <Set name>/
+└── 04 Others/
+    └── <Brand>/
+        └── <Product>/            deckboxes, accessories…
+```
+
+- **Always three levels:** `Images/<NN Type>/<Brand>/<Product>/`. The type becomes the side menu on the site; the brand becomes the chips inside each type.
+- **Type folders are named in English,** with an optional number prefix (`01 `, `02 `…) that sets the menu order; the script hides the number. The site shows each type in the visitor's language through `src/i18n/dictionaries.ts` (Figures → "Figuras" on `/`); a type without a translation shows its folder name as is.
+- **New types** are added by creating a folder at the first level (for example `05 Deckboxes`). A more specific name reads better in the menu than "Others".
+- **Brand folders** keep the designer or studio name (Tanuki, NomNom, myAnimate, Hiko). The shop's own products go under `Arcanist's Dice`, so every product has a brand.
+- **Product folders don't change:** `meta.txt` (`name=`, `tags=`), a `Cover` image and the photos directly inside. `category=` and `brand=` become unnecessary because the folders give them; existing `meta.txt` files keep working, and the script will only warn when they don't match the folders.
+- **Product IDs stay brand + name** (`tanuki-voldemort`), so they don't change when a product moves between types; the script will warn if two products ever get the same ID.
+- **To move:** `NomNom/`, `Tanuki/` and `myAnimate/` into `01 Figures/` (myAnimate's 31 folders also need a `meta.txt` each). Keycaps: today `Keycaps/Images/` holds ~66 loose photos plus 5 series folders (Chainsaw, DBZ, Extra, HxH, One Piece); split them into one folder per keycap or set under `02 Keycaps/Hiko/`, each with `meta.txt` and `Cover`.
+- **Keep the root:** `Images/` itself stays where it is (its ID is `rootFolderId` and it's shared with the script's service account; folders created inside inherit that).
+- `3D Arcanist/Hiko Keycaps/` (outside `Images/`) holds Hiko's model files (`.stl`, `.rar`) for printing, not catalog photos; it stays out of the catalog.
+
 ## meta.txt format
 UTF-8, 4 lines, `key=value`, no spaces around `=`:
 ```
