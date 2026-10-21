@@ -1,158 +1,167 @@
-# Arcanist's Dice - Catalogo Web
+# Arcanist's Dice - Web Catalog
 
-Catalogo de productos estatico para **Arcanist's Dice** (El Salvador).
-Sitio: [www.arcanistsdice.com](https://www.arcanistsdice.com) (español en `/`, inglés en `/en/`)
+Static product catalog for **Arcanist's Dice** (El Salvador).
+Site: [www.arcanistsdice.com](https://www.arcanistsdice.com) (Spanish at `/`, English at `/en/`)
 
-La documentacion para continuar el trabajo (estado actual, decisiones, arquitectura, reglas y pantallas) esta en [`docs/README.md`](docs/README.md), en ingles.
+The docs for picking up the work (current state, decisions, architecture, rules and screens) are in [`docs/README.md`](docs/README.md).
 
 ---
 
-## Estructura del Proyecto
+## Project structure
 
 ```
 arcanist/
 ├── scripts/
-│   └── generate-manifest/   <- Script que lee Google Drive y genera el catalogo
-├── arcanist-catalog/        <- Sitio web Next.js
-└── docs/                    <- Documentacion del proyecto y maquetas
+│   └── generate-manifest/   <- Script that reads Google Drive and builds the catalog
+├── arcanist-catalog/        <- Next.js website
+└── docs/                    <- Project docs and mockups
 ```
 
 ---
 
-## 1. Generar el Catalogo (manifest)
+## 1. Generate the catalog (manifest)
 
-El script lee la carpeta de Google Drive y genera `arcanist-catalog/src/data/catalog.json`.
+The script reads the Google Drive folder and writes `arcanist-catalog/src/data/catalog.json`.
 
-### Requisitos (primera vez)
+### Requirements (first time)
 
-1. Colocar el archivo de credenciales de la Service Account en:
+1. Put the service account key file in:
    ```
    scripts/generate-manifest/service-account-key.json
    ```
-   > Este archivo NO se sube a git (el repositorio es publico). El dueno lo guarda en Google Drive, en `My Drive/3D Arcanist/`. Copiarlo con el nombre `service-account-key.json` y protegerlo con `chmod 600 service-account-key.json`.
+   > This file is NOT committed to git (the repo is public). The owner keeps it in Google Drive, in `My Drive/3D Arcanist/`. Copy it with the name `service-account-key.json` and protect it with `chmod 600 service-account-key.json`.
 
-2. Verificar que el `rootFolderId` en `scripts/generate-manifest/config.json` sea correcto:
+2. Check that `rootFolderId` in `scripts/generate-manifest/config.json` is correct:
    ```json
    {
-     "rootFolderId": "ID_DE_LA_CARPETA_RAIZ_EN_DRIVE"
+     "rootFolderId": "ROOT_FOLDER_ID_IN_DRIVE"
    }
    ```
-   El ID se obtiene de la URL de Google Drive:
-   `https://drive.google.com/drive/folders/`**`ESTE_ES_EL_ID`**
+   The ID comes from the Google Drive URL:
+   `https://drive.google.com/drive/folders/`**`THIS_IS_THE_ID`**
 
-3. Instalar dependencias (solo la primera vez):
+3. Install dependencies (first time only):
    ```bash
    cd scripts/generate-manifest
    npm install
    ```
 
-### Correr el script
+### Run the script
+
+First, a test run that changes nothing (it doesn't touch sharing in Drive and writes to a temp folder):
+
+```bash
+cd scripts/generate-manifest
+node index.js --dry-run
+```
+
+To generate the catalog for real:
 
 ```bash
 cd scripts/generate-manifest
 node index.js
 ```
 
-El script va a:
-- Explorar la carpeta raiz en Google Drive (ROOT > BRAND > PRODUCTO)
-- Leer el `meta.txt` de cada carpeta de producto
-- Omitir productos que no tengan `meta.txt`
-- Poner primero la imagen `cover` de cada producto (ver abajo)
-- Incluir los productos sin fotos; el sitio los muestra como "Fotos pronto"
-- Hacer publicas las imagenes en Google Drive automaticamente
-- Generar `arcanist-catalog/src/data/catalog.json`
-- Generar `docs/catalog-status.md`: productos sin fotos, sin `cover` y carpetas omitidas
+The script will:
+- Walk the root folder in Google Drive in three levels: TYPE > BRAND > PRODUCT (for example `01 Figures/Tanuki/Voldemort`). The type's number sets the menu order
+- Read the `meta.txt` in each product folder
+- Skip products without a `meta.txt`
+- Put each product's `cover` image first (see below)
+- Include products without photos; the site shows them as "Fotos pronto"
+- Make the images public in Google Drive automatically
+- Write `arcanist-catalog/src/data/catalog.json`
+- Write `docs/catalog-status.md`: products without photos, without a `cover`, and skipped folders
 
-### Formato de `meta.txt`
+### `meta.txt` format
 
-Cada carpeta de producto en Google Drive debe tener un archivo `meta.txt`:
+Every product folder in Google Drive needs a `meta.txt` file:
 
 ```
-name=Nombre del Producto
-category=Categoria del Producto
-tags=tag1, tag2, tag3
+name=Product Name
+tags=tag1,tag2,tag3
 images=Image_1.jpg, Image_3.jpg
 ```
 
-| Campo    | Requerido | Descripcion                                                        |
-|----------|-----------|--------------------------------------------------------------------|
-| name     | Si        | Nombre del producto                                                |
-| category | Si        | Categoria (agrupa los tabs del catalogo)                           |
-| tags     | No        | Etiquetas separadas por coma                                       |
-| images   | No        | Imagenes especificas a mostrar. Si se omite, se usan todas        |
+| Field  | Required | Description                                                  |
+|--------|----------|--------------------------------------------------------------|
+| name   | Yes      | Product name                                                 |
+| tags   | No       | Comma-separated tags                                         |
+| images | No       | Specific images to show. If left out, all images are used    |
 
-### Imagen de portada (`cover`)
+The type and the brand come from the folders, so `category=` and `brand=` aren't needed anymore. `meta.txt` files that have them still work; if they don't match the folder, the script warns and uses the folder. Details in [`docs/drive-images-schema.md`](docs/drive-images-schema.md).
 
-En cada carpeta de producto, la imagen llamada `cover` (o `Cover`, con cualquier extension: `cover.jpg`, `Cover.png`...) es la que se muestra en la tarjeta del catalogo y la primera al abrir el producto. Las demas van en orden de nombre (`_01`, `_02`, ..., `_10`).
+### Cover image (`cover`)
 
-Si una carpeta no tiene `cover`, se usa la primera por nombre y el script muestra una advertencia. Al final indica cuantos productos no tienen `cover`.
+In each product folder, the image named `cover` (or `Cover`, with any extension: `cover.jpg`, `Cover.png`...) is the one shown on the catalog card and first when the product opens. The rest follow in name order (`_01`, `_02`, ..., `_10`).
 
-### Identificadores
+If a folder has no `cover`, the first image by name is used and the script prints a warning. At the end it says how many products have no `cover`.
 
-El id de cada producto es marca + nombre (`tanuki-voldemort`), porque hay personajes con el mismo nombre en dos marcas.
+### IDs
+
+Each product's id is brand + name (`tanuki-voldemort`), because some characters exist in two brands.
 
 ---
 
-## 2. Correr el Sitio Localmente
+## 2. Run the site locally
 
-### Requisitos
+### Requirements
 
-- Node.js 18 o superior
+- Node.js 18 or newer
 
-### Instalacion (primera vez)
+### Install (first time)
 
 ```bash
 cd arcanist-catalog
 npm install
 ```
 
-### Modo desarrollo
+### Development mode
 
 ```bash
 cd arcanist-catalog
 npm run dev
 ```
 
-Abrir [http://localhost:3000](http://localhost:3000) en el navegador.
+Open [http://localhost:3000](http://localhost:3000) in the browser.
 
-### Build de produccion
+### Production build
 
 ```bash
 cd arcanist-catalog
 npm run build
 ```
 
-Genera la carpeta `out/` con el sitio estatico listo para desplegar.
+Writes the `out/` folder with the static site, ready to deploy.
 
 ---
 
-## 3. Flujo de Actualizacion del Catalogo
+## 3. Catalog update flow
 
-Cuando el dueno agrega nuevos productos en Google Drive:
+When the owner adds new products in Google Drive:
 
 ```bash
-# 1. Crear una rama
-git checkout -b data/catalogo-AAAA-MM-DD
+# 1. Create a branch
+git checkout -b data/catalog-YYYY-MM-DD
 
-# 2. Generar el nuevo catalogo (hace publicas las fotos nuevas en Drive)
+# 2. Generate the new catalog (makes the new photos public in Drive)
 cd scripts/generate-manifest
 node index.js
 
-# 3. Revisar el resumen del script, catalog.json y docs/catalog-status.md
-# 4. Subir la rama y abrir un PR
+# 3. Review the script's summary, catalog.json and docs/catalog-status.md
+# 4. Push the branch and open a PR
 git add arcanist-catalog/src/data/catalog.json docs/catalog-status.md
 git commit
 git push -u origin HEAD
 gh pr create
 ```
 
-Al hacer merge del PR, Vercel reconstruye el sitio automaticamente en pocos minutos. `docs/catalog-status.md` lista los productos sin fotos, sin `cover` y las carpetas omitidas.
+When the PR is merged, Vercel rebuilds the site automatically within a few minutes. `docs/catalog-status.md` lists the products without photos, without a `cover`, and the skipped folders.
 
 ---
 
-## Configuracion de Contacto
+## Contact settings
 
-Los links de WhatsApp e Instagram se configuran en `arcanist-catalog/src/lib/config.ts`:
+The WhatsApp and Instagram links are set in `arcanist-catalog/src/lib/config.ts`:
 
 ```ts
 export const SOCIAL = {
@@ -161,4 +170,4 @@ export const SOCIAL = {
 };
 ```
 
-Los mensajes de WhatsApp (y todos los textos del sitio, en español e ingles) estan en `arcanist-catalog/src/i18n/dictionaries.ts`.
+The WhatsApp messages (and every text on the site, in Spanish and English) are in `arcanist-catalog/src/i18n/dictionaries.ts`.

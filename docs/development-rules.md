@@ -43,7 +43,7 @@ Every PR description has a **"Docs updated:"** line listing the docs changed, or
 ## Drive data and the catalog script
 
 - The Drive layout and `meta.txt` format are in [`drive-images-schema.md`](drive-images-schema.md). Read it before changing the script or the data.
-- **Ask the owner before running the script:** each run sets every listed photo to "anyone with the link can view" in Drive.
+- **Ask the owner before running the script:** each run sets every listed photo to "anyone with the link can view" in Drive. `--dry-run` changes nothing (no sharing, writes to a temp folder) and doesn't need approval; use it first and compare its `catalog.json` with the committed one.
 - After a run, review the summary (products, without photos, without cover, skipped), build, check at phone width, and open a PR with `catalog.json` and `catalog-status.md`.
 - Cover rule: the image named `cover`/`Cover` goes first; rename files in Drive, not in code.
 - Fix data problems (typos, category names) in Drive, not in code.
@@ -57,6 +57,7 @@ Every PR description has a **"Docs updated:"** line listing the docs changed, or
 | Dev server | `cd arcanist-catalog && npm run dev` → http://localhost:3000 |
 | Production build | `cd arcanist-catalog && npm run build` → `out/` |
 | Install script dependencies | `cd scripts/generate-manifest && npm install` |
+| Preview a catalog run (changes nothing) | `cd scripts/generate-manifest && node index.js --dry-run` |
 | Regenerate the catalog | `cd scripts/generate-manifest && node index.js` (ask the owner first) |
 
 ## Setup on a new machine

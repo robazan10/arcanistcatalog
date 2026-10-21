@@ -125,7 +125,7 @@ export default function ProductModal({ product, onClose, onTagClick, t }: Props)
       >
         <div className="h-[5px] w-10 rounded-full bg-brand-line mx-auto my-2 md:hidden" aria-hidden="true" />
 
-        {/* Galeria */}
+        {/* Gallery */}
         {product.cover ? (
           <div className="relative md:w-3/5 flex-shrink-0">
             <div
@@ -209,7 +209,7 @@ export default function ProductModal({ product, onClose, onTagClick, t }: Props)
           </div>
         )}
 
-        {/* Informacion */}
+        {/* Info */}
         <div className="flex flex-col md:w-2/5 md:min-h-full">
           <div className="px-4 pt-3.5 md:p-5">
             <h2 id="product-title" className="text-[32px] leading-none">

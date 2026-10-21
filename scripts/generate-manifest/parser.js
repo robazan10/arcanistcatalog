@@ -1,11 +1,13 @@
 /**
- * Parsea el contenido de un archivo meta.txt.
+ * Parses the contents of a meta.txt file.
  *
- * Formato esperado:
- *   name=Nombre del Producto
- *   category=Categoria
- *   tags=Tag1, Tag2, Tag3
- *   images=Image_1.png, Image_2.png   (opcional)
+ * Expected format (only name is required):
+ *   name=Product Name
+ *   tags=tag1,tag2,tag3
+ *   images=Image_1.png, Image_2.png   (optional: only these images)
+ *
+ * Older files may also have category= and brand=; they're parsed, and the
+ * script compares them with the brand folder.
  */
 function parseMetaTxt(content) {
   const result = {};

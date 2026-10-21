@@ -3,30 +3,32 @@ const path = require('path');
 
 const isCover = filename => path.parse(filename).name.toLowerCase() === 'cover';
 
-function groupByBrand(items, label) {
+// Groups by "Type / Brand", e.g. "Figures / Tanuki"
+function groupByTypeAndBrand(items, label) {
   const groups = new Map();
   for (const item of items) {
-    if (!groups.has(item.brand)) groups.set(item.brand, []);
-    groups.get(item.brand).push(label(item));
+    const key = `${item.typeName ?? item.type} / ${item.brand}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(label(item));
   }
   return [...groups.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([brand, names]) => {
+    .map(([group, names]) => {
       const sorted = names.sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base', numeric: true }));
-      return `### ${brand} (${sorted.length})\n\n${sorted.map(n => `- ${n}`).join('\n')}`;
+      return `### ${group} (${sorted.length})\n\n${sorted.map(n => `- ${n}`).join('\n')}`;
     })
     .join('\n\n');
 }
 
 function section(title, explanation, items, label) {
-  const body = items.length ? groupByBrand(items, label) : '_None._';
+  const body = items.length ? groupByTypeAndBrand(items, label) : '_None._';
   return `## ${title} (${items.length})\n\n${explanation}\n\n${body}`;
 }
 
 /**
  * Writes a Markdown report of what still needs work in the Drive folders:
  * products without photos, products without a "cover" image, and skipped folders.
- * skipped: [{ brand, folder }]
+ * products: catalog products with a typeName; skipped: [{ type, brand, folder }]
  */
 function writeStatusReport({ generatedAt, products, skipped }, outputPath) {
   const withoutPhotos = products.filter(p => p.images.length === 0);
@@ -58,7 +60,7 @@ function writeStatusReport({ generatedAt, products, skipped }, outputPath) {
     ),
     section(
       'Skipped folders',
-      'Folders without a `meta.txt` (or without `name` and `category` in it). They are not in the catalog.',
+      'Folders without a `meta.txt` (or without `name=` in it). They are not in the catalog.',
       skipped,
       s => s.folder
     ),
