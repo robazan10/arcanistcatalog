@@ -4,15 +4,15 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-21)
 
-- **State:** `main` has everything through PR #15 and is live at www.arcanistsdice.com. Apart from this docs update (`docs/drive-reorganized`), no branch is open.
+- **State:** `main` has everything through PR #16 and is live at www.arcanistsdice.com. Work in progress: `feat/script-three-levels` (the catalog script reads the new Drive structure; checked with `--dry-run`: same 355 products, IDs, tags and photos as the live catalog).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/` (32 series, one product per series), `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
-- **Next step: the owner's remaining Drive work.** Nothing to build until it's done:
+- **Next step:** after `feat/script-three-levels` merges, a real run of the script (ask the owner first: it sets photo sharing in Drive) to regenerate `catalog.json` with the new `type` field and `types` list. Nothing visible changes on the site (same 355 products); Aku Aku and Agumon get their new covers.
+- **The owner's remaining Drive work** (in parallel; the owner deferred it):
   1. Add the missing keycap series from Hiko's unsorted models (one folder per series under `02 Keycaps/Hiko/`), and anything for `03 Dice/` and `04 Others/`.
   2. Then `meta.txt` for the myAnimate folders and every keycap series (Claude Code can draft them for review: series as the name, characters and bilingual tags), covers, and photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)). Deferred by the owner until the keycap series are complete.
 - **Then, in order:**
-  1. Update the catalog script for the new type level (part of phase 4), then rerun it (ask the owner first, see [`development-rules.md`](development-rules.md)). **Don't run the current script after the Drive reorganization:** it would read the type folders as brands and the brand folders as products, and skip almost every product. The live site is unaffected until a new `catalog.json` is committed.
-  2. Phase 4, the side menu by type: phone mockup first, then build.
-  3. Phase 6, usage analytics and sharing (scope below): mockup of the share buttons first, then build.
+  1. Phase 4, the side menu by type: phone mockup first, then build. Until keycaps have `meta.txt`, the menu would only have Figures.
+  2. Phase 6, usage analytics and sharing (scope below): mockup of the share buttons first, then build.
 - **Decisions waiting on the owner:**
   - Phase 6: create the Umami Cloud account and share the site ID (not a secret).
   - Chinese Rocks in the git history: buy a Typodermic web license or rewrite the history (see the backlog).
@@ -50,7 +50,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#13](https://github.com/robazan10/arcanistcatalog/pull/13) | 2026-10-16 | UX principles in `ui.md`; `brand-ui.md` brought up to date |
 | [#14](https://github.com/robazan10/arcanistcatalog/pull/14) | 2026-10-18 | Selected category chip: gradient runs edge to edge (no mint strip on the right) |
 | [#15](https://github.com/robazan10/arcanistcatalog/pull/15) | 2026-10-21 | Target Drive structure for phase 4 (type → brand → product, English type folders) |
-| `docs/drive-reorganized` | open | Drive reorganized: schema doc, architecture and roadmap describe the new layout and the keycap series |
+| [#16](https://github.com/robazan10/arcanistcatalog/pull/16) | 2026-10-21 | Drive reorganized: schema doc, architecture and roadmap describe the new layout and the keycap series |
+| `feat/script-three-levels` | open | Catalog script reads type → brand → product; `type` and `types` in `catalog.json`; `--dry-run` |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -62,7 +63,7 @@ Agreed on 2026-10-09 and 2026-10-10; Drive structure and type names agreed on 20
 - **Address:** the selected type goes in the URL as `?type=` (for example `/?type=dice`, `/en/?type=dice`) so a section can be linked from Instagram.
 - **Languages:** Drive type folders are in English; the menu labels and type names go in `src/i18n/dictionaries.ts` in both languages (Figures/Figuras, Keycaps/Keycaps, Dice/Dados, Others/Otros). A type without a translation shows its folder name.
 - **Keycaps** is a type: `02 Keycaps/Hiko/<series>/`, one product per series with the characters as tags.
-- **First step of the build:** update the script for the three levels, and mark in `drive-images-schema.md` that the script reads them.
+- **First step of the build:** done in `feat/script-three-levels` (the script reads the three levels and writes `types`). Left for the menu itself: the site reading `types`, the menu panel, `?type=`, translations.
 - Mockup first, then build.
 
 ## Agreed scope: phase 6 · usage analytics and sharing

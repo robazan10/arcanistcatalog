@@ -6,10 +6,10 @@ A static catalog: product data comes from Google Drive through a script run by h
 
 ```
 Google Drive  My Drive/3D Arcanist/Images/<NN Type>/<Brand>/<Product>/   (meta.txt + photos)
-      │   (since 2026-10-21; the script still reads the old <Brand>/<Product>/ levels until phase 4)
       │   scripts/generate-manifest  (run by hand, Drive API with a service account)
+      │     · type from the 1st level (number = order), brand from the 2nd, product from the 3rd
       │     · reads meta.txt and lists photos; "cover" first, then name order
-      │     · sets each photo to "anyone with the link can view"
+      │     · sets each photo to "anyone with the link can view" (not with --dry-run)
       ▼
 arcanist-catalog/src/data/catalog.json   +   docs/catalog-status.md
       │   committed in a PR; Vercel builds main on merge
@@ -19,7 +19,8 @@ next build (output: 'export')  →  arcanist-catalog/out/  →  Vercel  →  www
 
 - The Drive folder layout and `meta.txt` format are in [`drive-images-schema.md`](drive-images-schema.md). The script's root folder ID is in `scripts/generate-manifest/config.json`.
 - Photos are not copied anywhere: the site links to `https://lh3.googleusercontent.com/d/<file id>` and asks Google for a resized copy with `=w<width>`.
-- `catalog.json` is the source of truth for the site and its git history doubles as a log of catalog changes.
+- `catalog.json` is the source of truth for the site and its git history doubles as a log of catalog changes. Each product has `id` (brand + name), `name`, `type` (type id, e.g. `figures`), `brand`, `category` (= brand, used by the chips and badges), `tags` and `images`. Top-level lists: `types` (`id`, `name`, `order`, `productIds`; for the phase 4 menu, not used by the site yet), `categories` and `tags`.
+- `node index.js --dry-run` reads Drive but changes no sharing and writes its `catalog.json` and `catalog-status.md` to a temp folder, to compare before a real run.
 
 ## Routes
 

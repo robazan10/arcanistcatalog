@@ -27,25 +27,24 @@ Images/
 ```
 
 - **Always three levels:** `Images/<NN Type>/<Brand>/<Product>/`. The type becomes the side menu on the site; the brand becomes the chips inside each type.
-- **The catalog script still expects the old two levels** (`Images/<Brand>/<Product>/`) until phase 4 updates it. **Don't run it before that:** it would read the type folders as brands and skip almost every product. The live site keeps working meanwhile: it uses the committed `catalog.json`, and every photo kept its Drive ID and sharing in the move.
-- **Type folders are named in English,** with a number prefix (`01 `, `02 `…) that sets the menu order; the script will hide the number. The site shows each type in the visitor's language through `src/i18n/dictionaries.ts` (Figures → "Figuras" on `/`); a type without a translation shows its folder name as is.
+- **The catalog script reads these three levels** (since the `feat/script-three-levels` PR, 2026-10-21): the type from the first level, the brand from the second. Every photo kept its Drive ID and sharing in the move, so the live site was never affected. Run `node index.js --dry-run` to see what a run would produce without changing anything.
+- **Type folders are named in English,** with a number prefix (`01 `, `02 `…) that sets the menu order; the script hides the number. A type folder without a number goes last, with a warning; two folders with the same type name (like the leftover `Keycaps`) are merged into one type, with a warning. The site shows each type in the visitor's language through `src/i18n/dictionaries.ts` (Figures → "Figuras" on `/`); a type without a translation shows its folder name as is.
 - **New types** are added by creating a folder at the first level (for example `05 Deckboxes`). A more specific name reads better in the menu than "Others".
 - **Brand folders** keep the designer or studio name (Tanuki, NomNom, myAnimate, Hiko). The shop's own products go under `Arcanist's Dice`, so every product has a brand.
-- **Product folders:** `meta.txt` (`name=`, `tags=`), a `Cover` image and the photos directly inside; subfolders are ignored. `category=` and `brand=` become unnecessary because the folders give them; existing `meta.txt` files keep working, and the script will only warn when they don't match the folders.
+- **Product folders:** `meta.txt` (`name=`, `tags=`), a `Cover` image and the photos directly inside; subfolders are ignored. `category=` and `brand=` are no longer needed because the folders give them; existing `meta.txt` files keep working, and the script warns when they don't match the folders (the folder wins).
 - **Keycaps are one product per series, anime, movie or game** (owner's choice, 2026-10-21): `02 Keycaps/Hiko/Demon Slayer/` holds every Demon Slayer keycap. Photo file names keep the character names; the characters go in `tags=` so searching a character still finds the series.
-- **Product IDs stay brand + name** (`tanuki-voldemort`, `hiko-demon-slayer`), so they don't change when a product moves between types; the script will warn if two products ever get the same ID.
+- **Product IDs stay brand + name** (`tanuki-voldemort`, `hiko-demon-slayer`), so they don't change when a product moves between types; the script warns if two products ever get the same ID.
 - **Keep the root:** `Images/` itself stays where it is (its ID is `rootFolderId` and it's shared with the script's service account; folders created inside inherit that).
 - `3D Arcanist/Hiko Keycaps/` (outside `Images/`) holds Hiko's model files (`.stl`, `.rar`) for printing, not catalog photos; it stays out of the catalog.
 - Some files may be cloud-only (not downloaded); reading them triggers a download.
 
 ## meta.txt format
-UTF-8, 4 lines, `key=value`, no spaces around `=`:
+UTF-8, `key=value` lines, no spaces around `=`. Only `name=` is required:
 ```
-name=<exactly the character folder name>
-category=<brand folder name>   # NomNom | Tanuki
-brand=<brand folder name>      # same value as category
+name=<exactly the product folder name>
 tags=<comma-separated, no spaces after commas, lowercase>
 ```
+The files written on 2026-10-09 also have `category=` and `brand=` (both the brand folder's name). They still work; since the three-level script, the brand and category come from the folder, and a value that doesn't match only produces a warning. New files don't need them.
 Example (`Tanuki/Gojo/meta.txt`):
 ```
 name=Gojo

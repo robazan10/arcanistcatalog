@@ -115,7 +115,7 @@ export default function CatalogClient({ products, categories, lang }: Props) {
         </div>
       </div>
 
-      {/* Busqueda */}
+      {/* Search */}
       <label
         ref={searchRef}
         className="mt-3 sm:mt-5 scroll-mt-20 flex items-center gap-2 bg-brand-field border-1.5 border-brand-line rounded-card px-3.5 text-brand-lavender transition-colors duration-150 focus-within:border-brand-mint">
@@ -130,7 +130,7 @@ export default function CatalogClient({ products, categories, lang }: Props) {
         />
       </label>
 
-      {/* Chips de categoria */}
+      {/* Category chips */}
       <div className="flex gap-2 overflow-x-auto mt-3.5 -mx-4 px-4 pb-1 scrollbar-hide" role="group" aria-label={t.categories}>
         <button
           onClick={() => setActiveCategory('todos')}
@@ -151,7 +151,7 @@ export default function CatalogClient({ products, categories, lang }: Props) {
         ))}
       </div>
 
-      {/* Contador y selector de vista */}
+      {/* Count and view toggle */}
       <div className="flex items-center justify-between gap-3 mt-4">
         <p className="text-brand-lavender text-sm" aria-live="polite">
           {t.productCount(filteredProducts.length, Boolean(isFiltering))}
@@ -177,7 +177,7 @@ export default function CatalogClient({ products, categories, lang }: Props) {
         </div>
       </div>
 
-      {/* Productos */}
+      {/* Products */}
       {filteredProducts.length === 0 ? (
         <div className="text-center py-20 text-brand-lavender">
           <div className="text-5xl mb-4">🎲</div>
@@ -205,7 +205,7 @@ export default function CatalogClient({ products, categories, lang }: Props) {
         </div>
       )}
 
-      {/* Modal */}
+      {/* Product view */}
       <ProductModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}

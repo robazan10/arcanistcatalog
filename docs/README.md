@@ -14,4 +14,4 @@ These docs are meant to be enough for a new chat or machine to continue the work
 | [`catalog-status.md`](catalog-status.md) | Products without photos, without a cover, and skipped folders | Never by hand: the catalog script rewrites it on every run |
 | [`mockups/`](mockups/) | The agreed phone mockups, as HTML pages that open in a browser | A new mockup is agreed |
 
-[`../CLAUDE.md`](../CLAUDE.md) is the short summary Claude Code reads first, and it points here. [`../README.md`](../README.md) (Spanish) explains how to regenerate the catalog and run the site. [`../PLAN.md`](../PLAN.md) is the original May 2026 plan, kept for history.
+[`../CLAUDE.md`](../CLAUDE.md) is the short summary Claude Code reads first, and it points here. [`../README.md`](../README.md) explains how to regenerate the catalog and run the site. [`../PLAN.md`](../PLAN.md) is the original May 2026 plan, kept for history.

@@ -147,3 +147,19 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 **Volumes stay inside their series** (Dragon Ball Vol I, Vol II and Daima; Chainsaw Man Vol I and II; Pokemon Eeveelutions and Legendaries). **Studio Ghibli is one folder,** because one photo mixes Calcifer (Howl's Moving Castle) and Kaonashi (Spirited Away). Donkey Kong Bananza and Super Mario stay separate, as do Deadpool and Spider-Man.
 
 **`meta.txt` for the keycap series and myAnimate is deferred** until the owner adds the remaining keycap series.
+
+## 2026-10-21 · Catalog script reads type → brand → product
+
+**The script reads `Images/<NN Type>/<Brand>/<Product>/`,** done before the rest of phase 4 at the owner's request. Each product gets a `type`; `catalog.json` gets a `types` list for the future menu. The site doesn't use them yet, so nothing visible changes.
+
+**The category is the brand folder's name, and `meta.txt` only needs `name=`.** Old `category=`/`brand=` lines still work; a mismatch with the folder is a warning and the folder wins.
+- Why: the folders already say it; one less line to keep right in every `meta.txt`, and the chips and badges stay exactly as they are.
+- Alternatives: keep requiring `category=` (redundant); make `category` the type (would change the chips before the menu exists).
+
+**Two root folders with the same type name merge into one type, with a warning;** a root folder without a number goes last, with a warning.
+- Why: the leftover `Images/Keycaps/` would otherwise create a second "Keycaps" type with the same id until the owner deletes it.
+
+**`--dry-run`** reads Drive without changing sharing and writes to a temp folder.
+- Why: compare a run with the live catalog before committing to a real run, which changes photo sharing in Drive.
+
+**The README and all code comments are in English,** like the rest of the docs (the owner's preference). The site's visible texts stay in both languages in the dictionary; the catalog script's terminal messages are still in Spanish. `PLAN.md` stays in Spanish as the historical May 2026 plan.
