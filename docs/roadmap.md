@@ -2,16 +2,18 @@
 
 What's done, what's next, and how to pick the work up. Decisions behind each step are in [`decisions.md`](decisions.md).
 
-## Next up / how to resume (2026-10-21)
+## Next up / how to resume (2026-10-22)
 
 - **State:** `main` has everything through PR #16 and is live at www.arcanistsdice.com. Work in progress: `feat/script-three-levels` (the catalog script reads the new Drive structure; checked with `--dry-run`: same 355 products, IDs, tags and photos as the live catalog).
-- **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/` (32 series, one product per series), `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
-- **Next step:** after `feat/script-three-levels` merges, a real run of the script (ask the owner first: it sets photo sharing in Drive) to regenerate `catalog.json` with the new `type` field and `types` list. Nothing visible changes on the site (same 355 products); Aku Aku and Agumon get their new covers.
-- **The owner's remaining Drive work** (in parallel; the owner deferred it):
-  1. Add the missing keycap series from Hiko's unsorted models (one folder per series under `02 Keycaps/Hiko/`), and anything for `03 Dice/` and `04 Others/`.
-  2. Then `meta.txt` for the myAnimate folders and every keycap series (Claude Code can draft them for review: series as the name, characters and bilingual tags), covers, and photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)). Deferred by the owner until the keycap series are complete.
+- **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
+- **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
+- **Next step:** after `feat/script-three-levels` merges, a real run of the script (ask the owner first: it sets photo sharing in Drive) to regenerate `catalog.json` with the new `type` field and `types` list. Expected: the 355 figures as today (Aku Aku and Agumon get their new covers) plus 67 keycap products showing "Fotos pronto". Run `--dry-run` first and check that count.
+- **The owner's remaining Drive work** (in parallel):
+  1. Delete the leftover `Images/Keycaps/` folder.
+  2. Keycap photos and a `Cover` per series (from the archive or new ones), and anything for `03 Dice/` and `04 Others/`.
+  3. `meta.txt` for the myAnimate folders (Claude Code can draft them for review), covers, and figure photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)).
 - **Then, in order:**
-  1. Phase 4, the side menu by type: phone mockup first, then build. Until keycaps have `meta.txt`, the menu would only have Figures.
+  1. Phase 4, the side menu by type: phone mockup first, then build. After the next script run the menu has Figures and Keycaps.
   2. Phase 6, usage analytics and sharing (scope below): mockup of the share buttons first, then build.
 - **Decisions waiting on the owner:**
   - Phase 6: create the Umami Cloud account and share the site ID (not a secret).
@@ -51,7 +53,7 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#14](https://github.com/robazan10/arcanistcatalog/pull/14) | 2026-10-18 | Selected category chip: gradient runs edge to edge (no mint strip on the right) |
 | [#15](https://github.com/robazan10/arcanistcatalog/pull/15) | 2026-10-21 | Target Drive structure for phase 4 (type → brand → product, English type folders) |
 | [#16](https://github.com/robazan10/arcanistcatalog/pull/16) | 2026-10-21 | Drive reorganized: schema doc, architecture and roadmap describe the new layout and the keycap series |
-| `feat/script-three-levels` | open | Catalog script reads type → brand → product; `type` and `types` in `catalog.json`; `--dry-run` |
+| `feat/script-three-levels` | open | Catalog script reads type → brand → product; `type` and `types` in `catalog.json`; `--dry-run`. Docs for the keycap series rebuilt in Drive (2026-10-22) |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -96,6 +98,7 @@ Agreed on 2026-10-15; to start after phase 4. Goal: data to evaluate which produ
 - **Chinese Rocks in the git history:** the font files were deleted in #3 but are still in commit `2a28cc6` of this public repo. Fix: a Typodermic web license, or a history rewrite + force-push. Owner's decision; don't rewrite history without it.
 - **Covers:** 202 products with photos have no `Cover` image; the card uses the first photo by name, sometimes `Scaleparts.jpg`.
 - **Photos:** 147 products show "Fotos pronto".
-- **myAnimate (31 folders) and Keycaps (1):** no `meta.txt`, so they're skipped.
+- **myAnimate (31 folders):** no `meta.txt`, so they're skipped.
+- **Keycaps (67 series):** `meta.txt` only; photos and covers to add.
 - **English wording:** accepted for now; review when convenient.
 - **Vercel CLI:** not installed on the owner's Mac, so build logs need the Vercel dashboard. Optional: install it and log in.

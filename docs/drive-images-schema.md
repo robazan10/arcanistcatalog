@@ -1,7 +1,7 @@
 # 3D Arcanist — `Images` folder schema & change log
 
 Context for any Claude Code session working on the project that reads these Google Drive folders.
-Last reorganized: 2026-10-21 (type folders added, keycaps sorted by series; see "Changes made on 2026-10-21"). Before that: 2026-10-09 (Cowork session). Synced to the Mac via Google Drive for desktop (streaming mode).
+Last changed: 2026-10-22 (keycap series rebuilt from the owned models, with `meta.txt`; see "Changes made on 2026-10-22"). Before that: 2026-10-21 (type folders added, keycaps sorted by series) and 2026-10-09 (Cowork session). Synced to the Mac via Google Drive for desktop (streaming mode).
 
 ## Location
 - macOS path: `/Users/arcanist/Library/CloudStorage/GoogleDrive-<account>/My Drive/3D Arcanist/Images`
@@ -19,8 +19,8 @@ Images/
 │   └── myAnimate/                 31 product folders (no meta.txt yet)
 │       └── Ace/
 ├── 02 Keycaps/
-│   └── Hiko/                      32 series folders (no meta.txt yet)
-│       └── Demon Slayer/          one product per series: all its keycaps as photos
+│   └── Hiko/                      67 series folders, meta.txt only (no photos yet)
+│       └── Demon Slayer/          one product per series; its keycaps go in as photos
 ├── 03 Dice/                       empty for now; the shop's own designs go under an `Arcanist's Dice` brand folder
 ├── 04 Others/                     empty for now (deckboxes, accessories…)
 └── Keycaps/                       leftover from the move; only a duplicate photo and empty folders; the owner deletes it
@@ -35,7 +35,8 @@ Images/
 - **Keycaps are one product per series, anime, movie or game** (owner's choice, 2026-10-21): `02 Keycaps/Hiko/Demon Slayer/` holds every Demon Slayer keycap. Photo file names keep the character names; the characters go in `tags=` so searching a character still finds the series.
 - **Product IDs stay brand + name** (`tanuki-voldemort`, `hiko-demon-slayer`), so they don't change when a product moves between types; the script warns if two products ever get the same ID.
 - **Keep the root:** `Images/` itself stays where it is (its ID is `rootFolderId` and it's shared with the script's service account; folders created inside inherit that).
-- `3D Arcanist/Hiko Keycaps/` (outside `Images/`) holds Hiko's model files (`.stl`, `.rar`) for printing, not catalog photos; it stays out of the catalog.
+- `3D Arcanist/Hiko Keycaps/` (outside `Images/`) holds Hiko's model files (`.stl`, `.rar`) for printing, not catalog photos; it stays out of the catalog. The owner's working copy of the models is on the Mac at `Desktop/Arcanist's Dice/3D Models/Hiko Keycaps/`; the keycap series and their tags were built from it.
+- `3D Arcanist/Keycaps archive/Hiko/` (outside `Images/`) holds the 32 keycap series as they were on 2026-10-21, with their 85 photos (Hiko's renders and promo images). The script doesn't read it; the owner picks photos from it for the new series folders.
 - Some files may be cloud-only (not downloaded); reading them triggers a download.
 
 ## meta.txt format
@@ -44,7 +45,7 @@ UTF-8, `key=value` lines, no spaces around `=`. Only `name=` is required:
 name=<exactly the product folder name>
 tags=<comma-separated, no spaces after commas, lowercase>
 ```
-The files written on 2026-10-09 also have `category=` and `brand=` (both the brand folder's name). They still work; since the three-level script, the brand and category come from the folder, and a value that doesn't match only produces a warning. New files don't need them.
+The files written on 2026-10-09 and the keycap files written on 2026-10-22 also have `category=` and `brand=` (both the brand folder's name, e.g. `Hiko`; the owner asked for them on the keycaps). They still work; since the three-level script, the brand and category come from the folder, and a value that doesn't match only produces a warning. New files don't need them.
 Example (`Tanuki/Gojo/meta.txt`):
 ```
 name=Gojo
@@ -66,6 +67,17 @@ tags=fullsize,tamaño completo,bust,busto,satoru gojo,gojo,jujutsu kaisen,jjk,st
 - Exception: when a chibi/toon shares a name with a full model, the variant word is kept: `Batman Toon`, `Deadpool Toon`, `Frieren Chibi`, `Goku Chibi`.
 - NomNom keeps its original descriptive names (`<Character> - <Series>`, chibis prefixed `Chibi ...`).
 
+## Changes made on 2026-10-22
+Done by Claude Code through the synced folder, with the owner's approval (moves and new files only; nothing deleted).
+
+1. Moved the 32 series folders of 2026-10-21, with their 85 photos, from `Images/02 Keycaps/Hiko/` to `3D Arcanist/Keycaps archive/Hiko/` (outside `Images/`, so the script ignores them). The owner wanted the series folders to start without images.
+2. Created one folder per series in `Images/02 Keycaps/Hiko/` for every Hiko model the owner has, each with only a `meta.txt` (`name=`, `category=Hiko`, `brand=Hiko`, `tags=`). 67 folders:
+   - **The 32 earlier series**, recreated: Arcane, Berserk, Bleach, Chainsaw Man, Clair Obscur - Expedition 33, Dandadan, Deadpool, Demon Slayer, Donkey Kong Bananza, Dragon Ball, Evangelion, Hollow Knight, Hunter x Hunter, JoJo's Bizarre Adventure, Jujutsu Kaisen, KPop Demon Hunters, Kirby, Labubu, Mortal Kombat, My Hero Academia, Naruto, One Piece, Pokemon, Sailor Moon, Solo Leveling, Sonic, Spider-Man, Spy x Family, Stranger Things, Studio Ghibli, Super Mario, The Legend of Zelda.
+   - **21 new series:** Attack on Titan, Cyberpunk Edgerunners, Digimon, Mob Psycho 100, One Punch Man, Frieren, The Apothecary Diaries, Witch Hat Atelier, Final Fantasy, Kingdom Hearts, The Amazing Digital Circus, Genshin Impact, League of Legends, Valorant, X-Men, Teenage Mutant Ninja Turtles, The Simpsons, Duolingo, Video Game Consoles, Japanese Masks, Sports Balls.
+   - **14 Hiko originals, grouped by theme:** Cute Animals, Kitties, Dinosaurs, Christmas, Halloween, Valentine's Day, Spiritual Symbols, Aliens and Demons, Food, Sushi, Plants, Zodiac Signs (Aries), Owl Witch (Hiko's own design), Mimic Chest (a generic RPG mimic, not Frieren's).
+3. **Tags come from the model file names** (owner's request): every character or object in the series' `.stl`/`.3mf` files and archives is a tag, cleaned of words like `keycap`, `by_hiko`, `stem`, `hollow`, `v2`, followed by the bilingual and media tags. Teemo, the Poros and Kindred are their own `League of Legends` series; `Arcane` keeps Caitlyn and Jinx. Pokemon stays one series with every Pokémon and ball as a tag.
+4. Left out on purpose: `Smile_Keycaps` (a free set by another designer; owner's choice) and `ExtraClear/Cthulhu.stl` (same file name as the Smile set).
+
 ## Changes made on 2026-10-21
 Done by Claude Code through the synced folder, with the owner's approval. Every move was a move (never a copy or delete) and was checked against Drive's server: all moved folders and files kept their Drive IDs, and the 1,734 photos used by the live site were all found in the new structure and still load publicly.
 
@@ -74,7 +86,7 @@ Done by Claude Code through the synced folder, with the owner's approval. Every 
 3. Sorted the keycap photos from `Keycaps/Images/` (76 loose photos + 5 series folders) into `02 Keycaps/Hiko/<series>/`: 85 photos in 32 series folders. Seven set or "portada" images were renamed `Cover.jpg` (marked ✱ below); all other photos kept their file names.
 4. Left in `Keycaps/Images/`: `LUFFYS.jpg` (a byte-for-byte copy of `One Piece/LUFFYS.jpg`) and the 5 old series folders, now empty. Nothing was deleted; the owner deletes the leftover folder.
 
-### Keycap series (`02 Keycaps/Hiko/`)
+### Keycap series of 2026-10-21 (since 2026-10-22 in `3D Arcanist/Keycaps archive/Hiko/`)
 | Series folder | Photos | Characters or sets |
 |---|---|---|
 | Arcane | 4 | Caitlyn, Jinx |
@@ -593,8 +605,9 @@ NomNom and Tanuki are now under `01 Figures/` (see the structure above). Every f
 - Zodd
 
 ## Known gaps
-- `01 Figures/myAnimate/` (31 folders) and `02 Keycaps/Hiko/` (32 series) have no meta.txt yet; the owner will add them later, after adding more keycap series.
-- 25 of the 32 keycap series and the myAnimate folders have no `Cover` image yet.
+- `01 Figures/myAnimate/` (31 folders) has no meta.txt yet.
+- The 67 keycap series in `02 Keycaps/Hiko/` have no photos yet (the earlier ones are in `Keycaps archive/Hiko/`); they show "Fotos pronto" on the site until the owner adds photos and a `Cover`.
+- The myAnimate folders have no `Cover` image yet.
 - `Images/Keycaps/` is a leftover (a duplicate photo and empty folders) for the owner to delete.
 - Folders marked † have no images yet. Code reading these folders should tolerate a character folder that contains only meta.txt.
 - A few folder names keep typos from the source list on purpose (e.g. `Ayla - Crono Trigger`, `Malthael - Diablo 3 Repeaer of Souls`); tags use the correct spelling.
