@@ -163,3 +163,18 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 - Why: compare a run with the live catalog before committing to a real run, which changes photo sharing in Drive.
 
 **The README and all code comments are in English,** like the rest of the docs (the owner's preference). The site's visible texts stay in both languages in the dictionary; the catalog script's terminal messages are still in Spanish. `PLAN.md` stays in Spanish as the historical May 2026 plan.
+
+## 2026-10-22 · Keycap series rebuilt from the owned models
+
+**`02 Keycaps/Hiko/` has one folder per series the owner has Hiko models for (67),** built from the model files on the Mac (`Desktop/Arcanist's Dice/3D Models/Hiko Keycaps/`), each with only a `meta.txt`.
+- Why: the owner wanted the full list of what they can print, ready for photos, instead of only the series that had photos.
+
+**The earlier 32 series and their photos moved to `3D Arcanist/Keycaps archive/Hiko/`,** outside `Images/`, and were recreated empty (the owner's "option B").
+- Why: the owner wanted the series folders without images. Outside `Images/` the script doesn't read the archive, so no duplicate products.
+- Alternatives: add `meta.txt` to the existing folders and keep their photos (option A); move them into `Images/Keycaps/` (would merge into the Keycaps type and duplicate 32 product IDs).
+
+**Keycap tags list every model in the series, taken from the file names,** then the bilingual and media tags. `meta.txt` also has `category=Hiko` and `brand=Hiko` at the owner's request (the brand folder's name, so no warnings).
+
+**Hiko's own designs are grouped by theme** (Cute Animals, Kitties, Christmas, Halloween, Food…), like franchise series. **League of Legends is its own series** (Teemo, Poros, Kindred), apart from Arcane (Caitlyn, Jinx). Aries goes in `Zodiac Signs`; `Owl Witch` (Hiko's design) and `Mimic Chest` (generic) are their own series.
+
+**`Smile_Keycaps` is left out** (a free set by another designer; owner's choice).
