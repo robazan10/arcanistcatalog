@@ -71,6 +71,9 @@ The script will:
 - Make the images public in Google Drive automatically
 - Write `arcanist-catalog/src/data/catalog.json`
 - Write `docs/catalog-status.md`: products without photos, without a `cover`, and skipped folders
+- Stop without writing anything if a `meta.txt` can't be read (network or login error), so a run never drops products from the catalog; run it again
+
+A run takes a few minutes when the Mac stays awake; `caffeinate -i node index.js` keeps it from sleeping. The login renews itself if a run outlasts Google's one-hour token.
 
 ### `meta.txt` format
 

@@ -44,7 +44,8 @@ Every PR description has a **"Docs updated:"** line listing the docs changed, or
 
 - The Drive layout and `meta.txt` format are in [`drive-images-schema.md`](drive-images-schema.md). Read it before changing the script or the data.
 - **Ask the owner before running the script:** each run sets every listed photo to "anyone with the link can view" in Drive. `--dry-run` changes nothing (no sharing, writes to a temp folder) and doesn't need approval; use it first and compare its `catalog.json` with the committed one.
-- After a run, review the summary (products, without photos, without cover, skipped), build, check at phone width, and open a PR with `catalog.json` and `catalog-status.md`.
+- After a run, review the summary (products, without photos, without cover, skipped, time), build, check at phone width, and open a PR with `catalog.json` and `catalog-status.md`.
+- **Gotcha:** Google's access token lasts one hour. Runs left overnight in October 2026 took 72–87 min (the idle Mac slowed them) and failed with `Invalid Credentials` / `ACCESS_TOKEN_EXPIRED`. Since `fix/script-token-refresh` the client gets a new token and retries on a 401, and a `meta.txt` read error stops the run instead of dropping the product. Run with `caffeinate -i` so the Mac stays awake.
 - Cover rule: the image named `cover`/`Cover` goes first; rename files in Drive, not in code.
 - Fix data problems (typos, category names) in Drive, not in code.
 - Editing files in Drive from Claude Code works through the synced folder (below); ask before renaming or moving anything there, and never delete.
@@ -57,8 +58,8 @@ Every PR description has a **"Docs updated:"** line listing the docs changed, or
 | Dev server | `cd arcanist-catalog && npm run dev` → http://localhost:3000 |
 | Production build | `cd arcanist-catalog && npm run build` → `out/` |
 | Install script dependencies | `cd scripts/generate-manifest && npm install` |
-| Preview a catalog run (changes nothing) | `cd scripts/generate-manifest && node index.js --dry-run` |
-| Regenerate the catalog | `cd scripts/generate-manifest && node index.js` (ask the owner first) |
+| Preview a catalog run (changes nothing) | `cd scripts/generate-manifest && caffeinate -i node index.js --dry-run` |
+| Regenerate the catalog | `cd scripts/generate-manifest && caffeinate -i node index.js` (ask the owner first) |
 
 ## Setup on a new machine
 

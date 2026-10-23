@@ -162,7 +162,7 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 **`--dry-run`** reads Drive without changing sharing and writes to a temp folder.
 - Why: compare a run with the live catalog before committing to a real run, which changes photo sharing in Drive.
 
-**The README and all code comments are in English,** like the rest of the docs (the owner's preference). The site's visible texts stay in both languages in the dictionary; the catalog script's terminal messages are still in Spanish. `PLAN.md` stays in Spanish as the historical May 2026 plan.
+**The README and all code comments are in English,** like the rest of the docs (the owner's preference). The site's visible texts stay in both languages in the dictionary; the catalog script's terminal messages were still in Spanish (translated on 2026-10-22, see below). `PLAN.md` stays in Spanish as the historical May 2026 plan.
 
 ## 2026-10-22 · Keycap series rebuilt from the owned models
 
@@ -178,3 +178,14 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 **Hiko's own designs are grouped by theme** (Cute Animals, Kitties, Christmas, Halloween, Food…), like franchise series. **League of Legends is its own series** (Teemo, Poros, Kindred), apart from Arcane (Caitlyn, Jinx). Aries goes in `Zodiac Signs`; `Owl Witch` (Hiko's design) and `Mimic Chest` (generic) are their own series.
 
 **`Smile_Keycaps` is left out** (a free set by another designer; owner's choice).
+
+## 2026-10-22 · Catalog script: login renewal and read errors
+
+**The Drive client sets `forceRefreshOnFailure`:** on a 401 it gets a new access token and retries once.
+- Why: two dry runs failed about an hour in with `ACCESS_TOKEN_EXPIRED`. The library renews a token before it expires but doesn't retry a refused request by default; a test with a dead token failed without the option and passed with it.
+- Alternatives: keep every run under an hour (not under our control on an idle Mac); retry the whole run by hand.
+
+**A `meta.txt` that can't be read stops the run** (nothing is written) instead of skipping the product. Folders without `meta.txt` are still skipped.
+- Why: the failed dry run dropped `Spawn - Spawn comics` with only a warning; a real run would have removed it from the live site.
+
+**The script's terminal messages are in English,** like the code and docs (owner's request). The run summary also shows how long it took.
