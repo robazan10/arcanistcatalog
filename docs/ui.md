@@ -19,16 +19,28 @@ The ideas behind every screen. Each one comes from a decision in [`decisions.md`
 
 ## Page, top to bottom
 
-1. **Header** (sticky): white book symbol, "Arcanist's Dice" in Staatliches, a lavender tagline, then the **ES | EN** pill (current language in the gradient; switching keeps `?q=`) and an Instagram button.
-2. **Top section:** the full dark-background logo, the title ("Catálogo" / "Catalog") in Staatliches with the gradient fill, and a short subtitle.
+1. **Header** (sticky): the **menu button** (☰, 36px; a mint dot when a type is selected), white book symbol, "Arcanist's Dice" in Staatliches, a lavender tagline (cut with "…" on phones), then the **ES | EN** pill (current language in the gradient; switching keeps `?q=` and `?type=`) and an Instagram button. On phones the symbol is 32px, the name 20px and the gaps 10px so everything fits at 390px. With an old catalog without types there's no menu button.
+2. **Top section:** the full dark-background logo, the title in Staatliches with the gradient fill, and a short subtitle. On "Todo" the title is "Catálogo" / "Catalog"; inside a type it's the type's name ("Figuras", "Keycaps", "Dados") with its own line.
    - **Phones (under 640px):** a compact row: the logo at 64px on the left, the 32px title and the subtitle beside it, aligned left. At an iPhone's visible size in Safari (390 × 664) the products start at 369px, so the first row's photos and names show above the WhatsApp bar.
    - **640px and wider:** the big centered logo (150px) with the 48px title and the subtitle below.
 3. **Search box:** `field` background, search icon, mint border on focus. Typing filters instantly and updates `?q=`; accents and case are ignored.
-4. **Category chips:** pills that scroll sideways. "Todos"/"All" plus one per category (today the brands, Tanuki and NomNom), each with its count; the selected one has the gradient.
+4. **Category chips:** pills that scroll sideways. "Todos"/"All" plus one per brand with products in the selected type, each with its count there; on "Todo" all brands in menu order of their type (Tanuki, NomNom, Hiko). The selected one has the gradient. The search also looks only inside the selected type ("Buscar en Keycaps...").
 5. **Count and view toggle:** "355 productos" ("… encontrados" while filtering) on the left; on the right two icon buttons, Cuadrícula/Grid and Lista/List, the selected one in the gradient.
 6. **Products:** grid or list (below).
 7. **Footer:** name and year, a one-line description; extra bottom padding so the WhatsApp bar never covers it.
 8. **WhatsApp bar** (fixed): the gradient main button "Escríbenos por WhatsApp" / "Message us on WhatsApp", WhatsApp logo in green on an indigo circle. Full width on phones, bottom-right on desktop. Opens WhatsApp with a greeting in the page's language.
+
+## Side menu by type
+
+- The menu button opens a panel from the left (300px, at most 85% of the screen) over a darkened page: the book symbol and "Productos" / "Products", a × button, then **Todo** and each type with an icon (grid, figure, keycap, die) and its count. The selected one is mint.
+- Types come from the Drive type folders in their number order. Empty types are hidden, except **Dados**, which shows a mint "Pronto" / "Soon" badge instead of a count.
+- Choosing a type puts it in the address (`?type=keycaps`), clears the search, scrolls to the top and closes the panel. Back/Forward move between types.
+- Closes with ×, a tap outside or Escape; focus starts on × and stays in the panel; the page behind doesn't scroll; focus returns to the menu button. The slide-in is skipped with reduced motion.
+- **Tapping a tag** in a product view searches the whole catalog (it leaves the selected type).
+
+## Dados: "Próximamente"
+
+A type in the menu with no products (today Dados) shows, under the title, a panel with the striped art and a "Próximamente" badge, "Estamos preparando esta sección", an invitation to ask about custom dice, and buttons to the types that have products ("Ver Figuras", "Ver Keycaps"). No search, chips or count. The WhatsApp bar's message becomes "Hola! Me interesan sus dados personalizados."
 
 ## Products: grid (default)
 
@@ -67,3 +79,4 @@ The agreed phone mockups are in [`mockups/`](mockups/). Open them in a browser f
 | [`2026-10-10-list-view.html`](mockups/2026-10-10-list-view.html) | Grid/list toggle and list rows | Rows also show the model type, added after the mockup |
 | [`2026-10-10-languages.html`](mockups/2026-10-10-languages.html) | ES \| EN switch, English page and product view | None |
 | [`2026-10-14-compact-top.html`](mockups/2026-10-14-compact-top.html) | Compact top section on phones: today vs options A, B, C at 390 × 664; B chosen | Logo at 64px instead of the mockup's 54px; the real page has a little more spacing, so products start at 369px instead of 337px |
+| [`2026-10-23-type-menu.html`](mockups/2026-10-23-type-menu.html) | Phase 4: menu button, side panel by type, title per type, Dados "Próximamente", English | Header on phones: symbol 32px and name 20px (the mockup's 40px and 22px didn't fit with the menu button) |

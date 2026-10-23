@@ -73,3 +73,38 @@ export function ListIcon({ className = 'w-[18px] h-[18px]' }: IconProps) {
     </svg>
   );
 }
+
+export function MenuIcon({ className = 'w-[18px] h-[18px]' }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" className={className} aria-hidden="true">
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </svg>
+  );
+}
+
+export function FigureIcon({ className = 'w-[18px] h-[18px]' }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className={className} aria-hidden="true">
+      <circle cx="12" cy="7" r="3.5" />
+      <path d="M5 21c.6-4.5 3.4-7 7-7s6.4 2.5 7 7" />
+    </svg>
+  );
+}
+
+export function KeycapIcon({ className = 'w-[18px] h-[18px]' }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" className={className} aria-hidden="true">
+      <path d="M6 5h12l2 12H4z" />
+      <path d="M4 17h16v2H4z" />
+    </svg>
+  );
+}
+
+export function DieIcon({ className = 'w-[18px] h-[18px]' }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" className={className} aria-hidden="true">
+      <path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z" />
+      <path d="M4 7.5 12 12l8-4.5M12 12v9" />
+    </svg>
+  );
+}

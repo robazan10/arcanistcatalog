@@ -6,6 +6,8 @@ export interface ProductImage {
 export interface Product {
   id: string;
   name: string;
+  // Type id from the Drive type folder (figures, keycaps…); missing in catalogs made before phase 4
+  type?: string;
   brand: string;
   category: string;
   tags: string[];
@@ -18,6 +20,21 @@ export interface Category {
   productIds: string[];
 }
 
+// A Drive type folder ("01 Figures"): the side menu's sections
+export interface ProductType {
+  id: string;
+  name: string;
+  order: number | null;
+  productIds: string[];
+}
+
+// What the menu needs of each type
+export interface MenuType {
+  id: string;
+  name: string;
+  count: number;
+}
+
 export interface Tag {
   id: string;
   name: string;
@@ -27,6 +44,7 @@ export interface Tag {
 export interface Catalog {
   generatedAt: string;
   products: Product[];
+  types?: ProductType[];
   categories: Category[];
   tags: Tag[];
 }
@@ -35,6 +53,7 @@ export interface Catalog {
 export interface ProductSummary {
   id: string;
   name: string;
+  type: string | null;
   brand: string;
   category: string;
   tags: string[];

@@ -2,16 +2,21 @@ import { SITE, SOCIAL } from '@/lib/config';
 import { getDictionary, type Lang } from '@/i18n/dictionaries';
 import { InstagramIcon } from './icons';
 import LanguageSwitch from './LanguageSwitch';
+import TypeMenu from './TypeMenu';
+import { getAllProducts, getMenuTypes } from '@/lib/catalog';
 
 export default function Header({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
+  const menuTypes = getMenuTypes();
   return (
     <header className="sticky top-0 z-40 bg-brand-deep/90 backdrop-blur-md border-b-1.5 border-brand-line">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-2.5 sm:gap-3">
+        {/* No menu with a catalog made before product types existed */}
+        {menuTypes.length > 0 && <TypeMenu types={menuTypes} total={getAllProducts().length} lang={lang} />}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/isotype-white.svg" alt="" className="w-10 h-auto flex-shrink-0" />
+        <img src="/brand/isotype-white.svg" alt="" className="w-8 sm:w-10 h-auto flex-shrink-0" />
         <div className="min-w-0">
-          <p className="font-display text-[22px] leading-none tracking-[0.02em]">{SITE.name}</p>
+          <p className="font-display text-[20px] sm:text-[22px] leading-none tracking-[0.02em] whitespace-nowrap">{SITE.name}</p>
           <p className="text-brand-lavender text-[11px] mt-0.5 truncate">{t.tagline}</p>
         </div>
         <div className="ml-auto flex items-center gap-2">
