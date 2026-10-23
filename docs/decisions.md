@@ -189,3 +189,15 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 - Why: the failed dry run dropped `Spawn - Spawn comics` with only a warning; a real run would have removed it from the live site.
 
 **The script's terminal messages are in English,** like the code and docs (owner's request). The run summary also shows how long it took.
+
+## 2026-10-23 · Phase 4 mockup: menu by type
+
+**The phone mockup [`2026-10-23-type-menu.html`](mockups/2026-10-23-type-menu.html) is agreed:** a menu button left of the header opens a side panel with "Todo" and each type, with icons and counts; the title changes to the type's name with its own line; `?type=` in the address.
+- Why: keycaps would otherwise mix with figures under a "Hiko" chip that doesn't say what they are.
+- Alternatives: run the catalog now with brand chips only; type chips instead of a panel (the agreed scope since 2026-10-09 is a side panel).
+
+**An empty Dice type is shown as "Próximamente"; an empty Others type is hidden.**
+- Why: the shop is called Arcanist's Dice, so visitors look for dice; hiding the section would suggest the shop doesn't make them, and a notice with WhatsApp keeps the contact. "Otros" says nothing while empty.
+- Alternatives: hide every empty type (the earlier scope); show both as coming soon (two empty sections out of four feel unfinished).
+
+**Built details** (same day): the selected type lives in `?type=`, and the header menu, the catalog and the WhatsApp bar follow it through one hook; tapping a tag in a product view searches the whole catalog (it leaves the type), so a "goku" tag on a keycap also finds the Goku figures; in Dados the WhatsApp message asks about custom dice; on phones the header symbol and name are a bit smaller so the menu button fits at 390px; the panel renders in `<body>` because the header's backdrop blur traps fixed elements.

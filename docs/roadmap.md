@@ -4,16 +4,16 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-22)
 
-- **State:** `main` has everything through PR #18 and is live at www.arcanistsdice.com; the catalog script reads the type → brand → product structure, but `catalog.json` hasn't been regenerated yet. Work in progress: `fix/script-token-refresh` (the script renews its Google login when a run passes one hour, stops on `meta.txt` read errors instead of dropping products, and logs in English).
+- **State:** `main` has everything through PR #18 and is live at www.arcanistsdice.com; the catalog script reads the type → brand → product structure, but `catalog.json` hasn't been regenerated yet. Work in progress: `feat/type-menu` (phase 4: menu button, side panel by type, title per type, Dados "Próximamente"; built and checked at 390px in both languages; the catalog was regenerated on 2026-10-23 with the real run: 422 products, Figures 355, Keycaps 67, Dice 0; the figures are unchanged except the new Aku Aku and Agumon covers).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** after `fix/script-token-refresh` merges, a real run of the script with `caffeinate -i` (ask the owner first: it sets photo sharing in Drive) to regenerate `catalog.json` with the new `type` field and `types` list. Expected: the 355 figures as today (Aku Aku and Agumon get their new covers) plus 67 keycap products showing "Fotos pronto". Run `--dry-run` first and check that count.
+- **Next step:** the owner reviews and merges the `feat/type-menu` PR (menu, keycaps and the new catalog go live together), then check the live site at 390px in both languages. A real run takes about 12 minutes (it confirms sharing on every photo); one sharing call failed on a Cyclops photo that was already public.
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
   2. Keycap photos and a `Cover` per series (from the archive or new ones), and anything for `03 Dice/` and `04 Others/`.
   3. `meta.txt` for the myAnimate folders (Claude Code can draft them for review), covers, and figure photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)).
 - **Then, in order:**
-  1. Phase 4, the side menu by type: phone mockup first, then build. After the next script run the menu has Figures and Keycaps.
+  1. Phase 4, the side menu by type: built on `feat/type-menu`, with the regenerated catalog; waiting on the PR.
   2. Phase 6, usage analytics and sharing (scope below): mockup of the share buttons first, then build.
 - **Decisions waiting on the owner:**
   - Phase 6: create the Umami Cloud account and share the site ID (not a secret).
@@ -30,7 +30,7 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | 3 · Grid / list | View toggle, list rows with model type, choice remembered on the device | Done (#8) |
 | 5 · Spanish and English | `/` Spanish, `/en/` English, ES \| EN switch, all texts in one dictionary | Done (#9). Done before phase 4 at the owner's request |
 | Compact top on phones | Logo 64px beside the title on phones; big logo kept on desktop | Done (#11) |
-| 4 · Side menu by type | Menu of product types (Figuras, Dados, Keycaps, Deckboxes…) | Waiting on the owner (Drive reorganization + names and order) |
+| 4 · Side menu by type | Menu button and side panel by type, title per type, Dados "Próximamente", `?type=` | Built on `feat/type-menu` with the regenerated catalog; PR open |
 | 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Planned, after phase 4 |
 
 ## Pull requests
@@ -55,20 +55,24 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#16](https://github.com/robazan10/arcanistcatalog/pull/16) | 2026-10-21 | Drive reorganized: schema doc, architecture and roadmap describe the new layout and the keycap series |
 | [#17](https://github.com/robazan10/arcanistcatalog/pull/17) | 2026-10-21 | Catalog script reads type → brand → product; `type` and `types` in `catalog.json`; `--dry-run` |
 | [#18](https://github.com/robazan10/arcanistcatalog/pull/18) | 2026-10-22 | Docs for the keycap series rebuilt in Drive (67 series with `meta.txt`, old photos in `Keycaps archive`) |
-| `fix/script-token-refresh` | open | Script renews its login on a 401, stops on `meta.txt` read errors, logs in English, shows the run time |
+| [#19](https://github.com/robazan10/arcanistcatalog/pull/19) | 2026-10-23 | Script renews its login on a 401, stops on `meta.txt` read errors, logs in English, shows the run time |
+| `feat/type-menu` | open | Phase 4: menu by type, title per type, Dados "Próximamente", `?type=`; mockup `2026-10-23-type-menu.html` |
 
 ## Agreed scope: phase 4 · side menu by type
 
-Agreed on 2026-10-09 and 2026-10-10; Drive structure and type names agreed on 2026-10-21.
+Agreed on 2026-10-09 and 2026-10-10; Drive structure and type names agreed on 2026-10-21; phone mockup agreed on 2026-10-23: [`mockups/2026-10-23-type-menu.html`](mockups/2026-10-23-type-menu.html).
 
 - **Drive layout:** `Images/<NN Type>/<Brand>/<Product>/`, with the types `01 Figures`, `02 Keycaps`, `03 Dice`, `04 Others` (the structure is in place since 2026-10-21; see [`drive-images-schema.md`](drive-images-schema.md)). The script reads the type from the first level and the brand from the second, so `category=` and `brand=` in `meta.txt` are no longer needed; it warns when they don't match the folders, and when two products get the same ID.
 - **Order:** the number prefix on the type folders sets the menu order; the script hides it.
-- **Menu:** a menu button at the left of the header opens a panel from the left: "Todo" plus each type with its count; the selected one in mint. Inside a type, the chips filter by brand. Types with no products are hidden.
-- **Address:** the selected type goes in the URL as `?type=` (for example `/?type=dice`, `/en/?type=dice`) so a section can be linked from Instagram.
+- **Menu:** a menu button (☰, 36px) at the left of the header opens a panel from the left, titled "Productos" / "Products": "Todo" plus each type with an icon (grid, figure, keycap, die) and its count; the selected one in mint. It closes with ×, a tap outside or Escape. A mint dot on the menu button shows a type is selected. Inside a type, the chips filter by brand and the search looks only inside the type; on "Todo" the chips are all brands in type order.
+- **Title per type:** the top title becomes the type's name, with its own line (Figuras: "Figuras de anime, series y videojuegos, impresas en resina y pintadas a mano"; Keycaps: "Teclas de anime, series y videojuegos para tu teclado"; Dados: today's line). On "Todo" it stays "Catálogo".
+- **Empty types:** Dice shows even when empty, with a mint "Pronto" / "Soon" badge instead of the count; selecting it shows a "Próximamente" notice (striped art, a line inviting a WhatsApp message about custom dice, buttons to Figuras and Keycaps), with no search, chips or count. Others is hidden while empty. Both fill in by themselves once their Drive folder has products.
+- **Phones:** with the extra button, the header tagline is cut with "…".
+- **Address:** the selected type goes in the URL as `?type=` (for example `/?type=dice`, `/en/?type=dice`) so a section can be linked from Instagram. Switching ES | EN keeps it, like `?q=`.
 - **Languages:** Drive type folders are in English; the menu labels and type names go in `src/i18n/dictionaries.ts` in both languages (Figures/Figuras, Keycaps/Keycaps, Dice/Dados, Others/Otros). A type without a translation shows its folder name.
 - **Keycaps** is a type: `02 Keycaps/Hiko/<series>/`, one product per series with the characters as tags.
 - **First step of the build:** done in `feat/script-three-levels` (the script reads the three levels and writes `types`). Left for the menu itself: the site reading `types`, the menu panel, `?type=`, translations.
-- Mockup first, then build.
+- Mockup done (2026-10-23); built on `feat/type-menu` (2026-10-23).
 
 ## Agreed scope: phase 6 · usage analytics and sharing
 

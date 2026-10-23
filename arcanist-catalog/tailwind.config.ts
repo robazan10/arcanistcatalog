@@ -33,6 +33,13 @@ const config: Config = {
       borderWidth: {
         1.5: '1.5px',
       },
+      // The type menu's side panel slides in from the left (only without reduced motion)
+      keyframes: {
+        'slide-in': { from: { transform: 'translateX(-100%)' }, to: { transform: 'translateX(0)' } },
+      },
+      animation: {
+        'slide-in': 'slide-in 180ms ease-out',
+      },
       backgroundImage: {
         'brand-gradient': 'linear-gradient(90deg, #3FFFB1, #A57FFF)',
         'brand-page': 'radial-gradient(ellipse at top, #3a3db0 0%, #2E3192 40%, #1F2170 100%)',
