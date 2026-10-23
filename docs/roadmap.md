@@ -4,10 +4,10 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-22)
 
-- **State:** `main` has everything through PR #16 and is live at www.arcanistsdice.com. Work in progress: `feat/script-three-levels` (the catalog script reads the new Drive structure; checked with `--dry-run`: same 355 products, IDs, tags and photos as the live catalog).
+- **State:** `main` has everything through PR #18 and is live at www.arcanistsdice.com; the catalog script reads the type → brand → product structure, but `catalog.json` hasn't been regenerated yet. Work in progress: `fix/script-token-refresh` (the script renews its Google login when a run passes one hour, stops on `meta.txt` read errors instead of dropping products, and logs in English).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** after `feat/script-three-levels` merges, a real run of the script (ask the owner first: it sets photo sharing in Drive) to regenerate `catalog.json` with the new `type` field and `types` list. Expected: the 355 figures as today (Aku Aku and Agumon get their new covers) plus 67 keycap products showing "Fotos pronto". Run `--dry-run` first and check that count.
+- **Next step:** after `fix/script-token-refresh` merges, a real run of the script with `caffeinate -i` (ask the owner first: it sets photo sharing in Drive) to regenerate `catalog.json` with the new `type` field and `types` list. Expected: the 355 figures as today (Aku Aku and Agumon get their new covers) plus 67 keycap products showing "Fotos pronto". Run `--dry-run` first and check that count.
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
   2. Keycap photos and a `Cover` per series (from the archive or new ones), and anything for `03 Dice/` and `04 Others/`.
@@ -53,7 +53,9 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#14](https://github.com/robazan10/arcanistcatalog/pull/14) | 2026-10-18 | Selected category chip: gradient runs edge to edge (no mint strip on the right) |
 | [#15](https://github.com/robazan10/arcanistcatalog/pull/15) | 2026-10-21 | Target Drive structure for phase 4 (type → brand → product, English type folders) |
 | [#16](https://github.com/robazan10/arcanistcatalog/pull/16) | 2026-10-21 | Drive reorganized: schema doc, architecture and roadmap describe the new layout and the keycap series |
-| `feat/script-three-levels` | open | Catalog script reads type → brand → product; `type` and `types` in `catalog.json`; `--dry-run`. Docs for the keycap series rebuilt in Drive (2026-10-22) |
+| [#17](https://github.com/robazan10/arcanistcatalog/pull/17) | 2026-10-21 | Catalog script reads type → brand → product; `type` and `types` in `catalog.json`; `--dry-run` |
+| [#18](https://github.com/robazan10/arcanistcatalog/pull/18) | 2026-10-22 | Docs for the keycap series rebuilt in Drive (67 series with `meta.txt`, old photos in `Keycaps archive`) |
+| `fix/script-token-refresh` | open | Script renews its login on a 401, stops on `meta.txt` read errors, logs in English, shows the run time |
 
 ## Agreed scope: phase 4 · side menu by type
 

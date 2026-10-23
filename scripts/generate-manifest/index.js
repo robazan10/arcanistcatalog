@@ -58,7 +58,7 @@ async function makeFilePublic(drive, fileId) {
   } catch (err) {
     const msg = err?.errors?.[0]?.message || err.message || '';
     if (!msg.includes('already exists') && !msg.includes('sharingRateLimitExceeded')) {
-      console.warn(`    Advertencia: no se pudo hacer publica la imagen ${fileId}: ${msg}`);
+      console.warn(`    Warning: could not make image ${fileId} public: ${msg}`);
     }
   }
 }
@@ -76,7 +76,7 @@ async function processProductFolder(drive, folder, brandName, typeId) {
 
   const metaFile = contents.find(f => f.name.toLowerCase() === 'meta.txt');
   if (!metaFile) {
-    console.log(`    Omitido (sin meta.txt): ${folder.name}`);
+    console.log(`    Skipped (no meta.txt): ${folder.name}`);
     return null;
   }
 
@@ -85,19 +85,19 @@ async function processProductFolder(drive, folder, brandName, typeId) {
     const content = await readTextFile(drive, metaFile.id);
     meta = parseMetaTxt(content);
   } catch (err) {
-    console.warn(`    Error leyendo meta.txt de ${folder.name}: ${err.message}`);
-    return null;
+    // A read error (network, login) would silently drop the product from the live catalog; stop instead
+    throw new Error(`could not read meta.txt of ${folder.name}: ${err.message}`);
   }
 
   if (!meta.name) {
-    console.log(`    Omitido (meta.txt incompleto, requiere name): ${folder.name}`);
+    console.log(`    Skipped (meta.txt has no name=): ${folder.name}`);
     return null;
   }
 
   // The brand comes from the folder; older meta.txt files may still repeat it as category= and brand=
   for (const key of ['category', 'brand']) {
     if (meta[key] && meta[key].toLowerCase() !== brandName.toLowerCase()) {
-      console.warn(`    Advertencia: ${key}=${meta[key]} no coincide con la carpeta de marca "${brandName}"; se usa la carpeta`);
+      console.warn(`    Warning: ${key}=${meta[key]} doesn't match the brand folder "${brandName}"; using the folder`);
     }
   }
 
@@ -119,9 +119,9 @@ async function processProductFolder(drive, folder, brandName, typeId) {
   );
 
   if (selectedImages.length === 0) {
-    console.log(`    Sin fotos todavia (se muestra como "Fotos pronto")`);
+    console.log(`    No photos yet (shown as "Fotos pronto")`);
   } else if (!isCover(selectedImages[0])) {
-    console.warn(`    Advertencia: sin imagen "cover", se usa ${selectedImages[0].name}`);
+    console.warn(`    Warning: no "cover" image, using ${selectedImages[0].name}`);
   }
 
   const images = [];
@@ -149,8 +149,9 @@ async function processProductFolder(drive, folder, brandName, typeId) {
 }
 
 async function main() {
-  console.log("=== Arcanist's Dice - Generador de Catalogo ===\n");
-  if (DRY_RUN) console.log('Modo --dry-run: no se cambia ningun permiso en Drive ni se escribe en el repositorio.\n');
+  console.log("=== Arcanist's Dice - Catalog generator ===\n");
+  if (DRY_RUN) console.log('--dry-run: no sharing changes in Drive, nothing written to the repo.\n');
+  const startedAt = Date.now();
 
   const drive = getDriveClient();
   const products = [];
@@ -158,12 +159,12 @@ async function main() {
   const types = [];
 
   // Images/<NN Type>/<Brand>/<Product>/
-  console.log('Explorando carpeta raiz...');
+  console.log('Reading the root folder...');
   const rootContents = await listFolder(drive, config.rootFolderId);
   const typeFolders = rootContents.filter(f => f.mimeType === FOLDER_MIME);
 
   if (typeFolders.length === 0) {
-    console.warn('Advertencia: no se encontraron carpetas de tipo en la carpeta raiz.');
+    console.warn('Warning: no type folders found in the root folder.');
   }
 
   for (const typeFolder of typeFolders) {
@@ -171,32 +172,32 @@ async function main() {
     // Two folders with the same type name (e.g. "02 Keycaps" and a leftover "Keycaps") share one menu entry
     let type = types.find(t => t.id === slugify(typeName));
     if (type) {
-      console.warn(`\nAdvertencia: "${typeFolder.name}" repite el tipo "${type.name}"; sus productos se juntan en ese tipo`);
+      console.warn(`\nWarning: "${typeFolder.name}" repeats the type "${type.name}"; its products join that type`);
       type.order = Math.min(type.order, order);
     } else {
       type = { id: slugify(typeName), name: typeName, order, productIds: [] };
       types.push(type);
     }
-    console.log(`\nTipo: ${typeName}`);
+    console.log(`\nType: ${typeName}`);
     if (order === Number.MAX_SAFE_INTEGER) {
-      console.warn(`  Advertencia: "${typeFolder.name}" no tiene numero de orden (ej. "05 ${typeName}"); va al final del menu`);
+      console.warn(`  Warning: "${typeFolder.name}" has no order number (e.g. "05 ${typeName}"); it goes last in the menu`);
     }
 
     const brandFolders = (await listFolder(drive, typeFolder.id)).filter(f => f.mimeType === FOLDER_MIME);
     for (const brand of brandFolders) {
-      console.log(`  Marca: ${brand.name}`);
+      console.log(`  Brand: ${brand.name}`);
       const productFolders = (await listFolder(drive, brand.id)).filter(f => f.mimeType === FOLDER_MIME);
-      console.log(`    ${productFolders.length} producto(s) encontrado(s)`);
+      console.log(`    ${productFolders.length} product folder(s)`);
 
       for (const productFolder of productFolders) {
-        console.log(`  Procesando: ${productFolder.name}`);
+        console.log(`  Reading: ${productFolder.name}`);
         const product = await processProductFolder(drive, productFolder, brand.name, type.id);
         if (!product) {
           skipped.push({ type: typeName, brand: brand.name, folder: productFolder.name });
         } else {
           products.push(product);
           type.productIds.push(product.id);
-          console.log(`    OK: "${product.name}" (${product.images.length} imagen(es))`);
+          console.log(`    OK: "${product.name}" (${product.images.length} image(s))`);
         }
       }
     }
@@ -209,7 +210,7 @@ async function main() {
   // The id is brand + name; two products with the same id would clash on the site
   const seen = new Map();
   for (const p of products) {
-    if (seen.has(p.id)) console.warn(`\nAdvertencia: id repetido "${p.id}" (${seen.get(p.id)} y ${p.brand}/${p.name})`);
+    if (seen.has(p.id)) console.warn(`\nWarning: duplicate id "${p.id}" (${seen.get(p.id)} and ${p.brand}/${p.name})`);
     else seen.set(p.id, `${p.brand}/${p.name}`);
   }
 
@@ -256,19 +257,20 @@ async function main() {
   const reportPath = DRY_RUN ? path.join(outDir, 'catalog-status.md') : path.resolve(__dirname, config.reportPath);
   writeStatusReport({ generatedAt: manifest.generatedAt, products, skipped }, reportPath);
 
-  console.log('\n=== Resultado ===');
+  console.log('\n=== Result ===');
   const withPhotos = products.filter(p => p.images.length > 0);
   const withoutCover = withPhotos.filter(
     p => path.parse(p.images[0].filename).name.toLowerCase() !== 'cover'
   );
-  console.log(`Productos:  ${products.length} (${withPhotos.length} con fotos, ${products.length - withPhotos.length} sin fotos)`);
-  console.log(`Sin cover:  ${withoutCover.length}`);
-  console.log(`Tipos:      ${types.map(t => `${t.name} (${t.productIds.length})`).join(', ')}`);
-  console.log(`Categorias: ${categoriesMap.size}`);
-  console.log(`Etiquetas:  ${tagsMap.size}`);
-  console.log(`Archivo:    ${outputPath}`);
-  console.log(`Reporte:    ${reportPath}`);
-  console.log(DRY_RUN ? '\nDry run terminado (nada cambio en Drive ni en el repositorio).' : '\nCatalogo generado exitosamente.');
+  console.log(`Products:   ${products.length} (${withPhotos.length} with photos, ${products.length - withPhotos.length} without)`);
+  console.log(`No cover:   ${withoutCover.length}`);
+  console.log(`Types:      ${types.map(t => `${t.name} (${t.productIds.length})`).join(', ')}`);
+  console.log(`Categories: ${categoriesMap.size}`);
+  console.log(`Tags:       ${tagsMap.size}`);
+  console.log(`Catalog:    ${outputPath}`);
+  console.log(`Report:     ${reportPath}`);
+  console.log(`Time:       ${Math.round((Date.now() - startedAt) / 60000)} min`);
+  console.log(DRY_RUN ? '\nDry run done (nothing changed in Drive or the repo).' : '\nCatalog generated.');
 }
 
 main().catch(err => {

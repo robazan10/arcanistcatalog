@@ -7,6 +7,8 @@ function getDriveClient() {
   const auth = new google.auth.GoogleAuth({
     keyFile: path.resolve(__dirname, keyPath),
     scopes: ['https://www.googleapis.com/auth/drive'],
+    // A run can outlast the one-hour access token; on a 401, get a new token and retry once
+    clientOptions: { forceRefreshOnFailure: true },
   });
   return google.drive({ version: 'v3', auth });
 }
