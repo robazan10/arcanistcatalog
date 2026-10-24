@@ -201,3 +201,9 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 - Alternatives: hide every empty type (the earlier scope); show both as coming soon (two empty sections out of four feel unfinished).
 
 **Built details** (same day): the selected type lives in `?type=`, and the header menu, the catalog and the WhatsApp bar follow it through one hook; tapping a tag in a product view searches the whole catalog (it leaves the type), so a "goku" tag on a keycap also finds the Goku figures; in Dados the WhatsApp message asks about custom dice; on phones the header symbol and name are a bit smaller so the menu button fits at 390px; the panel renders in `<body>` because the header's backdrop blur traps fixed elements.
+
+## 2026-10-24 · All of a product's photos at a glance
+
+**The product view gets a thumbnail row and a photo grid** (mockup [`2026-10-24-all-photos.html`](mockups/2026-10-24-all-photos.html)), on phones and desktop. Under the big photo, a row with every photo's thumbnail that scrolls sideways; a "▦ 19 fotos" button on the photo (replacing the dots and the "3 / 24" counter) opens a grid of all the photos inside the product view, 3 columns on phones and 6 on desktop. Tapping a photo in the grid goes back to it.
+- Why: keycap series have up to 56 photos; one at a time, reaching photo 15 took 14 swipes.
+- Alternatives: only the grid (A) or only the row (B); a "Fotos | Cuadrícula" switch inside the view (C: long view, buttons far down); every photo in a vertical list (D: very long, more mobile data). A "Ver 19" box at the end of the row was in the first draft; the owner preferred the row with only photos, since the button on the photo already opens the grid.

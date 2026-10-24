@@ -58,7 +58,9 @@ A type in the menu with no products (today Dados) shows, under the title, a pane
 ## Product view
 
 - **Phone:** a bottom sheet with a grab handle. **Desktop:** a centered window with the photo on the left and the info on the right, plus arrow buttons.
-- **Photos:** swipe sideways (scroll snap); the cover shows immediately, the rest load on open (`=w1000`). Up to 8 photos: dots with the current one as a gradient pill. More than 8: a "3 / 24" counter.
+- **Photos:** swipe sideways (scroll snap); the cover shows immediately, the rest load on open (`=w1000`). With more than one photo:
+  - **Thumbnail row** under the photo with every photo (58px, `=w200`); it scrolls sideways (a thin scrollbar from 768px up), the current one has a mint border and stays centered as the photo changes. Tapping one shows it.
+  - **"▦ 19 fotos" / "19 photos" button** (mint outline) at the bottom right of the photo opens the **photo grid**: all the photos in 3 columns on phones, 6 on desktop (`=w300`), inside the product view, with "←" (back to the photo), the name, "19 fotos · toca una para verla en grande", × and, on phones, the WhatsApp button at the bottom. The current photo has a mint border; tapping one returns to it. Escape in the grid goes back to the photo.
 - **Info:** name in Staatliches, category badge, "Marca"/"Brand" line only when the brand differs from the category, the first 5 tags as buttons plus a mint "+N" button that shows the rest. **Tapping a tag** closes the view and searches the catalog for it.
 - **Actions:** "Consultar este producto" / "Ask about this product" (gradient, WhatsApp with the product name) and "Ver en Instagram" / "See on Instagram" (secondary).
 - **No photos:** a shorter striped banner with "Fotos pronto" and a short message instead of the gallery; the actions stay.
@@ -79,4 +81,5 @@ The agreed phone mockups are in [`mockups/`](mockups/). Open them in a browser f
 | [`2026-10-10-list-view.html`](mockups/2026-10-10-list-view.html) | Grid/list toggle and list rows | Rows also show the model type, added after the mockup |
 | [`2026-10-10-languages.html`](mockups/2026-10-10-languages.html) | ES \| EN switch, English page and product view | None |
 | [`2026-10-14-compact-top.html`](mockups/2026-10-14-compact-top.html) | Compact top section on phones: today vs options A, B, C at 390 × 664; B chosen | Logo at 64px instead of the mockup's 54px; the real page has a little more spacing, so products start at 369px instead of 337px |
+| [`2026-10-24-all-photos.html`](mockups/2026-10-24-all-photos.html) | All of a product's photos: options A–D, then A + B chosen (thumbnail row + "19 fotos" grid), phone and desktop | The grid doesn't mark the cover with "Portada" |
 | [`2026-10-23-type-menu.html`](mockups/2026-10-23-type-menu.html) | Phase 4: menu button, side panel by type, title per type, Dados "Próximamente", English | Header on phones: symbol 32px and name 20px (the mockup's 40px and 22px didn't fit with the menu button) |

@@ -84,6 +84,8 @@ Server components render the page shell and pass plain data down. The client par
 | Grid card | `=w500` |
 | List row thumbnail | `=w200` |
 | Product view | `=w1000` |
+| Product view: thumbnail row | `=w200` |
+| Product view: photo grid | `=w300` |
 
 `next/image` runs with `unoptimized: true` (static export), so resizing is entirely Google's. The grid lazy-loads; the product view shows the cover immediately, then the full list from `/data/products/<id>.json`.
 
