@@ -1,0 +1,281 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Maqueta: ver todas las fotos</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Staatliches&display=swap" rel="stylesheet"><style>
+  :root {
+    --indigo:#2E3192; --deep:#1F2170; --violet:#A57FFF; --lavender:#D7CEEA;
+    --mint:#3FFFB1; --line:#5357C2; --field:#25277C; --panel:rgba(255,255,255,.07);
+    --grad:linear-gradient(90deg,#3FFFB1,#A57FFF);
+  }
+  * { box-sizing:border-box; margin:0; }
+  body { font-family:Nunito,system-ui,sans-serif; background:#15164f; color:#fff; padding:32px 16px; }
+  h1.page { font-family:Staatliches; font-weight:400; letter-spacing:.04em; text-align:center; font-size:30px; }
+  .intro { max-width:860px; margin:8px auto 28px; text-align:center; color:var(--lavender); font-size:14px; line-height:1.5; }
+  .board { display:flex; gap:36px; flex-wrap:wrap; justify-content:center; align-items:flex-start; }
+  .col { width:410px; }
+  .label { font-family:Staatliches; letter-spacing:.06em; color:var(--lavender); font-size:18px; margin-bottom:10px; text-align:center; }
+  .phone { width:410px; height:864px; border-radius:44px; border:10px solid #0b0c2c; overflow:hidden; position:relative;
+           background:radial-gradient(ellipse at top,#3a3db0 0%,#2E3192 40%,#1F2170 100%); }
+  .display { font-family:Staatliches,Impact,sans-serif; font-weight:400; letter-spacing:.02em; }
+  .gtext { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* Page behind the sheet */
+  .behind { position:absolute; inset:0; padding:70px 16px; opacity:.5; }
+  .behind .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .behind .row div { aspect-ratio:1; border-radius:12px; background:var(--field); border:1.5px solid var(--line); }
+  .shade { position:absolute; inset:0; background:rgba(15,16,60,.6); }
+
+  /* Bottom sheet (today's product view) */
+  .sheet { position:absolute; left:0; right:0; bottom:0; top:44px; background:var(--field); border-top:1.5px solid var(--line);
+           border-radius:20px 20px 0 0; overflow:hidden; display:flex; flex-direction:column; }
+  .sheet .scroll { overflow:hidden; flex:1; }
+  .grab { width:40px; height:5px; border-radius:99px; background:var(--line); margin:8px auto; }
+  .hero { position:relative; aspect-ratio:1; background:var(--deep); }
+  .hero img { width:100%; height:100%; object-fit:cover; display:block; }
+  .x { position:absolute; top:10px; right:10px; width:36px; height:36px; border-radius:12px; border:1.5px solid var(--line);
+       background:rgba(31,33,112,.8); display:grid; place-items:center; font-size:20px; }
+  .counter { position:absolute; right:10px; bottom:10px; border-radius:99px; border:1px solid var(--line); background:rgba(31,33,112,.8);
+             font-size:12px; font-weight:700; padding:2px 10px; }
+  .pill { position:absolute; left:10px; bottom:10px; display:flex; align-items:center; gap:6px; border-radius:99px; border:1.5px solid var(--mint);
+          background:rgba(31,33,112,.85); color:var(--mint); font-size:12px; font-weight:800; padding:4px 10px; }
+  .info { padding:14px 16px 0; }
+  .info h2 { font-family:Staatliches; font-weight:400; font-size:32px; line-height:1; letter-spacing:.02em; }
+  .badge { display:inline-block; margin-top:8px; font-size:11px; font-weight:700; border-radius:999px; padding:2px 8px;
+           background:rgba(165,127,255,.25); color:#CDB8FF; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .tags span { font-size:12px; color:var(--lavender); border:1.5px solid var(--line); border-radius:99px; padding:1px 8px; }
+  .tags .more { color:var(--mint); border-color:var(--mint); font-weight:700; }
+  .actions { padding:14px 16px 20px; display:flex; flex-direction:column; gap:10px; background:var(--field); }
+  .btn { display:flex; align-items:center; justify-content:center; gap:8px; border-radius:12px; padding:12px; font-weight:800; font-size:15px; }
+  .btn.main { background:var(--grad); color:var(--indigo); }
+  .btn.sec { background:var(--panel); border:1.5px solid var(--line); font-weight:700; }
+  .link { display:flex; align-items:center; justify-content:center; gap:8px; margin:12px 16px 0; padding:10px; border-radius:12px;
+          border:1.5px solid var(--line); background:var(--panel); font-weight:700; font-size:14px; }
+  .link b { color:var(--mint); }
+
+  /* Option A: full-screen camera roll */
+  .roll { position:absolute; inset:0; background:var(--deep); display:flex; flex-direction:column; }
+  .rollbar { display:flex; align-items:center; gap:10px; padding:14px 16px; border-bottom:1.5px solid var(--line); background:rgba(31,33,112,.95); }
+  .back { width:36px; height:36px; border-radius:12px; border:1.5px solid var(--line); background:var(--panel); display:grid; place-items:center; flex:none; }
+  .rollbar .t { min-width:0; }
+  .rollbar .t p { font-family:Staatliches; font-size:22px; line-height:1; letter-spacing:.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rollbar .t small { color:var(--lavender); font-size:12px; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; padding:3px; overflow:hidden; }
+  .grid3 div { position:relative; aspect-ratio:1; background:var(--field); overflow:hidden; }
+  .grid3 img { width:100%; height:100%; object-fit:cover; display:block; }
+  .grid3 .first::after { content:"Portada"; position:absolute; left:4px; bottom:4px; font-size:10px; font-weight:800; color:var(--mint);
+                         background:rgba(31,33,112,.85); border-radius:99px; padding:1px 6px; }
+  .grid3 .tapped { outline:3px solid var(--mint); outline-offset:-3px; }
+  .rollfoot { margin-top:auto; padding:12px 16px 20px; background:rgba(31,33,112,.95); border-top:1.5px solid var(--line); }
+
+  /* Option B: filmstrip */
+  .strip { display:flex; gap:6px; padding:8px 16px 0; overflow:hidden; }
+  .strip div { flex:none; width:58px; height:58px; border-radius:10px; overflow:hidden; border:2px solid transparent; opacity:.65; }
+  .strip div.on { border-color:var(--mint); opacity:1; }
+  .strip img { width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* Option C: toggle inside the sheet */
+  .seg { display:flex; gap:2px; padding:3px; margin:8px 16px 0; border:1.5px solid var(--line); border-radius:12px; background:var(--panel); }
+  .seg span { flex:1; text-align:center; padding:7px; border-radius:9px; font-size:13px; font-weight:800; color:var(--lavender); }
+  .seg span.on { background:var(--grad); color:var(--indigo); }
+  .inline { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:8px 16px 0; }
+  .inline div { aspect-ratio:1; border-radius:8px; overflow:hidden; background:var(--deep); }
+  .inline img { width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* Option D: vertical feed */
+  .feed img { width:100%; aspect-ratio:1; object-fit:cover; display:block; margin-bottom:4px; }
+  .feedhead { padding:10px 16px 12px; }
+  .feedhead h2 { font-family:Staatliches; font-weight:400; font-size:28px; line-height:1; }
+  .feedhead small { color:var(--lavender); font-size:12px; }
+  .floatbtn { position:absolute; left:16px; right:16px; bottom:18px; }
+
+  /* Chosen combination */
+  h2.sec { font-family:Staatliches; font-weight:400; letter-spacing:.04em; text-align:center; font-size:26px; margin:44px 0 6px; }
+  .secintro { max-width:860px; margin:0 auto 24px; text-align:center; color:var(--lavender); font-size:14px; line-height:1.5; }
+  .strip.scrollx { overflow-x:auto; scrollbar-width:thin; scrollbar-color:var(--line) transparent; padding-bottom:6px; }
+  .stripbtn { flex:none; width:58px; height:58px; border-radius:10px; border:1.5px solid var(--mint); color:var(--mint); background:rgba(63,255,177,.1);
+              display:grid; place-items:center; font-size:11px; font-weight:800; text-align:center; line-height:1.1; }
+  .desk { width:1000px; height:640px; border-radius:14px; border:10px solid #0b0c2c; overflow:hidden; position:relative;
+          background:radial-gradient(ellipse at top,#3a3db0 0%,#2E3192 40%,#1F2170 100%); }
+  .desk .bar { height:30px; background:#0b0c2c; color:var(--lavender); font-size:12px; display:flex; align-items:center; justify-content:center; }
+  .desk .behind { padding:50px 40px; }
+  .desk .behind .row { grid-template-columns:repeat(5,1fr); }
+  .win { position:absolute; left:50%; top:62px; transform:translateX(-50%); width:880px; height:540px; background:var(--field);
+         border:1.5px solid var(--line); border-radius:20px; overflow:hidden; display:flex; }
+  .win .media { width:60%; display:flex; flex-direction:column; background:var(--deep); }
+  .win .big { position:relative; flex:1; min-height:0; }
+  .win .big img { width:100%; height:100%; object-fit:cover; display:block; }
+  .arrow { position:absolute; top:50%; transform:translateY(-50%); width:38px; height:38px; border-radius:99px; border:1.5px solid var(--line);
+           background:rgba(31,33,112,.8); display:grid; place-items:center; }
+  .win .strip { padding:8px 10px; }
+  .win .side { width:40%; display:flex; flex-direction:column; }
+  .win .side .info { padding:20px; }
+  .win .side .actions { margin-top:auto; padding:20px; }
+  .wingrid { width:100%; display:flex; flex-direction:column; }
+  .wingrid .rollbar { border-radius:0; }
+  .grid5 { display:grid; grid-template-columns:repeat(6,1fr); gap:4px; padding:4px; overflow:hidden; }
+  .grid5 div { aspect-ratio:1; overflow:hidden; background:var(--deep); position:relative; }
+  .grid5 img { width:100%; height:100%; object-fit:cover; display:block; }
+  .notes { margin-top:14px; font-size:14px; line-height:1.5; color:var(--lavender); }
+  .notes li { margin:0 0 6px 18px; }
+  .notes b { color:#fff; }
+  .pros { color:var(--mint); } .cons { color:#FF7A9A; }
+  .summary { max-width:860px; margin:36px auto 0; padding:18px 20px; border:1.5px solid var(--line); border-radius:12px; background:var(--panel);
+             color:var(--lavender); font-size:14px; line-height:1.55; }
+  .summary h2 { font-family:Staatliches; font-weight:400; letter-spacing:.04em; color:#fff; font-size:22px; margin-bottom:6px; }
+  .summary li { margin:0 0 6px 18px; } .summary b { color:#fff; }
+</style></head><body>
+
+<h1 class="page gtext">Maqueta · ver todas las fotos de un producto</h1>
+<p class="intro">Hoy la vista de producto muestra las fotos una por una (deslizar). Con productos de 19, 36 o 56 fotos (Demon Slayer, Zelda, Pokemon) cuesta ver todo. Cuatro formas de ver todas las fotos de un vistazo, con fotos reales de <b>Demon Slayer</b> (19 fotos). Teléfono a 390px.</p>
+
+<div class="board">
+
+  <div class="col">
+    <div class="label">Hoy · carrusel</div>
+    <div class="phone" data-panel="today"></div>
+    <ul class="notes">
+      <li>Una foto a la vez; el contador "1 / 19" dice cuántas hay.</li>
+      <li class="cons">Para ver la foto 15 hay que deslizar 14 veces.</li>
+    </ul>
+  </div>
+
+  <div class="col">
+    <div class="label">A · Cuadrícula a pantalla completa</div>
+    <div class="phone" data-panel="roll"></div>
+    <ul class="notes">
+      <li>En el carrusel, el contador se vuelve un botón <b>"▦ 19 fotos"</b>. Al tocarlo se abre una <b>cuadrícula de 3 columnas</b> como el carrete del teléfono.</li>
+      <li>Tocar una foto vuelve al carrusel <b>en esa foto</b>. "←" vuelve igual que antes.</li>
+      <li>El botón de WhatsApp sigue abajo.</li>
+      <li class="pros">Lo más familiar (galería del teléfono, Instagram). Escala bien a 56 fotos.</li>
+    </ul>
+  </div>
+
+  <div class="col">
+    <div class="label">B · Tira de miniaturas</div>
+    <div class="phone" data-panel="strip"></div>
+    <ul class="notes">
+      <li>Debajo de la foto grande, una <b>fila de miniaturas</b> que se desliza de lado; la actual con borde mint.</li>
+      <li>Tocar una miniatura cambia la foto grande.</li>
+      <li class="pros">No sale de la vista del producto; sirve también en escritorio.</li>
+      <li class="cons">Con 56 fotos hay que deslizar la tira; se ven 6 a la vez.</li>
+    </ul>
+  </div>
+
+  <div class="col">
+    <div class="label">C · Fotos | Cuadrícula</div>
+    <div class="phone" data-panel="toggle"></div>
+    <ul class="notes">
+      <li>Un selector <b>Fotos | Cuadrícula</b> bajo la foto, como el de la página (cuadrícula / lista).</li>
+      <li>En "Cuadrícula", todas las fotos en 3 columnas <b>dentro de la misma vista</b>; nombre, etiquetas y botones siguen abajo.</li>
+      <li class="cons">La vista se alarga mucho con 56 fotos; los botones quedan lejos.</li>
+    </ul>
+  </div>
+
+  <div class="col">
+    <div class="label">D · Todas en lista vertical</div>
+    <div class="phone" data-panel="feed"></div>
+    <ul class="notes">
+      <li>Sin carrusel: todas las fotos <b>una debajo de otra</b>, a lo ancho, como un post largo. Nombre arriba; el botón de consultar <b>flota abajo</b>.</li>
+      <li class="pros">Lo más simple: solo hacer scroll.</li>
+      <li class="cons">Con 56 fotos es un scroll muy largo; más datos móviles si se cargan todas.</li>
+    </ul>
+  </div>
+
+</div>
+
+<h2 class="sec gtext">Combinación: A en teléfono y escritorio, B también</h2>
+<p class="secintro">Para revisar si funcionan juntas: la tira con todas las miniaturas (B), que se desliza de lado bajo la foto grande, y el botón "▦ 19 fotos" sobre la foto, que abre la cuadrícula completa (A). En teléfono y en escritorio.</p>
+<div class="board">
+  <div class="col">
+    <div class="label">Teléfono · A + B</div>
+    <div class="phone" data-panel="phoneAB"></div>
+    <ul class="notes">
+      <li>Bajo la foto, la <b>tira con las 19 miniaturas</b>; se desliza de lado para verlas todas (pruébalo aquí: se puede deslizar). Tocar una cambia la foto grande.</li>
+      <li>El botón <b>"▦ 19 fotos"</b> sobre la foto abre la cuadrícula (A).</li>
+      <li class="cons">La tira ocupa ~70px: el nombre y las etiquetas bajan un poco, los botones siguen visibles.</li>
+    </ul>
+  </div>
+  <div class="col">
+    <div class="label">Teléfono · A abierta</div>
+    <div class="phone" data-panel="roll2"></div>
+    <ul class="notes">
+      <li>La misma cuadrícula de A: tocar una foto vuelve a la vista del producto en esa foto, y la tira se mueve a ella.</li>
+    </ul>
+  </div>
+</div>
+<div class="board" style="margin-top:36px">
+  <div>
+    <div class="label">Escritorio · A + B</div>
+    <div class="desk" data-panel="deskAB"></div>
+    <ul class="notes" style="max-width:1000px">
+      <li>Ventana de hoy (foto a la izquierda, datos a la derecha) con la <b>tira de las 19 miniaturas</b> bajo la foto, que se desliza de lado, y las flechas de siempre.</li>
+      <li>El botón <b>"▦ 19 fotos"</b> sobre la foto abre la cuadrícula dentro de la misma ventana.</li>
+    </ul>
+  </div>
+</div>
+<div class="board" style="margin-top:36px">
+  <div>
+    <div class="label">Escritorio · A abierta</div>
+    <div class="desk" data-panel="deskGrid"></div>
+    <ul class="notes" style="max-width:1000px">
+      <li>La cuadrícula ocupa toda la ventana, <b>6 columnas</b>; "←" vuelve a la foto. Tocar una foto la abre en grande.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="summary">
+  <h2>Acordado (2026-10-24)</h2>
+  <ul>
+    <li><b>Teléfono y escritorio:</b> bajo la foto grande, una <b>tira con todas las miniaturas</b> que se desliza de lado (B); la actual con borde mint, tocar una la muestra en grande.</li>
+    <li>El botón <b>"▦ 19 fotos"</b> sobre la foto abre la <b>cuadrícula completa</b> (A): 3 columnas en el teléfono, 6 en escritorio, dentro de la vista del producto. Tocar una foto vuelve a ella.</li>
+    <li>Sin casilla "Ver 19" en la tira. Productos con una sola foto: sin tira ni botón.</li>
+  </ul>
+</div>
+
+<script>
+const IDS = ["1YY1t5O3XurIAUUuH_wmNPErEuGA9xi7m","1hg4A1-uWFmaMvgHLKbOUJLoowvA0u7cj","17gQ2NCncMg4kj1M3H_t3SG3zVMuXUztS","1cI6_qL5GbXFLmbUxc8RpYtoV_LuUtTc0","1lMdZCKSaBnhT-Z3XsGH1PudSQMT6exLK","1C8GzP3c6QW9dJ-iNH0RfJFgOv274gUyc","12udQeUOssOFE_BVwHYCSzsTM0omyCVFh","17mHC0sgxp5Ee9ckwYhvIzPChfkJfvlef","1qayXEqrVABK-9trDgIX-2ehnaDN3lFgQ","13Gs59uWHyue5cDOPGkYZ2JNkxiTkqClb","1i_LKrs61RJcF_dSy1qcuS3Yc8oTbc1u5","1bPMwExL_awZ--NXyNkrVDgQ89wbLd7lv","1UG7ARarSEd9NzIqYxPdcs6n1vZs9Hrj0","1x6wevuqvkMMus4QCsDDzc6U6OR06Cers","1gxowkxT0FrO03Imlyg78v3km28WcmSX-","1vLbORDgIKrztBsurK3Wh50DRpyi99L54","12H5pL56gJcoVtfJp2ewqfmkm8JkrAaaf","12hEcycoDjXJUSpu60mdS0Ya5oJGjRC2O","1hEY9adKV6q_ZJlRCfloEpHoC7LV2VxMc"];
+const img = (id, w) => `<img src="https://lh3.googleusercontent.com/d/${id}=w${w}" alt="">`;
+const N = IDS.length;
+const wa = '<svg width="17" height="17" viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg>';
+const gridIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>';
+const behind = '<div class="behind"><div class="row"><div></div><div></div><div></div><div></div></div></div><div class="shade"></div>';
+const info = `<div class="info"><h2>Demon Slayer</h2><span class="badge">Hiko</span>
+  <div class="tags"><span>demon slayer</span><span>guardianes de la noche</span><span>kimetsu no yaiba</span><span>tanjiro</span><span>nezuko</span><span class="more">+12</span></div></div>`;
+const actions = `<div class="actions"><div class="btn main"><span style="width:28px;height:28px;border-radius:99px;background:#2E3192;display:grid;place-items:center">${wa}</span>Consultar este producto</div><div class="btn sec">Ver en Instagram</div></div>`;
+
+const panels = {
+  today: `${behind}<div class="sheet"><div class="grab"></div><div class="scroll">
+    <div class="hero">${img(IDS[0],1000)}<span class="x">×</span><span class="counter">1 / ${N}</span></div>${info}</div>${actions}</div>`,
+  roll: `<div class="roll"><div class="rollbar"><span class="back">←</span><div class="t"><p>Demon Slayer</p><small>${N} fotos · toca una para verla en grande</small></div></div>
+    <div class="grid3">${IDS.slice(0,18).map((id,i)=>`<div class="${i===0?'first':''}${i===7?' tapped':''}">${img(id,300)}</div>`).join('')}</div>
+    <div class="rollfoot"><div class="btn main"><span style="width:28px;height:28px;border-radius:99px;background:#2E3192;display:grid;place-items:center">${wa}</span>Consultar este producto</div></div></div>`,
+  strip: `${behind}<div class="sheet"><div class="grab"></div><div class="scroll">
+    <div class="hero">${img(IDS[2],1000)}<span class="x">×</span><span class="counter">3 / ${N}</span></div>
+    <div class="strip">${IDS.slice(0,8).map((id,i)=>`<div class="${i===2?'on':''}">${img(id,200)}</div>`).join('')}</div>${info}</div>${actions}</div>`,
+  toggle: `${behind}<div class="sheet"><div class="grab"></div><div class="scroll">
+    <div class="seg"><span>Fotos</span><span class="on">Cuadrícula · ${N}</span></div>
+    <div class="inline">${IDS.slice(0,12).map(id=>`<div>${img(id,300)}</div>`).join('')}</div>${info}</div>${actions}</div>`,
+  feed: `${behind}<div class="sheet"><div class="grab"></div><div class="scroll feed">
+    <div class="feedhead"><h2>Demon Slayer</h2><small>Hiko · ${N} fotos</small></div>
+    ${IDS.slice(0,3).map(id=>img(id,1000)).join('')}</div>
+    <div class="floatbtn"><div class="btn main" style="box-shadow:0 8px 24px rgba(10,10,50,.45)"><span style="width:28px;height:28px;border-radius:99px;background:#2E3192;display:grid;place-items:center">${wa}</span>Consultar este producto</div></div></div>`,
+};
+const countBtn = `<span class="pill" style="left:auto;right:10px">${gridIcon} ${N} fotos</span>`;
+const stripAB = (cur) => `<div class="strip scrollx">${IDS.map((id,i)=>`<div class="${i===cur?'on':''}">${img(id,200)}</div>`).join('')}</div>`;
+panels.phoneAB = `${behind}<div class="sheet"><div class="grab"></div><div class="scroll">
+  <div class="hero">${img(IDS[3],1000)}<span class="x">×</span>${countBtn}</div>${stripAB(3)}${info}</div>${actions}</div>`;
+panels.roll2 = panels.roll;
+panels.deskAB = `<div class="bar">arcanistsdice.com/?type=keycaps</div>${behind}<div class="win">
+  <div class="media"><div class="big">${img(IDS[3],1000)}<span class="arrow" style="left:12px">‹</span><span class="arrow" style="right:12px">›</span><span class="x">×</span>${countBtn}</div>
+  <div class="strip scrollx" style="padding:8px 10px">${IDS.map((id,i)=>`<div class="${i===3?'on':''}">${img(id,200)}</div>`).join('')}</div></div>
+  <div class="side">${info}${actions}</div></div>`;
+panels.deskGrid = `<div class="bar">arcanistsdice.com/?type=keycaps</div>${behind}<div class="win"><div class="wingrid">
+  <div class="rollbar"><span class="back">←</span><div class="t"><p>Demon Slayer</p><small>${N} fotos · toca una para verla en grande</small></div><span class="x" style="position:static;margin-left:auto">×</span></div>
+  <div class="grid5">${IDS.slice(0,18).map(id=>`<div>${img(id,300)}</div>`).join('')}</div></div></div>`;
+for (const el of document.querySelectorAll('[data-panel]')) el.innerHTML = panels[el.dataset.panel];
+// Option A's entry point (the counter becomes a button), shown as an inset
+const a = document.querySelector('[data-panel="roll"]');
+a.insertAdjacentHTML('beforeend', `<div style="position:absolute;right:12px;bottom:96px;width:150px;border-radius:14px;overflow:hidden;border:2px solid var(--mint);box-shadow:0 8px 24px rgba(0,0,0,.5)">
+  <div style="position:relative;aspect-ratio:1">${img(IDS[0],300)}<span class="pill" style="left:6px;bottom:6px;font-size:10px;padding:2px 7px">${gridIcon} ${N} fotos</span></div>
+  <div style="background:var(--field);font-size:10px;color:var(--lavender);padding:4px 6px;text-align:center">Antes: el botón en el carrusel</div></div>`);
+</script>
+</body></html>

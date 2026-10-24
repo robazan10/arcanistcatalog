@@ -4,10 +4,10 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-24)
 
-- **State:** `main` has everything through PR #20 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente") and the 67 keycap series. Work in progress: `data/keycap-photos` (catalog regenerated on 2026-10-24: 11 keycap series got their first photos, 196 in all; nothing else changed).
+- **State:** `main` has everything through PR #20 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente") and the 67 keycap series. PR #21 added the first photos of 11 keycap series. Work in progress: `feat/all-photos` (product view: a row with every photo's thumbnail and a "19 fotos" button that opens a grid of all the photos; mockup `2026-10-24-all-photos.html`; built and checked at 390px and desktop in both languages).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** the owner merges the `data/keycap-photos` PR, then check the Keycaps section on the live site. After that, phase 6 (below). A real run takes 12–14 minutes (it confirms sharing on every photo).
+- **Next step:** the owner merges the `feat/all-photos` PR, then check a product with many photos (Pokemon, 56) on the live site. After that, phase 6 (below). A real run takes 12–14 minutes (it confirms sharing on every photo).
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
   2. Keycap photos for the other 56 series, and a `Cover` for every series (the 11 with photos have none yet, so each shows its first photo by file name); anything for `03 Dice/` and `04 Others/`.
@@ -56,7 +56,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#18](https://github.com/robazan10/arcanistcatalog/pull/18) | 2026-10-22 | Docs for the keycap series rebuilt in Drive (67 series with `meta.txt`, old photos in `Keycaps archive`) |
 | [#19](https://github.com/robazan10/arcanistcatalog/pull/19) | 2026-10-23 | Script renews its login on a 401, stops on `meta.txt` read errors, logs in English, shows the run time |
 | [#20](https://github.com/robazan10/arcanistcatalog/pull/20) | 2026-10-23 | Phase 4: menu by type, title per type, Dados "Próximamente", `?type=`; catalog with the 67 keycap series (422 products) |
-| `data/keycap-photos` | open | Catalog regenerated: first photos for 11 keycap series |
+| [#21](https://github.com/robazan10/arcanistcatalog/pull/21) | 2026-10-24 | Catalog regenerated: first photos for 11 keycap series |
+| `feat/all-photos` | open | Product view: thumbnail row with every photo and a grid of all the photos |
 
 ## Agreed scope: phase 4 · side menu by type
 
