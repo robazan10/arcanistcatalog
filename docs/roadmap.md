@@ -2,19 +2,18 @@
 
 What's done, what's next, and how to pick the work up. Decisions behind each step are in [`decisions.md`](decisions.md).
 
-## Next up / how to resume (2026-10-22)
+## Next up / how to resume (2026-10-24)
 
-- **State:** `main` has everything through PR #18 and is live at www.arcanistsdice.com; the catalog script reads the type → brand → product structure, but `catalog.json` hasn't been regenerated yet. Work in progress: `feat/type-menu` (phase 4: menu button, side panel by type, title per type, Dados "Próximamente"; built and checked at 390px in both languages; the catalog was regenerated on 2026-10-23 with the real run: 422 products, Figures 355, Keycaps 67, Dice 0; the figures are unchanged except the new Aku Aku and Agumon covers).
+- **State:** `main` has everything through PR #20 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente") and the 67 keycap series. Work in progress: `data/keycap-photos` (catalog regenerated on 2026-10-24: 11 keycap series got their first photos, 196 in all; nothing else changed).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** the owner reviews and merges the `feat/type-menu` PR (menu, keycaps and the new catalog go live together), then check the live site at 390px in both languages. A real run takes about 12 minutes (it confirms sharing on every photo); one sharing call failed on a Cyclops photo that was already public.
+- **Next step:** the owner merges the `data/keycap-photos` PR, then check the Keycaps section on the live site. After that, phase 6 (below). A real run takes 12–14 minutes (it confirms sharing on every photo).
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
-  2. Keycap photos and a `Cover` per series (from the archive or new ones), and anything for `03 Dice/` and `04 Others/`.
+  2. Keycap photos for the other 56 series, and a `Cover` for every series (the 11 with photos have none yet, so each shows its first photo by file name); anything for `03 Dice/` and `04 Others/`.
   3. `meta.txt` for the myAnimate folders (Claude Code can draft them for review), covers, and figure photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)).
 - **Then, in order:**
-  1. Phase 4, the side menu by type: built on `feat/type-menu`, with the regenerated catalog; waiting on the PR.
-  2. Phase 6, usage analytics and sharing (scope below): mockup of the share buttons first, then build.
+  1. Phase 6, usage analytics and sharing (scope below): mockup of the share buttons first, then build.
 - **Decisions waiting on the owner:**
   - Phase 6: create the Umami Cloud account and share the site ID (not a secret).
   - Chinese Rocks in the git history: buy a Typodermic web license or rewrite the history (see the backlog).
@@ -30,7 +29,7 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | 3 · Grid / list | View toggle, list rows with model type, choice remembered on the device | Done (#8) |
 | 5 · Spanish and English | `/` Spanish, `/en/` English, ES \| EN switch, all texts in one dictionary | Done (#9). Done before phase 4 at the owner's request |
 | Compact top on phones | Logo 64px beside the title on phones; big logo kept on desktop | Done (#11) |
-| 4 · Side menu by type | Menu button and side panel by type, title per type, Dados "Próximamente", `?type=` | Built on `feat/type-menu` with the regenerated catalog; PR open |
+| 4 · Side menu by type | Menu button and side panel by type, title per type, Dados "Próximamente", `?type=` | Done (#20) |
 | 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Planned, after phase 4 |
 
 ## Pull requests
@@ -56,7 +55,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#17](https://github.com/robazan10/arcanistcatalog/pull/17) | 2026-10-21 | Catalog script reads type → brand → product; `type` and `types` in `catalog.json`; `--dry-run` |
 | [#18](https://github.com/robazan10/arcanistcatalog/pull/18) | 2026-10-22 | Docs for the keycap series rebuilt in Drive (67 series with `meta.txt`, old photos in `Keycaps archive`) |
 | [#19](https://github.com/robazan10/arcanistcatalog/pull/19) | 2026-10-23 | Script renews its login on a 401, stops on `meta.txt` read errors, logs in English, shows the run time |
-| `feat/type-menu` | open | Phase 4: menu by type, title per type, Dados "Próximamente", `?type=`; mockup `2026-10-23-type-menu.html` |
+| [#20](https://github.com/robazan10/arcanistcatalog/pull/20) | 2026-10-23 | Phase 4: menu by type, title per type, Dados "Próximamente", `?type=`; catalog with the 67 keycap series (422 products) |
+| `data/keycap-photos` | open | Catalog regenerated: first photos for 11 keycap series |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -102,9 +102,9 @@ Agreed on 2026-10-15; to start after phase 4. Goal: data to evaluate which produ
 ## Backlog
 
 - **Chinese Rocks in the git history:** the font files were deleted in #3 but are still in commit `2a28cc6` of this public repo. Fix: a Typodermic web license, or a history rewrite + force-push. Owner's decision; don't rewrite history without it.
-- **Covers:** 202 products with photos have no `Cover` image; the card uses the first photo by name, sometimes `Scaleparts.jpg`.
+- **Covers:** 211 products with photos have no `Cover` image (200 figures, 11 keycap series); the card uses the first photo by name, sometimes `Scaleparts.jpg`.
 - **Photos:** 147 products show "Fotos pronto".
 - **myAnimate (31 folders):** no `meta.txt`, so they're skipped.
-- **Keycaps (67 series):** `meta.txt` only; photos and covers to add.
+- **Keycaps (67 series):** 11 with photos (no covers yet), 56 still "Fotos pronto".
 - **English wording:** accepted for now; review when convenient.
 - **Vercel CLI:** not installed on the owner's Mac, so build logs need the Vercel dashboard. Optional: install it and log in.
