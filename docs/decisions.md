@@ -207,3 +207,24 @@ A dated log of decisions that shaped the catalog: what was decided, why, and wha
 **The product view gets a thumbnail row and a photo grid** (mockup [`2026-10-24-all-photos.html`](mockups/2026-10-24-all-photos.html)), on phones and desktop. Under the big photo, a row with every photo's thumbnail that scrolls sideways; a "▦ 19 fotos" button on the photo (replacing the dots and the "3 / 24" counter) opens a grid of all the photos inside the product view, 3 columns on phones and 6 on desktop. Tapping a photo in the grid goes back to it.
 - Why: keycap series have up to 56 photos; one at a time, reaching photo 15 took 14 swipes.
 - Alternatives: only the grid (A) or only the row (B); a "Fotos | Cuadrícula" switch inside the view (C: long view, buttons far down); every photo in a vertical list (D: very long, more mobile data). A "Ver 19" box at the end of the row was in the first draft; the owner preferred the row with only photos, since the button on the photo already opens the grid.
+
+## 2026-10-24 · Design review: compact top, type chips, badges
+
+The owner asked for a review of the live site; the agreed changes are on a claude.ai Design canvas (sources and link in [`mockups/2026-10-24-design-review/`](mockups/2026-10-24-design-review/)).
+
+**The top section is a compact row on every screen,** with the full logo kept (64px wide on phones, 90px on desktop) and, from 768px, the search on the same row.
+- Why: on desktop the big centered logo pushed the first products to 608px at 1440 × 900; now they start at 305px. The owner wanted the logo kept.
+- Alternatives: drop the logo from the top (the first draft); keep the big centered logo.
+
+**On "Todo" the chips are the product types; inside a type they are its brands.** A type with one brand shows no brand chips. This replaces the phase 4 choice of brand chips on "Todo".
+- Why: Tanuki, NomNom and Hiko are model designers that visitors don't know; types are what they look for, and the chips show the sections without opening the menu.
+
+**Card and row badges show the type (on "Todo") or the brand (inside a type), plus the model type** in the page's language ("Figura · Busto", "Tanuki · Chibi").
+- Why: a brand badge on every card said little; the model type was only in the list view, in English.
+- Not built: a series line on the card (no reliable series field in `meta.txt` yet).
+
+**Header and subtitle copy name the whole catalog:** "Figuras, keycaps y dados · El Salvador" (header, from 640px; "El Salvador" on phones, where the longer line was cut) and "Figuras, keycaps y dados impresos en resina y pintados a mano". Dados keeps the old dice line. This updates the 2026-10-09 choice to keep the dice copy, now that figures and keycaps are sections; the footer and the link-preview description are unchanged.
+
+**The header drops the small book symbol** (the full logo is right below), and the menu and Instagram buttons are 44px, a comfortable touch size. **On desktop the WhatsApp button is a smaller round "Escríbenos" pill** so it covers less of the grid; on phones it stays the full-width bar.
+
+**Covers are fixed in Drive, not code:** the canvas has a cover guide (the painted piece, plain background, centered; no grey renders, promo art with text or technical files).

@@ -4,10 +4,10 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-24)
 
-- **State:** `main` has everything through PR #20 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente") and the 67 keycap series. PR #21 added the first photos of 11 keycap series. Work in progress: `feat/all-photos` (product view: a row with every photo's thumbnail and a "19 fotos" button that opens a grid of all the photos; mockup `2026-10-24-all-photos.html`; built and checked at 390px and desktop in both languages).
+- **State:** `main` has everything through PR #22 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos) and the product view's thumbnail row and photo grid. Work in progress: `feat/design-polish` (design review of 2026-10-24: compact top with the logo on every screen, type chips on "Todo" and brand chips inside a type, card badges by type or brand, new header and subtitle copy, WhatsApp pill on desktop; mockup in `docs/mockups/2026-10-24-design-review/`; built and checked at 390px and 1440px in both languages).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** the owner merges the `feat/all-photos` PR, then check a product with many photos (Pokemon, 56) on the live site. After that, phase 6 (below). A real run takes 12–14 minutes (it confirms sharing on every photo).
+- **Next step:** the owner merges the `feat/design-polish` PR, then check the live site at 390px and desktop in both languages. The owner picks a `Cover` per product in Drive following the cover guide (board "Cover photo guide" in the design review), then a script run. After that, phase 6 (below). A real run takes 12–14 minutes (it confirms sharing on every photo).
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
   2. Keycap photos for the other 56 series, and a `Cover` for every series (the 11 with photos have none yet, so each shows its first photo by file name); anything for `03 Dice/` and `04 Others/`.
@@ -57,7 +57,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#19](https://github.com/robazan10/arcanistcatalog/pull/19) | 2026-10-23 | Script renews its login on a 401, stops on `meta.txt` read errors, logs in English, shows the run time |
 | [#20](https://github.com/robazan10/arcanistcatalog/pull/20) | 2026-10-23 | Phase 4: menu by type, title per type, Dados "Próximamente", `?type=`; catalog with the 67 keycap series (422 products) |
 | [#21](https://github.com/robazan10/arcanistcatalog/pull/21) | 2026-10-24 | Catalog regenerated: first photos for 11 keycap series |
-| `feat/all-photos` | open | Product view: thumbnail row with every photo and a grid of all the photos |
+| [#22](https://github.com/robazan10/arcanistcatalog/pull/22) | 2026-10-24 | Product view: thumbnail row with every photo and a grid of all the photos |
+| `feat/design-polish` | open | Design review: compact top with the logo, type chips on "Todo", badges by type or brand, header and subtitle copy, WhatsApp pill on desktop |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -65,7 +66,7 @@ Agreed on 2026-10-09 and 2026-10-10; Drive structure and type names agreed on 20
 
 - **Drive layout:** `Images/<NN Type>/<Brand>/<Product>/`, with the types `01 Figures`, `02 Keycaps`, `03 Dice`, `04 Others` (the structure is in place since 2026-10-21; see [`drive-images-schema.md`](drive-images-schema.md)). The script reads the type from the first level and the brand from the second, so `category=` and `brand=` in `meta.txt` are no longer needed; it warns when they don't match the folders, and when two products get the same ID.
 - **Order:** the number prefix on the type folders sets the menu order; the script hides it.
-- **Menu:** a menu button (☰, 36px) at the left of the header opens a panel from the left, titled "Productos" / "Products": "Todo" plus each type with an icon (grid, figure, keycap, die) and its count; the selected one in mint. It closes with ×, a tap outside or Escape. A mint dot on the menu button shows a type is selected. Inside a type, the chips filter by brand and the search looks only inside the type; on "Todo" the chips are all brands in type order.
+- **Menu:** a menu button (☰, 36px; 44px since 2026-10-24) at the left of the header opens a panel from the left, titled "Productos" / "Products": "Todo" plus each type with an icon (grid, figure, keycap, die) and its count; the selected one in mint. It closes with ×, a tap outside or Escape. A mint dot on the menu button shows a type is selected. Inside a type, the chips filter by brand and the search looks only inside the type. On "Todo" the chips were all brands in type order; since the 2026-10-24 design review they are the product types, and a type with one brand shows no brand chips.
 - **Title per type:** the top title becomes the type's name, with its own line (Figuras: "Figuras de anime, series y videojuegos, impresas en resina y pintadas a mano"; Keycaps: "Teclas de anime, series y videojuegos para tu teclado"; Dados: today's line). On "Todo" it stays "Catálogo".
 - **Empty types:** Dice shows even when empty, with a mint "Pronto" / "Soon" badge instead of the count; selecting it shows a "Próximamente" notice (striped art, a line inviting a WhatsApp message about custom dice, buttons to Figuras and Keycaps), with no search, chips or count. Others is hidden while empty. Both fill in by themselves once their Drive folder has products.
 - **Phones:** with the extra button, the header tagline is cut with "…".

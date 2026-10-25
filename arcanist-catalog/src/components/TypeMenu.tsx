@@ -106,7 +106,7 @@ export default function TypeMenu({ types, total, lang }: Props) {
         aria-label={t.menuLabel(currentName)}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="relative grid place-items-center w-9 h-9 flex-shrink-0 rounded-card border-1.5 border-brand-line bg-white/[0.07] text-brand-lavender transition-colors duration-150 hover:border-brand-mint hover:text-white"
+        className="relative grid place-items-center w-11 h-11 flex-shrink-0 rounded-card border-1.5 border-brand-line bg-white/[0.07] text-brand-lavender transition-colors duration-150 hover:border-brand-mint hover:text-white"
       >
         <MenuIcon />
         {current && (

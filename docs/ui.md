@@ -19,16 +19,17 @@ The ideas behind every screen. Each one comes from a decision in [`decisions.md`
 
 ## Page, top to bottom
 
-1. **Header** (sticky): the **menu button** (☰, 36px; a mint dot when a type is selected), white book symbol, "Arcanist's Dice" in Staatliches, a lavender tagline (cut with "…" on phones), then the **ES | EN** pill (current language in the gradient; switching keeps `?q=` and `?type=`) and an Instagram button. On phones the symbol is 32px, the name 20px and the gaps 10px so everything fits at 390px. With an old catalog without types there's no menu button.
-2. **Top section:** the full dark-background logo, the title in Staatliches with the gradient fill, and a short subtitle. On "Todo" the title is "Catálogo" / "Catalog"; inside a type it's the type's name ("Figuras", "Keycaps", "Dados") with its own line.
-   - **Phones (under 640px):** a compact row: the logo at 64px on the left, the 32px title and the subtitle beside it, aligned left. At an iPhone's visible size in Safari (390 × 664) the products start at 369px, so the first row's photos and names show above the WhatsApp bar.
-   - **640px and wider:** the big centered logo (150px) with the 48px title and the subtitle below.
-3. **Search box:** `field` background, search icon, mint border on focus. Typing filters instantly and updates `?q=`; accents and case are ignored.
-4. **Category chips:** pills that scroll sideways. "Todos"/"All" plus one per brand with products in the selected type, each with its count there; on "Todo" all brands in menu order of their type (Tanuki, NomNom, Hiko). The selected one has the gradient. The search also looks only inside the selected type ("Buscar en Keycaps...").
-5. **Count and view toggle:** "355 productos" ("… encontrados" while filtering) on the left; on the right two icon buttons, Cuadrícula/Grid and Lista/List, the selected one in the gradient.
+1. **Header** (sticky): the **menu button** (☰, 44px; a mint dot when a type is selected), "Arcanist's Dice" in Staatliches with a lavender tagline ("El Salvador" on phones, "Figuras, keycaps y dados · El Salvador" from 640px), then the **ES | EN** pill (current language in the gradient; switching keeps `?q=` and `?type=`) and an Instagram button (44px). No book symbol in the header since 2026-10-24: the full logo sits right below. On phones the name is 20px and the gaps 10px so everything fits at 390px. With an old catalog without types there's no menu button.
+2. **Top section:** a compact row on every screen: the full dark-background logo on the left (64px wide on phones, 90px from 640px), the title in Staatliches with the gradient fill and a short subtitle beside it. On "Todo" the title is "Catálogo" / "Catalog" with "Figuras, keycaps y dados impresos en resina y pintados a mano"; inside a type it's the type's name ("Figuras", "Keycaps", "Dados") with its own line. From 768px the search box sits on the same row, on the right (up to 420px). At 1440 × 900 the first products start at 305px (608px before 2026-10-24).
+3. **Search box:** `field` background, search icon, mint border on focus, placeholder "Buscar producto, serie o personaje..." ("Buscar en Figuras..." inside a type). Typing filters instantly and updates `?q=`; accents and case are ignored. Full width under the title on phones.
+4. **Chips:** pills that scroll sideways on phones and wrap from 768px.
+   - On **"Todo"**: the **product types**, the same as the side menu: "Todo 422 · Figuras 355 · Keycaps 67 · Dados" (with a mint "Pronto"). Tapping one selects that type (`?type=`).
+   - **Inside a type**: its **brands**, "Todas 355 · Tanuki 204 · NomNom 151", counted there. A type with a single brand (Keycaps: Hiko) shows no brand chips.
+   - With an old catalog without types: the brand chips as before.
+5. **Count and view toggle:** "422 productos" ("… encontrados" while filtering) and two icon buttons, Cuadrícula/Grid and Lista/List, the selected one in the gradient. Under the chips on phones; on the chips' row, at the right, from 768px.
 6. **Products:** grid or list (below).
 7. **Footer:** name and year, a one-line description; extra bottom padding so the WhatsApp bar never covers it.
-8. **WhatsApp bar** (fixed): the gradient main button "Escríbenos por WhatsApp" / "Message us on WhatsApp", WhatsApp logo in green on an indigo circle. Full width on phones, bottom-right on desktop. Opens WhatsApp with a greeting in the page's language.
+8. **WhatsApp button** (fixed): the gradient main button with the WhatsApp logo in green on an indigo circle. On phones a full-width bar, "Escríbenos por WhatsApp" / "Message us on WhatsApp"; from 640px a smaller round pill at the bottom right, "Escríbenos" / "Message us" (its accessible name keeps "por WhatsApp"). Opens WhatsApp with a greeting in the page's language (in Dados, about custom dice).
 
 ## Side menu by type
 
@@ -45,14 +46,14 @@ A type in the menu with no products (today Dados) shows, under the title, a pane
 ## Products: grid (default)
 
 - 2 columns on phones, up to 5 on desktop; cards alternate lighter and darker in a checkerboard.
-- **Card:** square cover (`=w500`), photo-count pill when there's more than one photo, name in Staatliches on up to 2 lines, category badge (violet). Border turns mint on hover.
+- **Card:** square cover (`=w500`), photo-count pill when there's more than one photo, name in Staatliches on up to 2 lines, a violet badge: on "Todo" the type and model type ("Figura · Busto", "Figura · Tamaño completo + Busto", "Keycaps"), inside a type the brand and model type ("Tanuki · Chibi"). Border turns mint on hover.
 - **"Fotos pronto" card:** striped indigo square with the faded book symbol and a mint "Fotos pronto" / "Photos coming soon" badge. These cards come after all products with photos.
 - Order: A→Z by name.
 
 ## Products: list
 
 - One column on phones, two on wide screens; rows alternate lighter and darker.
-- **Row:** 64px cover (`=w200`) or striped thumbnail, name on up to 2 lines, category badge, the **model type** when the product has one (chibi, toon, extra, bust, fullsize, diorama; "fullsize · bust" for merged folders), photo count or "Fotos pronto", and an arrow.
+- **Row:** 64px cover (`=w200`) or striped thumbnail, name on up to 2 lines, the same badge as the card (type or brand, plus the model type in the page's language: Chibi, Toon, Extra, Busto/Bust, Tamaño completo/Full size, Diorama), photo count or "Fotos pronto", and an arrow.
 - The choice of grid or list is remembered on the device.
 
 ## Product view
@@ -81,5 +82,6 @@ The agreed phone mockups are in [`mockups/`](mockups/). Open them in a browser f
 | [`2026-10-10-list-view.html`](mockups/2026-10-10-list-view.html) | Grid/list toggle and list rows | Rows also show the model type, added after the mockup |
 | [`2026-10-10-languages.html`](mockups/2026-10-10-languages.html) | ES \| EN switch, English page and product view | None |
 | [`2026-10-14-compact-top.html`](mockups/2026-10-14-compact-top.html) | Compact top section on phones: today vs options A, B, C at 390 × 664; B chosen | Logo at 64px instead of the mockup's 54px; the real page has a little more spacing, so products start at 369px instead of 337px |
+| [`2026-10-24-design-review/`](mockups/2026-10-24-design-review/) | Design review: compact top with the logo on desktop, type chips on "Todo" and brand chips inside a type, card badges, cover guide. Made on a claude.ai Design canvas; the folder has its sources and the link | Card "series" line not built (no reliable series field yet); the cover guide is for Drive, not code |
 | [`2026-10-24-all-photos.html`](mockups/2026-10-24-all-photos.html) | All of a product's photos: options A–D, then A + B chosen (thumbnail row + "19 fotos" grid), phone and desktop | The grid doesn't mark the cover with "Portada" |
 | [`2026-10-23-type-menu.html`](mockups/2026-10-23-type-menu.html) | Phase 4: menu button, side panel by type, title per type, Dados "Próximamente", English | Header on phones: symbol 32px and name 20px (the mockup's 40px and 22px didn't fit with the menu button) |
