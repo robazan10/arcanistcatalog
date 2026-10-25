@@ -14,11 +14,13 @@ export default function CTAButtons({ lang }: { lang: Lang }) {
       <a
         href={whatsappLink(t.whatsappTypeMessages[type] ?? t.whatsappMessage)}
         target="_blank"
+        aria-label={t.whatsappCta}
         rel="noopener noreferrer"
-        className="btn-main py-3 shadow-[0_8px_24px_rgba(10,10,50,0.45)]"
+        className="btn-main py-3 sm:rounded-full sm:py-2.5 sm:pl-2.5 sm:pr-5 shadow-[0_8px_24px_rgba(10,10,50,0.45)]"
       >
         <WhatsAppMark />
-        {t.whatsappCta}
+        <span className="sm:hidden">{t.whatsappCta}</span>
+        <span className="hidden sm:inline">{t.whatsappCtaShort}</span>
       </a>
     </div>
   );

@@ -6,12 +6,14 @@ import { PhotosIcon } from './icons';
 
 interface Props {
   product: ProductSummary;
+  // Type or brand, plus the model type (Figura · Busto)
+  badge: string;
   alt?: boolean;
   t: Dictionary;
   onClick: (product: ProductSummary) => void;
 }
 
-export default function ProductCard({ product, alt = false, t, onClick }: Props) {
+export default function ProductCard({ product, badge, alt = false, t, onClick }: Props) {
   return (
     <button
       onClick={() => onClick(product)}
@@ -52,7 +54,7 @@ export default function ProductCard({ product, alt = false, t, onClick }: Props)
       <div className="px-2.5 pt-2 pb-2.5">
         {/* Up to two lines: many NomNom names include the series */}
         <h3 className="text-[19px] leading-[1.05] line-clamp-2 min-h-[2.1em]">{product.name}</h3>
-        <span className="badge mt-1.5">{product.category}</span>
+        <span className="badge mt-1.5">{badge}</span>
       </div>
     </button>
   );

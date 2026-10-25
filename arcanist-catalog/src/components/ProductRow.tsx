@@ -6,18 +6,15 @@ import { ArrowIcon, PhotosIcon } from './icons';
 
 interface Props {
   product: ProductSummary;
+  // Type or brand, plus the model type (Figura · Busto)
+  badge: string;
   alt?: boolean;
   t: Dictionary;
   onClick: (product: ProductSummary) => void;
 }
 
-// Model-type tags from the Drive tag conventions (docs/drive-images-schema.md), in English only
-const MODEL_TYPES = ['chibi', 'toon', 'extra', 'bust', 'fullsize', 'diorama'];
-
-// List view row: small cover, name, brand, model type and photo count
-export default function ProductRow({ product, alt = false, t, onClick }: Props) {
-  const modelTypes = product.tags.filter(tag => MODEL_TYPES.includes(tag.toLowerCase()));
-
+// List view row: small cover, name, type or brand with the model type, and photo count
+export default function ProductRow({ product, badge, alt = false, t, onClick }: Props) {
   return (
     <button
       onClick={() => onClick(product)}
@@ -39,12 +36,7 @@ export default function ProductRow({ product, alt = false, t, onClick }: Props) 
       <div className="flex-1 min-w-0">
         <h3 className="text-lg leading-[1.05] line-clamp-2">{product.name}</h3>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1.5">
-          <span className="badge">{product.category}</span>
-          {modelTypes.length > 0 && (
-            <span className="text-[11px] text-brand-lavender border-1.5 border-brand-line rounded-full px-2 leading-[18px]">
-              {modelTypes.join(' · ')}
-            </span>
-          )}
+          <span className="badge">{badge}</span>
           {product.photoCount > 0 ? (
             <span className="flex items-center gap-1 text-xs font-bold text-brand-lavender" aria-label={t.photos(product.photoCount)}>
               <PhotosIcon />

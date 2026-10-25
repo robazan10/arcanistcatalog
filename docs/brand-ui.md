@@ -76,7 +76,7 @@ One visual language, used across D4 Stat Forge:
 - **Badges:** small pills with a tinted background and matching text: violet `rgba(165,127,255,.25)` with `#CDB8FF`, mint `rgba(63,255,177,.18)` with mint, danger `rgba(255,122,154,.22)` with `#FF7A9A`.
 - **Headline numbers or titles:** Staatliches with the gradient as text fill (`background-clip: text`).
 - **Bars:** 6–8px tall, rounded, `field` track with a gradient fill. Prefer bars over pies or rings, so every screen uses the same few shapes.
-- **Header:** the white book symbol, the name in Staatliches, a small lavender subtitle; the active nav item in mint.
+- **Header:** the white book symbol, the name in Staatliches, a small lavender subtitle; the active nav item in mint. (The catalog drops the symbol from its header since 2026-10-24, because its compact top section shows the full logo right below.)
 - **Focus:** a visible 2px outline (mint or violet) on every interactive element.
 - **Motion:** keep it subtle (hover color changes, 150ms); respect `prefers-reduced-motion`.
 

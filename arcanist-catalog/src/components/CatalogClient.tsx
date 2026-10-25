@@ -123,6 +123,21 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
   }, [typeProducts, search, activeCategory, categories]);
 
   const isFiltering = search || activeCategory !== 'todos';
+  // A menu type with no products yet (Dice) shows a notice instead of search and results
+  const isSoon = Boolean(activeType && activeType.count === 0);
+  // Type chips on "Todo"; a catalog without types (made before October 2026) keeps the brand chips
+  const showTypeChips = !activeType && types.length > 0;
+
+  // The card badge: the type on "Todo" (Figura · Busto), the brand inside a type (Tanuki · Busto)
+  const badgeFor = (p: ProductSummary) => {
+    const models = p.tags
+      .map(tag => tag.toLowerCase())
+      .filter((tag, i, all) => t.modelTypes[tag] && all.indexOf(tag) === i)
+      .map(tag => t.modelTypes[tag]);
+    const type = types.find(ty => ty.id === p.type);
+    const first = !type ? p.category : activeType ? p.brand : t.typeSingular[type.id] ?? typeName(t, type.id, type.name);
+    return [first, models.join(' + ')].filter(Boolean).join(' · ');
+  };
 
   const chipClass = (active: boolean) =>
     `flex-shrink-0 rounded-full px-3.5 py-2 text-sm font-bold border-1.5 transition-colors duration-150 ${
@@ -133,38 +148,29 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
 
   return (
     <>
-      {/* Hero: compact row on phones so the first products show on the first screen; big centered logo from sm up */}
-      <div className="flex items-center gap-3 pt-1 sm:flex-col sm:gap-0 sm:pt-6 sm:pb-2 sm:text-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/brand/logo-dark-bg.svg"
-          alt="Arcanist's Dice"
-          width={150}
-          height={201}
-          className="w-16 sm:w-[150px] sm:mb-2.5 h-auto flex-shrink-0"
-        />
-        <div className="min-w-0">
-          <h1 className="text-gradient text-[32px] sm:text-5xl leading-none">{activeTypeName || t.heroTitle}</h1>
-          <p className="text-brand-lavender text-[13px] leading-snug sm:text-base mt-1 sm:mt-1.5">
-            {(activeType && t.typeSubtitles[activeType.id]) || t.heroSubtitle}
-          </p>
+      {/* Top: logo, title and line; on desktop the search sits on the same row */}
+      <div className="flex flex-wrap items-center md:items-end justify-between gap-x-6 gap-y-3 pt-1 sm:pt-4">
+        <div className="flex items-center gap-3 sm:gap-5 min-w-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/logo-dark-bg.svg"
+            alt="Arcanist's Dice"
+            width={150}
+            height={201}
+            className="w-16 sm:w-[90px] h-auto flex-shrink-0"
+          />
+          <div className="min-w-0">
+            <h1 className="text-gradient text-[32px] sm:text-5xl leading-none">{activeTypeName || t.heroTitle}</h1>
+            <p className="text-brand-lavender text-[13px] leading-snug sm:text-base mt-1 sm:mt-1.5">
+              {(activeType && t.typeSubtitles[activeType.id]) || t.heroSubtitle}
+            </p>
+          </div>
         </div>
-      </div>
-
-      {/* A type with no products yet (Dice): a "coming soon" notice instead of search and results */}
-      {activeType && activeType.count === 0 ? (
-        <SectionSoon
-          type={activeType.id}
-          others={types.filter(type => type.count > 0)}
-          onChoose={type => writeTypeToUrl(type)}
-          t={t}
-        />
-      ) : (
-        <>
-          {/* Search */}
+        {!isSoon && (
           <label
             ref={searchRef}
-            className="mt-3 sm:mt-5 scroll-mt-20 flex items-center gap-2 bg-brand-field border-1.5 border-brand-line rounded-card px-3.5 text-brand-lavender transition-colors duration-150 focus-within:border-brand-mint">
+            className="w-full md:w-auto md:flex-[0_1_420px] scroll-mt-20 flex items-center gap-2 bg-brand-field border-1.5 border-brand-line rounded-card px-3.5 text-brand-lavender transition-colors duration-150 focus-within:border-brand-mint"
+          >
             <SearchIcon className="w-[18px] h-[18px] flex-shrink-0 opacity-70" />
             <span className="sr-only">{t.searchLabel}</span>
             <input
@@ -175,51 +181,83 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
               className="w-full bg-transparent py-3 text-[16px] text-white placeholder-brand-lavender/70 focus:outline-none focus-visible:outline-none"
             />
           </label>
+        )}
+      </div>
 
-          {/* Category chips */}
-          <div className="flex gap-2 overflow-x-auto mt-3.5 -mx-4 px-4 pb-1 scrollbar-hide" role="group" aria-label={t.categories}>
-            <button
-              onClick={() => setActiveCategory('todos')}
-              aria-pressed={activeCategory === 'todos'}
-              className={chipClass(activeCategory === 'todos')}
-            >
-              {t.all} <span className="font-extrabold opacity-70 ml-0.5">{typeProducts.length}</span>
-            </button>
-            {typeChips.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                aria-pressed={activeCategory === cat.id}
-                className={chipClass(activeCategory === cat.id)}
-              >
-                {cat.name} <span className="font-extrabold opacity-70 ml-0.5">{cat.count}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Count and view toggle */}
-          <div className="flex items-center justify-between gap-3 mt-4">
-            <p className="text-brand-lavender text-sm" aria-live="polite">
-              {t.productCount(filteredProducts.length, Boolean(isFiltering))}
-            </p>
-            <div className="flex gap-0.5 p-[3px] rounded-card border-1.5 border-brand-line bg-white/[0.07]" role="group" aria-label={t.view}>
-              {([
-                ['grid', t.grid, GridIcon],
-                ['list', t.list, ListIcon],
-              ] as const).map(([value, label, Icon]) => (
-                <button
-                  key={value}
-                  onClick={() => changeView(value)}
-                  aria-pressed={view === value}
-                  aria-label={label}
-                  title={label}
-                  className={`grid place-items-center w-[38px] h-8 rounded-[9px] transition-colors duration-150 ${
-                    view === value ? 'bg-brand-gradient text-brand-indigo' : 'text-brand-lavender hover:text-white'
-                  }`}
-                >
-                  <Icon />
+      {/* A type with no products yet (Dice): a "coming soon" notice instead of search and results */}
+      {isSoon && activeType ? (
+        <SectionSoon
+          type={activeType.id}
+          others={types.filter(type => type.count > 0)}
+          onChoose={type => writeTypeToUrl(type)}
+          t={t}
+        />
+      ) : (
+        <>
+          {/* Chips, then count and view toggle; one row from md up */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-x-4 gap-y-3.5 mt-3.5 md:mt-5">
+            {/* On "Todo": the product types (same as the side menu). Inside a type: its brands, if more than one */}
+            {showTypeChips ? (
+              <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0 md:flex-wrap md:overflow-visible" role="group" aria-label={t.menuTitle}>
+                <button aria-pressed="true" className={chipClass(true)}>
+                  {t.allTypes} <span className="font-extrabold opacity-70 ml-0.5">{products.length}</span>
                 </button>
-              ))}
+                {types.map(type => (
+                  <button key={type.id} onClick={() => writeTypeToUrl(type.id)} aria-pressed="false" className={chipClass(false)}>
+                    {typeName(t, type.id, type.name)}{' '}
+                    {type.count > 0 ? (
+                      <span className="font-extrabold opacity-70 ml-0.5">{type.count}</span>
+                    ) : (
+                      <span className="badge-mint ml-1">{t.typeSoon}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            ) : typeChips.length > 1 ? (
+              <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0 md:flex-wrap md:overflow-visible" role="group" aria-label={t.categories}>
+                <button
+                  onClick={() => setActiveCategory('todos')}
+                  aria-pressed={activeCategory === 'todos'}
+                  className={chipClass(activeCategory === 'todos')}
+                >
+                  {activeType ? t.allBrands : t.all} <span className="font-extrabold opacity-70 ml-0.5">{typeProducts.length}</span>
+                </button>
+                {typeChips.map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    aria-pressed={activeCategory === cat.id}
+                    className={chipClass(activeCategory === cat.id)}
+                  >
+                    {cat.name} <span className="font-extrabold opacity-70 ml-0.5">{cat.count}</span>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            <div className="flex items-center justify-between md:justify-end gap-3">
+              <p className="text-brand-lavender text-sm" aria-live="polite">
+                {t.productCount(filteredProducts.length, Boolean(isFiltering))}
+              </p>
+              <div className="flex gap-0.5 p-[3px] rounded-card border-1.5 border-brand-line bg-white/[0.07]" role="group" aria-label={t.view}>
+                {([
+                  ['grid', t.grid, GridIcon],
+                  ['list', t.list, ListIcon],
+                ] as const).map(([value, label, Icon]) => (
+                  <button
+                    key={value}
+                    onClick={() => changeView(value)}
+                    aria-pressed={view === value}
+                    aria-label={label}
+                    title={label}
+                    className={`grid place-items-center w-[38px] h-8 rounded-[9px] transition-colors duration-150 ${
+                      view === value ? 'bg-brand-gradient text-brand-indigo' : 'text-brand-lavender hover:text-white'
+                    }`}
+                  >
+                    <Icon />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -233,7 +271,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
           ) : view === 'list' ? (
             <div className="grid lg:grid-cols-2 gap-2 mt-3">
               {filteredProducts.map((product, i) => (
-                <ProductRow key={product.id} product={product} alt={i % 2 === 1} t={t} onClick={setSelectedProduct} />
+                <ProductRow key={product.id} product={product} badge={badgeFor(product)} alt={i % 2 === 1} t={t} onClick={setSelectedProduct} />
               ))}
             </div>
           ) : (
@@ -242,6 +280,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
                 <ProductCard
                   key={product.id}
                   product={product}
+                  badge={badgeFor(product)}
                   t={t}
                   // Checkerboard on the 2-column phone grid
                   alt={(i + Math.floor(i / 2)) % 2 === 1}
