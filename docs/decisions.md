@@ -228,3 +228,19 @@ The owner asked for a review of the live site; the agreed changes are on a claud
 **The header drops the small book symbol** (the full logo is right below), and the menu and Instagram buttons are 44px, a comfortable touch size. **On desktop the WhatsApp button is a smaller round "Escríbenos" pill** so it covers less of the grid; on phones it stays the full-width bar.
 
 **Covers are fixed in Drive, not code:** the canvas has a cover guide (the painted piece, plain background, centered; no grey renders, promo art with text or technical files).
+
+## 2026-10-28 · Sharing (first half of phase 6)
+
+**Products get links (`?p=<id>`), and the product view and the results get a "Compartir" button** (boards Share 1–5 in [`mockups/2026-10-24-design-review/`](mockups/2026-10-24-design-review/)). On phones it opens the phone's share menu; elsewhere it copies the link and shows "Enlace copiado". The results button shares the type and the search, never an open product.
+- Why: people send products to friends; a link that opens the product directly is easier to act on.
+- How: touch screens (`pointer: coarse`) use the Web Share API; desktop copies, because desktop share menus are uncommon and copying is what people expect there. If copying is blocked, the message shows the link to copy by hand.
+- `?p=` is written with `replaceState`, so opening and closing products doesn't add Back steps.
+
+**The Instagram button leaves the product view;** "Compartir" takes its place. It opened the same Instagram page as the header button, so it repeated it.
+
+**The "Consultar este producto" WhatsApp message carries the type and the product link:** "Hola! Me interesa el producto: Demon Slayer (Keycaps)" and the link on the next line.
+- Why: the shop sees exactly which product; the type tells apart products with the same name (a Gojo figure and Gojo keycaps).
+
+**Not done:** a link preview per product. A pasted link shows the site's general preview; per-product previews need one small static page per product (a possible follow-up).
+
+**The "Enlace copiado" message sits at the top of the screen,** not at the bottom as drawn on the desktop board: at the bottom it covered the product view's WhatsApp button on phones.

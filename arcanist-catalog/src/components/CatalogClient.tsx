@@ -5,9 +5,10 @@ import type { ProductSummary, Category, MenuType } from '@/lib/types';
 import ProductCard from './ProductCard';
 import ProductRow from './ProductRow';
 import ProductModal from './ProductModal';
-import { GridIcon, ListIcon, SearchIcon } from './icons';
+import { CheckIcon, GridIcon, ListIcon, SearchIcon, ShareIcon } from './icons';
 import { normalize, readQueryFromUrl, writeQueryToUrl } from '@/lib/search';
 import { writeTypeToUrl } from '@/lib/productType';
+import { currentViewLink, readProductFromUrl, shareLink, writeProductToUrl } from '@/lib/share';
 import { useSelectedType } from '@/lib/useSelectedType';
 import { getDictionary, typeName, type Lang } from '@/i18n/dictionaries';
 import SectionSoon from './SectionSoon';
@@ -62,16 +63,49 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
     }
   };
 
-  // Start from ?q= in the address, and follow it when the visitor goes Back/Forward
+  // The open product lives in the address as ?p=, so a product link opens it directly
+  const openProduct = (product: ProductSummary) => {
+    setSelectedProduct(product);
+    writeProductToUrl(product.id);
+  };
+  const closeProduct = () => {
+    setSelectedProduct(null);
+    writeProductToUrl('');
+  };
+
+  // Start from ?q= and ?p= in the address, and follow them when the visitor goes Back/Forward
   useEffect(() => {
     const syncFromUrl = () => {
       setSearch(readQueryFromUrl());
-      setSelectedProduct(null);
+      const id = readProductFromUrl();
+      const product = id ? products.find(p => p.id === id) : undefined;
+      setSelectedProduct(product ?? null);
+      // A link to a product that no longer exists just shows the catalog
+      if (id && !product) writeProductToUrl('');
     };
-    setSearch(readQueryFromUrl());
+    syncFromUrl();
     window.addEventListener('popstate', syncFromUrl);
     return () => window.removeEventListener('popstate', syncFromUrl);
-  }, []);
+  }, [products]);
+
+  // "Enlace copiado" with the link, for a few seconds after a copy
+  const [toast, setToast] = useState<{ url: string; ok: boolean } | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const showCopied = (url: string, ok: boolean) => {
+    setToast({ url, ok });
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), ok ? 3000 : 8000);
+  };
+  const [searchCopied, setSearchCopied] = useState(false);
+  const shareSearch = async () => {
+    const url = currentViewLink();
+    const result = await shareLink(url, "Arcanist's Dice");
+    if (result === 'copied' || result === 'failed') showCopied(url, result === 'copied');
+    if (result === 'copied') {
+      setSearchCopied(true);
+      setTimeout(() => setSearchCopied(false), 2000);
+    }
+  };
 
   const updateSearch = (value: string, options?: { push?: boolean }) => {
     setSearch(value);
@@ -80,7 +114,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
 
   // Tapping a tag in the product view searches the whole catalog for it, leaving the selected type
   const searchTag = (tag: string) => {
-    setSelectedProduct(null);
+    closeProduct();
     setActiveCategory('todos');
     if (activeType) writeTypeToUrl('', tag);
     else updateSearch(tag, { push: true });
@@ -239,24 +273,39 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
               <p className="text-brand-lavender text-sm" aria-live="polite">
                 {t.productCount(filteredProducts.length, Boolean(isFiltering))}
               </p>
-              <div className="flex gap-0.5 p-[3px] rounded-card border-1.5 border-brand-line bg-white/[0.07]" role="group" aria-label={t.view}>
-                {([
-                  ['grid', t.grid, GridIcon],
-                  ['list', t.list, ListIcon],
-                ] as const).map(([value, label, Icon]) => (
-                  <button
-                    key={value}
-                    onClick={() => changeView(value)}
-                    aria-pressed={view === value}
-                    aria-label={label}
-                    title={label}
-                    className={`grid place-items-center w-[38px] h-8 rounded-[9px] transition-colors duration-150 ${
-                      view === value ? 'bg-brand-gradient text-brand-indigo' : 'text-brand-lavender hover:text-white'
-                    }`}
-                  >
-                    <Icon />
-                  </button>
-                ))}
+              <div className="flex items-center gap-2">
+                {/* Shares what's on screen: the type and the search */}
+                <button
+                  onClick={shareSearch}
+                  aria-label={t.shareSearch}
+                  className={`flex items-center gap-1.5 h-10 px-3 rounded-card border-1.5 text-[13px] font-bold transition-colors duration-150 ${
+                    searchCopied
+                      ? 'border-brand-mint text-brand-mint bg-brand-mint/[0.12]'
+                      : 'border-brand-line bg-white/[0.07] text-white hover:border-brand-mint'
+                  }`}
+                >
+                  {searchCopied ? <CheckIcon className="w-4 h-4" /> : <ShareIcon className="w-4 h-4" />}
+                  {searchCopied ? t.copied : t.share}
+                </button>
+                <div className="flex gap-0.5 p-[3px] rounded-card border-1.5 border-brand-line bg-white/[0.07]" role="group" aria-label={t.view}>
+                  {([
+                    ['grid', t.grid, GridIcon],
+                    ['list', t.list, ListIcon],
+                  ] as const).map(([value, label, Icon]) => (
+                    <button
+                      key={value}
+                      onClick={() => changeView(value)}
+                      aria-pressed={view === value}
+                      aria-label={label}
+                      title={label}
+                      className={`grid place-items-center w-[38px] h-8 rounded-[9px] transition-colors duration-150 ${
+                        view === value ? 'bg-brand-gradient text-brand-indigo' : 'text-brand-lavender hover:text-white'
+                      }`}
+                    >
+                      <Icon />
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -271,7 +320,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
           ) : view === 'list' ? (
             <div className="grid lg:grid-cols-2 gap-2 mt-3">
               {filteredProducts.map((product, i) => (
-                <ProductRow key={product.id} product={product} badge={badgeFor(product)} alt={i % 2 === 1} t={t} onClick={setSelectedProduct} />
+                <ProductRow key={product.id} product={product} badge={badgeFor(product)} alt={i % 2 === 1} t={t} onClick={openProduct} />
               ))}
             </div>
           ) : (
@@ -284,7 +333,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
                   t={t}
                   // Checkerboard on the 2-column phone grid
                   alt={(i + Math.floor(i / 2)) % 2 === 1}
-                  onClick={setSelectedProduct}
+                  onClick={openProduct}
                 />
               ))}
             </div>
@@ -295,10 +344,24 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
       {/* Product view */}
       <ProductModal
         product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
+        onClose={closeProduct}
         onTagClick={searchTag}
+        onCopied={showCopied}
         t={t}
+        lang={lang}
       />
+
+      {/* At the top, so it never covers the WhatsApp buttons at the bottom */}
+      {toast && (
+        <div
+          role="status"
+          className="fixed left-1/2 -translate-x-1/2 top-[max(1rem,env(safe-area-inset-top))] z-[60] max-w-[calc(100vw-2rem)] flex items-center gap-2.5 rounded-card border-1.5 border-brand-mint bg-brand-deep px-4 py-2.5 shadow-[0_8px_24px_rgba(10,10,50,0.45)]"
+        >
+          {toast.ok && <CheckIcon className="w-[18px] h-[18px] flex-shrink-0 text-brand-mint" />}
+          <span className="font-extrabold whitespace-nowrap">{toast.ok ? t.linkCopied : t.copyThisLink}</span>
+          <span className="text-[13px] text-brand-lavender truncate select-all">{toast.ok ? toast.url.replace(/^https?:\/\/(www\.)?/, '') : toast.url}</span>
+        </div>
+      )}
     </>
   );
 }

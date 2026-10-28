@@ -25,7 +25,9 @@ const es = {
   // The WhatsApp pill on desktop
   whatsappCtaShort: 'Escríbenos',
   whatsappMessage: 'Hola! Me interesa conocer más sobre sus productos.',
-  whatsappProductMessage: (name: string) => `Hola! Me interesa el producto: ${name}`,
+  // The type tells apart products with the same name (a Gojo figure and Gojo keycaps); the link opens the product
+  whatsappProductMessage: (name: string, type: string, url: string) =>
+    `Hola! Me interesa el producto: ${name}${type ? ` (${type})` : ''}\n${url}`,
   heroTitle: 'Catálogo',
   heroSubtitle: 'Figuras, keycaps y dados impresos en resina y pintados a mano',
   searchLabel: 'Buscar producto',
@@ -55,7 +57,12 @@ const es = {
   searchTag: (tag: string) => `Buscar "${tag}"`,
   moreTags: (n: number) => `Ver ${n} ${plural(n, 'etiqueta', 'etiquetas')} más`,
   askProduct: 'Consultar este producto',
-  seeInstagram: 'Ver en Instagram',
+  share: 'Compartir',
+  shareSearch: 'Compartir esta búsqueda',
+  copied: 'Copiado',
+  linkCopied: 'Enlace copiado',
+  // When the browser doesn't let the page copy: the link is shown to copy by hand
+  copyThisLink: 'Copia este enlace',
   // Side menu by type. Type ids come from the Drive type folders; a type missing here shows its folder name.
   menuLabel: (current?: string) => (current ? `Menú de productos, viendo ${current}` : 'Menú de productos'),
   menuTitle: 'Productos',
@@ -106,7 +113,8 @@ const en: Dictionary = {
   whatsappCta: 'Message us on WhatsApp',
   whatsappCtaShort: 'Message us',
   whatsappMessage: "Hi! I'd like to know more about your products.",
-  whatsappProductMessage: (name: string) => `Hi! I'm interested in: ${name}`,
+  whatsappProductMessage: (name: string, type: string, url: string) =>
+    `Hi! I'm interested in: ${name}${type ? ` (${type})` : ''}\n${url}`,
   heroTitle: 'Catalog',
   heroSubtitle: 'Figures, keycaps and dice, resin printed and hand-painted',
   searchLabel: 'Search products',
@@ -136,7 +144,11 @@ const en: Dictionary = {
   searchTag: (tag: string) => `Search "${tag}"`,
   moreTags: (n: number) => `Show ${n} more ${plural(n, 'tag', 'tags')}`,
   askProduct: 'Ask about this product',
-  seeInstagram: 'See on Instagram',
+  share: 'Share',
+  shareSearch: 'Share this search',
+  copied: 'Copied',
+  linkCopied: 'Link copied',
+  copyThisLink: 'Copy this link',
   menuLabel: (current?: string) => (current ? `Product menu, showing ${current}` : 'Product menu'),
   menuTitle: 'Products',
   allTypes: 'All',
