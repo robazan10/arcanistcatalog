@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Desktop share, link copied</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;family=Staatliches&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3FFFB1}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="min-height: 900px; position: relative; box-sizing: border-box; padding: 64px 24px; display: flex; align-items: center; justify-content: center; font-family: Nunito, system-ui, sans-serif; color: #ffffff; background: #1F2170">
+  <div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(ellipse at top, #3a3db0 0%, #2E3192 40%, #1F2170 100%); opacity: 0.5"></div>
+  <div aria-hidden="true" style="position: absolute; inset: 0; background: rgba(15,16,60,0.6)"></div>
+
+  <div role="dialog" aria-label="Demon Slayer" style="position: relative; width: 100%; max-width: 56rem; display: flex; flex-wrap: wrap; border-radius: 20px; border: 1.5px solid #5357C2; background: #25277C; overflow: hidden">
+    <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; background: #1F2170">
+      <div style="position: relative; aspect-ratio: 1; display: grid; place-items: center; background: repeating-linear-gradient(135deg, #1F2170 0 14px, #24267a 14px 28px)">
+        <span style="font-size: 13px; font-weight: 700; color: #D7CEEA">[Foto del producto]</span>
+        <button aria-label="Cerrar" style="position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid #5357C2; background: rgba(31,33,112,0.85); color: #ffffff; font-size: 22px; line-height: 1">×</button>
+        <button aria-label="Ver las 19 fotos" style="position: absolute; right: 10px; bottom: 10px; display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; border: 1.5px solid #3FFFB1; background: rgba(31,33,112,0.85); color: #3FFFB1; font: inherit; font-size: 12px; font-weight: 800">19 fotos</button>
+      </div>
+    </div>
+    <div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box">
+      <h2 style="margin: 0; font-family: Staatliches, Impact, sans-serif; font-weight: 400; font-size: 32px; line-height: 1; letter-spacing: 0.02em">Demon Slayer</h2>
+      <span style="align-self: flex-start; margin-top: 8px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(165,127,255,0.25); color: #CDB8FF">Keycaps</span>
+      <div style="margin-top: auto; padding-top: 24px; display: flex; flex-direction: column; gap: 10px">
+        <a href="#" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 12px; background: linear-gradient(90deg, #3FFFB1, #A57FFF); color: #2E3192; font-weight: 800; font-size: 16px; text-decoration: none">Consultar este producto</a>
+        <button style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 12px; border: 1.5px solid #3FFFB1; background: rgba(63,255,177,0.12); color: #3FFFB1; font: inherit; font-weight: 700; font-size: 15px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+          Copiado
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div role="status" style="position: absolute; left: 50%; bottom: 32px; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 12px; border: 1.5px solid #3FFFB1; background: #1F2170; box-shadow: 0 8px 24px rgba(10,10,50,0.45); white-space: nowrap">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3FFFB1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+    <span style="font-weight: 800">Enlace copiado</span>
+    <span style="font-size: 13px; color: #D7CEEA">arcanistsdice.com/?p=hiko-demon-slayer</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

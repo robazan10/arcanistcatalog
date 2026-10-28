@@ -32,7 +32,7 @@ next build (output: 'export')  →  arcanist-catalog/out/  →  Vercel  →  www
 | `/forge`, `/forge/*` | D4 Stat Forge, a separate Vercel project | `vercel.json` redirects and rewrites. Never add files under `/forge` here |
 | `/og-image.png`, `/favicon.ico`, `/icon.svg`, `/apple-icon.png` | Link preview and icons | `public/`, `src/app/` |
 
-`trailingSlash: true` makes the build write `/en/` as `en/index.html`. The search and the selected type go in the query string (`/?q=…`, `/?type=keycaps`, `/en/?type=keycaps&q=goku`).
+`trailingSlash: true` makes the build write `/en/` as `en/index.html`. The search, the selected type and the open product go in the query string (`/?q=…`, `/?type=keycaps`, `/en/?type=keycaps&q=goku`, `/?p=tanuki-gojo`).
 
 ## Code layout (`arcanist-catalog/src`)
 
@@ -57,6 +57,7 @@ lib/
   catalog.ts                     reads catalog.json; summaries for the grid (A→Z, "Fotos pronto" last); menu types
   images.ts                      sizedImage(url, width); widths 500 / 1000 / 200; productDataUrl(id)
   search.ts                      normalize() (case + accents); ?q= read/write
+  share.ts                       ?p= read/write; product and current-view links; shareLink(): phone share menu, else copy
   productType.ts                 ?type= read/write, the "typechange" event, COMING_SOON_TYPES (dice)
   useSelectedType.ts             hook: the type in the address, following the menu and Back/Forward
   metadata.ts, fonts.ts, config.ts (WhatsApp/Instagram links), types.ts
@@ -70,6 +71,8 @@ Server components render the page shell and pass plain data down. The client par
 | State | Where it lives | Why |
 |---|---|---|
 | Search text | URL `?q=` | Shareable links; Back/Forward |
+| Open product | URL `?p=` (replaceState, no Back step) | Product links for sharing and the WhatsApp message |
+| "Enlace copiado" message | Component state in `CatalogClient` | |
 | Selected type | URL `?type=`; components follow it through `useSelectedType` (a `typechange` event plus `popstate`) | Linkable sections from Instagram; the header menu, the catalog and the WhatsApp bar are separate components |
 | Language | The path (`/` or `/en/`) | Separate pages for search engines |
 | Grid or list | `localStorage` key `catalog-view` | A per-device preference; falls back to grid if storage is blocked |

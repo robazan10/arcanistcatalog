@@ -3,16 +3,20 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import type { ProductSummary } from '@/lib/types';
-import { SOCIAL, whatsappLink } from '@/lib/config';
-import type { Dictionary } from '@/i18n/dictionaries';
+import { whatsappLink } from '@/lib/config';
+import type { Dictionary, Lang } from '@/i18n/dictionaries';
+import { productLink, shareLink } from '@/lib/share';
 import { GRID_WIDTH, ROW_WIDTH, VIEWER_WIDTH, productDataUrl, sizedImage } from '@/lib/images';
-import { ArrowIcon, GridIcon, InstagramIcon, WhatsAppMark } from './icons';
+import { ArrowIcon, CheckIcon, GridIcon, ShareIcon, WhatsAppMark } from './icons';
 
 interface Props {
   product: ProductSummary | null;
   onClose: () => void;
   onTagClick: (tag: string) => void;
+  // A link was copied (not shared through the phone's menu): the catalog shows the "Enlace copiado" message
+  onCopied: (url: string, ok: boolean) => void;
   t: Dictionary;
+  lang: Lang;
 }
 
 const VISIBLE_TAGS = 5;
@@ -20,12 +24,14 @@ const VISIBLE_TAGS = 5;
 // Photo lists already fetched in this visit, by product id
 const imageCache = new Map<string, string[]>();
 
-export default function ProductModal({ product, onClose, onTagClick, t }: Props) {
+export default function ProductModal({ product, onClose, onTagClick, onCopied, t, lang }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState<string[]>([]);
   const [showAllTags, setShowAllTags] = useState(false);
   // All the photos as a grid, inside the product view
   const [showGrid, setShowGrid] = useState(false);
+  // "✓ Copiado" on the share button for a moment after copying
+  const [copied, setCopied] = useState(false);
   const galleryRef = useRef<HTMLDivElement>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -49,6 +55,7 @@ export default function ProductModal({ product, onClose, onTagClick, t }: Props)
     setCurrentIndex(0);
     setShowAllTags(false);
     setShowGrid(false);
+    setCopied(false);
     if (!product?.cover) {
       setImages([]);
       return;
@@ -126,7 +133,17 @@ export default function ProductModal({ product, onClose, onTagClick, t }: Props)
 
   if (!product) return null;
 
-  const whatsappUrl = whatsappLink(t.whatsappProductMessage(product.name));
+  const link = productLink(product.id, lang);
+  const whatsappUrl = whatsappLink(t.whatsappProductMessage(product.name, product.type ? t.typeSingular[product.type] ?? '' : '', link));
+
+  const share = async () => {
+    const result = await shareLink(link, `${product.name} · Arcanist's Dice`);
+    if (result === 'copied' || result === 'failed') onCopied(link, result === 'copied');
+    if (result === 'copied') {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
   const total = product.photoCount;
   const hasMany = total > 1;
   const hiddenTags = product.tags.length - VISIBLE_TAGS;
@@ -361,10 +378,13 @@ export default function ProductModal({ product, onClose, onTagClick, t }: Props)
                   <WhatsAppMark />
                   {t.askProduct}
                 </a>
-                <a href={SOCIAL.instagram} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                  <InstagramIcon className="w-[18px] h-[18px]" />
-                  {t.seeInstagram}
-                </a>
+                <button
+                  onClick={share}
+                  className={`btn-secondary ${copied ? 'border-brand-mint text-brand-mint bg-brand-mint/[0.12]' : ''}`}
+                >
+                  {copied ? <CheckIcon /> : <ShareIcon />}
+                  {copied ? t.copied : t.share}
+                </button>
               </div>
             </div>
           </>

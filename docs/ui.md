@@ -26,7 +26,7 @@ The ideas behind every screen. Each one comes from a decision in [`decisions.md`
    - On **"Todo"**: the **product types**, the same as the side menu: "Todo 422 · Figuras 355 · Keycaps 67 · Dados" (with a mint "Pronto"). Tapping one selects that type (`?type=`).
    - **Inside a type**: its **brands**, "Todas 355 · Tanuki 204 · NomNom 151", counted there. A type with a single brand (Keycaps: Hiko) shows no brand chips.
    - With an old catalog without types: the brand chips as before.
-5. **Count and view toggle:** "422 productos" ("… encontrados" while filtering) and two icon buttons, Cuadrícula/Grid and Lista/List, the selected one in the gradient. Under the chips on phones; on the chips' row, at the right, from 768px.
+5. **Count, share and view toggle:** a **"Compartir" button** (aria "Compartir esta búsqueda") shares what's on screen: the type and the search (`/?type=keycaps&q=goku`), never an open product. Then "422 productos" ("… encontrados" while filtering) and two icon buttons, Cuadrícula/Grid and Lista/List, the selected one in the gradient. Under the chips on phones; on the chips' row, at the right, from 768px.
 6. **Products:** grid or list (below).
 7. **Footer:** name and year, a one-line description; extra bottom padding so the WhatsApp bar never covers it.
 8. **WhatsApp button** (fixed): the gradient main button with the WhatsApp logo in green on an indigo circle. On phones a full-width bar, "Escríbenos por WhatsApp" / "Message us on WhatsApp"; from 640px a smaller round pill at the bottom right, "Escríbenos" / "Message us" (its accessible name keeps "por WhatsApp"). Opens WhatsApp with a greeting in the page's language (in Dados, about custom dice).
@@ -42,6 +42,10 @@ The ideas behind every screen. Each one comes from a decision in [`decisions.md`
 ## Dados: "Próximamente"
 
 A type in the menu with no products (today Dados) shows, under the title, a panel with the striped art and a "Próximamente" badge, "Estamos preparando esta sección", an invitation to ask about custom dice, and buttons to the types that have products ("Ver Figuras", "Ver Keycaps"). No search, chips or count. The WhatsApp bar's message becomes "Hola! Me interesan sus dados personalizados."
+
+## "Enlace copiado" message
+
+After a copy, a small message at the top of the screen (so it never covers the WhatsApp buttons): mint check, "Enlace copiado" / "Link copied" and the link, for 3 seconds. If the browser doesn't allow copying, it says "Copia este enlace" / "Copy this link" with the full link, for 8 seconds.
 
 ## Products: grid (default)
 
@@ -63,7 +67,8 @@ A type in the menu with no products (today Dados) shows, under the title, a pane
   - **Thumbnail row** under the photo with every photo (58px, `=w200`); it scrolls sideways (a thin scrollbar from 768px up), the current one has a mint border and stays centered as the photo changes. Tapping one shows it.
   - **"▦ 19 fotos" / "19 photos" button** (mint outline) at the bottom right of the photo opens the **photo grid**: all the photos in 3 columns on phones, 6 on desktop (`=w300`), inside the product view, with "←" (back to the photo), the name, "19 fotos · toca una para verla en grande", × and, on phones, the WhatsApp button at the bottom. The current photo has a mint border; tapping one returns to it. Escape in the grid goes back to the photo.
 - **Info:** name in Staatliches, category badge, "Marca"/"Brand" line only when the brand differs from the category, the first 5 tags as buttons plus a mint "+N" button that shows the rest. **Tapping a tag** closes the view and searches the catalog for it.
-- **Actions:** "Consultar este producto" / "Ask about this product" (gradient, WhatsApp with the product name) and "Ver en Instagram" / "See on Instagram" (secondary).
+- **Actions:** "Consultar este producto" / "Ask about this product" (gradient) opens WhatsApp with "Hola! Me interesa el producto: Demon Slayer (Keycaps)" and the product's link on a second line; and **"Compartir" / "Share"** (secondary, share icon). On phones Compartir opens the phone's share menu with the product link; elsewhere it copies the link, turns into "✓ Copiado" for 2 seconds and shows the "Enlace copiado" message. The Instagram button left the product view on 2026-10-28 (it opened the same page as the header's).
+- **Address:** an open product is in the address as `?p=<id>` (added and removed without a Back step), so `/?p=tanuki-gojo` or `/en/?p=…` opens it directly; an unknown id just shows the catalog.
 - **No photos:** a shorter striped banner with "Fotos pronto" and a short message instead of the gallery; the actions stay.
 - Close with the × button, Escape, or tapping outside. Focus moves to Cerrar/Close; the page behind doesn't scroll.
 
@@ -82,6 +87,6 @@ The agreed phone mockups are in [`mockups/`](mockups/). Open them in a browser f
 | [`2026-10-10-list-view.html`](mockups/2026-10-10-list-view.html) | Grid/list toggle and list rows | Rows also show the model type, added after the mockup |
 | [`2026-10-10-languages.html`](mockups/2026-10-10-languages.html) | ES \| EN switch, English page and product view | None |
 | [`2026-10-14-compact-top.html`](mockups/2026-10-14-compact-top.html) | Compact top section on phones: today vs options A, B, C at 390 × 664; B chosen | Logo at 64px instead of the mockup's 54px; the real page has a little more spacing, so products start at 369px instead of 337px |
-| [`2026-10-24-design-review/`](mockups/2026-10-24-design-review/) | Design review: compact top with the logo on desktop, type chips on "Todo" and brand chips inside a type, card badges, cover guide. Made on a claude.ai Design canvas; the folder has its sources and the link | Card "series" line not built (no reliable series field yet); the cover guide is for Drive, not code |
+| [`2026-10-24-design-review/`](mockups/2026-10-24-design-review/) | Design review: compact top with the logo on desktop, type chips on "Todo" and brand chips inside a type, card badges, cover guide. Then the share boards (Share 1–5, 2026-10-28): Compartir, the phone's share menu, sharing a search, desktop "Enlace copiado", the Consultar message with the link. Made on a claude.ai Design canvas; the folder has its sources and the link | Card "series" line not built (no reliable series field yet); the cover guide is for Drive, not code |
 | [`2026-10-24-all-photos.html`](mockups/2026-10-24-all-photos.html) | All of a product's photos: options A–D, then A + B chosen (thumbnail row + "19 fotos" grid), phone and desktop | The grid doesn't mark the cover with "Portada" |
 | [`2026-10-23-type-menu.html`](mockups/2026-10-23-type-menu.html) | Phase 4: menu button, side panel by type, title per type, Dados "Próximamente", English | Header on phones: symbol 32px and name 20px (the mockup's 40px and 22px didn't fit with the menu button) |

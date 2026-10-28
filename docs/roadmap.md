@@ -4,16 +4,16 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-24)
 
-- **State:** `main` has everything through PR #22 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos) and the product view's thumbnail row and photo grid. Work in progress: `feat/design-polish` (design review of 2026-10-24: compact top with the logo on every screen, type chips on "Todo" and brand chips inside a type, card badges by type or brand, new header and subtitle copy, WhatsApp pill on desktop; mockup in `docs/mockups/2026-10-24-design-review/`; built and checked at 390px and 1440px in both languages).
+- **State:** `main` has everything through PR #23 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos), the product view's thumbnail row and photo grid, and the design review (compact top with the logo, type chips, badges). Work in progress: `feat/share` (the sharing half of phase 6: `?p=` product links, Compartir in the product view instead of Instagram, a Compartir button for the search, "Enlace copiado" message, the Consultar WhatsApp message with type and link; boards Share 1–5 in the design review; built and checked at 390px in both languages).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** the owner merges the `feat/design-polish` PR, then check the live site at 390px and desktop in both languages. The owner picks a `Cover` per product in Drive following the cover guide (board "Cover photo guide" in the design review), then a script run. After that, phase 6 (below). A real run takes 12–14 minutes (it confirms sharing on every photo).
+- **Next step:** the owner merges the `feat/share` PR, then try sharing on a real phone (iPhone and Android share menus) and a product link in WhatsApp. Then the analytics half of phase 6 (below): it needs the owner's Umami Cloud account. In parallel, the owner picks a `Cover` per product in Drive following the cover guide, then a script run. A real run takes 12–14 minutes (it confirms sharing on every photo).
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
   2. Keycap photos for the other 56 series, and a `Cover` for every series (the 11 with photos have none yet, so each shows its first photo by file name); anything for `03 Dice/` and `04 Others/`.
   3. `meta.txt` for the myAnimate folders (Claude Code can draft them for review), covers, and figure photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)).
 - **Then, in order:**
-  1. Phase 6, usage analytics and sharing (scope below): mockup of the share buttons first, then build.
+  1. Phase 6, usage analytics (scope below): sharing is built on `feat/share`; analytics waits on the Umami account.
 - **Decisions waiting on the owner:**
   - Phase 6: create the Umami Cloud account and share the site ID (not a secret).
   - Chinese Rocks in the git history: buy a Typodermic web license or rewrite the history (see the backlog).
@@ -30,7 +30,7 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | 5 · Spanish and English | `/` Spanish, `/en/` English, ES \| EN switch, all texts in one dictionary | Done (#9). Done before phase 4 at the owner's request |
 | Compact top on phones | Logo 64px beside the title on phones; big logo kept on desktop | Done (#11) |
 | 4 · Side menu by type | Menu button and side panel by type, title per type, Dados "Próximamente", `?type=` | Done (#20) |
-| 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Planned, after phase 4 |
+| 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Sharing built on `feat/share`; analytics waiting on the Umami account |
 
 ## Pull requests
 
@@ -58,7 +58,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#20](https://github.com/robazan10/arcanistcatalog/pull/20) | 2026-10-23 | Phase 4: menu by type, title per type, Dados "Próximamente", `?type=`; catalog with the 67 keycap series (422 products) |
 | [#21](https://github.com/robazan10/arcanistcatalog/pull/21) | 2026-10-24 | Catalog regenerated: first photos for 11 keycap series |
 | [#22](https://github.com/robazan10/arcanistcatalog/pull/22) | 2026-10-24 | Product view: thumbnail row with every photo and a grid of all the photos |
-| `feat/design-polish` | open | Design review: compact top with the logo, type chips on "Todo", badges by type or brand, header and subtitle copy, WhatsApp pill on desktop |
+| [#23](https://github.com/robazan10/arcanistcatalog/pull/23) | 2026-10-25 | Design review: compact top with the logo, type chips on "Todo", badges by type or brand, header and subtitle copy, WhatsApp pill on desktop |
+| `feat/share` | open | Sharing: `?p=` product links, Compartir (product and search), "Enlace copiado", Consultar message with type and link; Instagram button out of the product view |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -94,11 +95,13 @@ Agreed on 2026-10-15; to start after phase 4. Goal: data to evaluate which produ
   | `instagram_click`, `language_switch`, `view_toggle` | — | General behavior |
 
   No personal data. Umami adds referrer, device and country on its own; the owner adds `utm_source` / `utm_campaign` to links posted on Instagram.
-- **Shareable product links:** `?p=<product id>` (for example `/?p=tanuki-gojo`, `/en/?p=tanuki-gojo`) opens that product directly; closing it removes `p` from the address.
+- **Shareable product links:** `?p=<product id>` (for example `/?p=tanuki-gojo`, `/en/?p=tanuki-gojo`) opens that product directly; closing it removes `p` from the address. Built on `feat/share` (2026-10-28).
 - **Share buttons** (UI, mockup first):
   - Next to the results: shares the current search. `?q=` links already work since #7; the button just makes them easy to get.
   - In the product view: shares the product's `?p=` link.
   - On phones the button opens the phone's share menu (Web Share API); on desktop it copies the link. Labels in both languages in the dictionary.
+  - Built on `feat/share` (2026-10-28), from the agreed boards Share 1–5. Also agreed then: the Instagram button leaves the product view (it repeated the header's), and the Consultar WhatsApp message adds the type and the product link.
+  - Later, optional: a link preview per product (one small static page per product with its cover as the preview image); today a pasted link shows the site's general preview.
 - **First report** after 2–4 weeks of data: products ranked by views and by WhatsApp clicks, and searches with no results.
 
 ## Backlog
