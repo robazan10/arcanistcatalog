@@ -1,6 +1,7 @@
 'use client';
 
 import { HOME_PATH, LANGS, getDictionary, type Lang } from '@/i18n/dictionaries';
+import { track } from '@/lib/analytics';
 
 // ES | EN pill. Keeps the current search (?q=...) when switching.
 export default function LanguageSwitch({ lang }: { lang: Lang }) {
@@ -19,6 +20,7 @@ export default function LanguageSwitch({ lang }: { lang: Lang }) {
           lang={code}
           aria-current={code === lang ? 'true' : undefined}
           onClick={e => {
+            if (code !== lang) track('language_switch', { to: code });
             e.currentTarget.href = HOME_PATH[code] + window.location.search;
           }}
           className={`rounded-full px-2.5 py-1 text-xs font-extrabold transition-colors duration-150 ${

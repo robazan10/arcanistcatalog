@@ -6,6 +6,7 @@ import type { ProductSummary } from '@/lib/types';
 import { whatsappLink } from '@/lib/config';
 import type { Dictionary, Lang } from '@/i18n/dictionaries';
 import { productLink, shareLink } from '@/lib/share';
+import { track } from '@/lib/analytics';
 import { GRID_WIDTH, ROW_WIDTH, VIEWER_WIDTH, productDataUrl, sizedImage } from '@/lib/images';
 import { ArrowIcon, CheckIcon, GridIcon, ShareIcon, WhatsAppMark } from './icons';
 
@@ -136,8 +137,11 @@ export default function ProductModal({ product, onClose, onTagClick, onCopied, t
   const link = productLink(product.id, lang);
   const whatsappUrl = whatsappLink(t.whatsappProductMessage(product.name, product.type ? t.typeSingular[product.type] ?? '' : '', link));
 
+  const trackWhatsApp = () => track('whatsapp_click', { product: product.id, type: product.type ?? '', lang });
+
   const share = async () => {
     const result = await shareLink(link, `${product.name} · Arcanist's Dice`);
+    track('share', { target: product.id, method: result });
     if (result === 'copied' || result === 'failed') onCopied(link, result === 'copied');
     if (result === 'copied') {
       setCopied(true);
@@ -228,7 +232,7 @@ export default function ProductModal({ product, onClose, onTagClick, onCopied, t
               ))}
             </div>
             <div className="md:hidden px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] border-t-1.5 border-brand-line">
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn-main py-3">
+              <a href={whatsappUrl} onClick={trackWhatsApp} target="_blank" rel="noopener noreferrer" className="btn-main py-3">
                 <WhatsAppMark />
                 {t.askProduct}
               </a>
@@ -284,7 +288,10 @@ export default function ProductModal({ product, onClose, onTagClick, onCopied, t
                       )}
                       <button
                         ref={photosRef}
-                        onClick={() => setShowGrid(true)}
+                        onClick={() => {
+                          track('photos', { product: product.id, photos: total });
+                          setShowGrid(true);
+                        }}
                         aria-label={t.seeAllPhotos(total)}
                         className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 rounded-full border-1.5 border-brand-mint bg-brand-deep/85 px-2.5 py-1 text-xs font-extrabold text-brand-mint transition-colors duration-150 hover:bg-brand-deep"
                       >
@@ -374,7 +381,7 @@ export default function ProductModal({ product, onClose, onTagClick, onCopied, t
               </div>
 
               <div className="mt-auto flex flex-col gap-2.5 px-4 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:p-5">
-                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn-main py-3">
+                <a href={whatsappUrl} onClick={trackWhatsApp} target="_blank" rel="noopener noreferrer" className="btn-main py-3">
                   <WhatsAppMark />
                   {t.askProduct}
                 </a>

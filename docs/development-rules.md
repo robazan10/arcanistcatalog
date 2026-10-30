@@ -18,6 +18,7 @@ Every PR updates, in the same change:
 - [`architecture.md`](architecture.md): any structural change (routes, modules, data flow, state).
 - The setup steps below: any environment change.
 - [`ui.md`](ui.md): any screen or component change.
+- [`analytics.md`](analytics.md): any event added, removed or changed (call `track()` from `src/lib/analytics.ts`, never Umami directly).
 - [`../CLAUDE.md`](../CLAUDE.md): anything that became wrong, and new key facts.
 
 Every PR description has a **"Docs updated:"** line listing the docs changed, or saying why none were needed. Commit messages don't repeat it.

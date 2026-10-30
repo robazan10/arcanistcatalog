@@ -9,6 +9,7 @@ import { CheckIcon, GridIcon, ListIcon, SearchIcon, ShareIcon } from './icons';
 import { normalize, readQueryFromUrl, writeQueryToUrl } from '@/lib/search';
 import { writeTypeToUrl } from '@/lib/productType';
 import { currentViewLink, readProductFromUrl, shareLink, writeProductToUrl } from '@/lib/share';
+import { track } from '@/lib/analytics';
 import { useSelectedType } from '@/lib/useSelectedType';
 import { getDictionary, typeName, type Lang } from '@/i18n/dictionaries';
 import SectionSoon from './SectionSoon';
@@ -55,6 +56,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
   }, []);
 
   const changeView = (next: View) => {
+    if (next !== view) track('view_toggle', { view: next });
     setView(next);
     try {
       localStorage.setItem(VIEW_KEY, next);
@@ -100,6 +102,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
   const shareSearch = async () => {
     const url = currentViewLink();
     const result = await shareLink(url, "Arcanist's Dice");
+    track('share', { target: 'search', method: result });
     if (result === 'copied' || result === 'failed') showCopied(url, result === 'copied');
     if (result === 'copied') {
       setSearchCopied(true);
@@ -114,6 +117,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
 
   // Tapping a tag in the product view searches the whole catalog for it, leaving the selected type
   const searchTag = (tag: string) => {
+    track('tag_click', { tag, product: selectedProduct?.id ?? '' });
     closeProduct();
     setActiveCategory('todos');
     if (activeType) writeTypeToUrl('', tag);
@@ -155,6 +159,30 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
       })
       .map(({ product }) => product);
   }, [typeProducts, search, activeCategory, categories]);
+
+  // Analytics (docs/analytics.md): each opened product, and a search once typing stops for a second
+  useEffect(() => {
+    if (!selectedProduct) return;
+    track('product_view', {
+      id: selectedProduct.id,
+      type: selectedProduct.type ?? '',
+      brand: selectedProduct.brand,
+      lang,
+    });
+  }, [selectedProduct, lang]);
+
+  const typedRef = useRef(false);
+  const resultCount = useRef(0);
+  resultCount.current = filteredProducts.length;
+  useEffect(() => {
+    const query = search.trim();
+    if (!typedRef.current || query.length < 2) return;
+    const timer = setTimeout(() => {
+      track('search', { query, results: resultCount.current, type: activeType?.id ?? 'all' });
+      typedRef.current = false;
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [search, activeType]);
 
   const isFiltering = search || activeCategory !== 'todos';
   // A menu type with no products yet (Dice) shows a notice instead of search and results
@@ -211,7 +239,10 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
               type="search"
               placeholder={activeType ? t.searchIn(activeTypeName) : t.searchPlaceholder}
               value={search}
-              onChange={e => updateSearch(e.target.value)}
+              onChange={e => {
+                typedRef.current = true;
+                updateSearch(e.target.value);
+              }}
               className="w-full bg-transparent py-3 text-[16px] text-white placeholder-brand-lavender/70 focus:outline-none focus-visible:outline-none"
             />
           </label>
@@ -223,7 +254,10 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
         <SectionSoon
           type={activeType.id}
           others={types.filter(type => type.count > 0)}
-          onChoose={type => writeTypeToUrl(type)}
+          onChoose={type => {
+            track('type_click', { type, from: 'soon' });
+            writeTypeToUrl(type);
+          }}
           t={t}
         />
       ) : (
@@ -237,7 +271,10 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
                   {t.allTypes} <span className="font-extrabold opacity-70 ml-0.5">{products.length}</span>
                 </button>
                 {types.map(type => (
-                  <button key={type.id} onClick={() => writeTypeToUrl(type.id)} aria-pressed="false" className={chipClass(false)}>
+                  <button key={type.id} onClick={() => {
+                      track('type_click', { type: type.id, from: 'chips' });
+                      writeTypeToUrl(type.id);
+                    }} aria-pressed="false" className={chipClass(false)}>
                     {typeName(t, type.id, type.name)}{' '}
                     {type.count > 0 ? (
                       <span className="font-extrabold opacity-70 ml-0.5">{type.count}</span>
@@ -259,7 +296,10 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
                 {typeChips.map(cat => (
                   <button
                     key={cat.id}
-                    onClick={() => setActiveCategory(cat.id)}
+                    onClick={() => {
+                      track('brand_click', { brand: cat.name, type: activeType?.id ?? 'all' });
+                      setActiveCategory(cat.id);
+                    }}
                     aria-pressed={activeCategory === cat.id}
                     className={chipClass(activeCategory === cat.id)}
                   >

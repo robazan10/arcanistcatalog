@@ -4,16 +4,16 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 
 ## Next up / how to resume (2026-10-24)
 
-- **State:** `main` has everything through PR #23 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos), the product view's thumbnail row and photo grid, and the design review (compact top with the logo, type chips, badges). Work in progress: `feat/share` (the sharing half of phase 6: `?p=` product links, Compartir in the product view instead of Instagram, a Compartir button for the search, "Enlace copiado" message, the Consultar WhatsApp message with type and link; boards Share 1–5 in the design review; built and checked at 390px in both languages).
+- **State:** `main` has everything through PR #24 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos), the product view's thumbnail row and photo grid, the design review (compact top with the logo, type chips, badges) and sharing (`?p=` product links, Compartir, the Consultar message with the link). Work in progress: `feat/analytics` (the analytics half of phase 6: Umami on the live domain, the 12 agreed events; the list and setup are in [`analytics.md`](analytics.md); events checked in a local build).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** the owner merges the `feat/share` PR, then try sharing on a real phone (iPhone and Android share menus) and a product link in WhatsApp. Then the analytics half of phase 6 (below): it needs the owner's Umami Cloud account. In parallel, the owner picks a `Cover` per product in Drive following the cover guide, then a script run. A real run takes 12–14 minutes (it confirms sharing on every photo).
+- **Next step:** the owner merges the `feat/analytics` PR; then check in the Umami dashboard that page views and events arrive from the live site, and try Compartir on a real phone. The first report comes after 2–4 weeks of data. In parallel, the owner picks a `Cover` per product in Drive following the cover guide, then a script run. A real run takes 12–14 minutes (it confirms sharing on every photo).
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
   2. Keycap photos for the other 56 series, and a `Cover` for every series (the 11 with photos have none yet, so each shows its first photo by file name); anything for `03 Dice/` and `04 Others/`.
   3. `meta.txt` for the myAnimate folders (Claude Code can draft them for review), covers, and figure photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)).
 - **Then, in order:**
-  1. Phase 6, usage analytics (scope below): sharing is built on `feat/share`; analytics waits on the Umami account.
+  1. Phase 6: sharing is live (#24); analytics is built on `feat/analytics`. Then the first report.
 - **Decisions waiting on the owner:**
   - Phase 6: create the Umami Cloud account and share the site ID (not a secret).
   - Chinese Rocks in the git history: buy a Typodermic web license or rewrite the history (see the backlog).
@@ -30,7 +30,7 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | 5 · Spanish and English | `/` Spanish, `/en/` English, ES \| EN switch, all texts in one dictionary | Done (#9). Done before phase 4 at the owner's request |
 | Compact top on phones | Logo 64px beside the title on phones; big logo kept on desktop | Done (#11) |
 | 4 · Side menu by type | Menu button and side panel by type, title per type, Dados "Próximamente", `?type=` | Done (#20) |
-| 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Sharing built on `feat/share`; analytics waiting on the Umami account |
+| 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Sharing done (#24); analytics built on `feat/analytics` |
 
 ## Pull requests
 
@@ -59,7 +59,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#21](https://github.com/robazan10/arcanistcatalog/pull/21) | 2026-10-24 | Catalog regenerated: first photos for 11 keycap series |
 | [#22](https://github.com/robazan10/arcanistcatalog/pull/22) | 2026-10-24 | Product view: thumbnail row with every photo and a grid of all the photos |
 | [#23](https://github.com/robazan10/arcanistcatalog/pull/23) | 2026-10-25 | Design review: compact top with the logo, type chips on "Todo", badges by type or brand, header and subtitle copy, WhatsApp pill on desktop |
-| `feat/share` | open | Sharing: `?p=` product links, Compartir (product and search), "Enlace copiado", Consultar message with type and link; Instagram button out of the product view |
+| [#24](https://github.com/robazan10/arcanistcatalog/pull/24) | 2026-10-28 | Sharing: `?p=` product links, Compartir (product and search), "Enlace copiado", Consultar message with type and link; Instagram button out of the product view |
+| `feat/analytics` | open | Usage analytics with Umami: script on the live domain only, 12 events; `docs/analytics.md` |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -81,9 +82,9 @@ Agreed on 2026-10-09 and 2026-10-10; Drive structure and type names agreed on 20
 
 Agreed on 2026-10-15; to start after phase 4. Goal: data to evaluate which products are viewed and asked about most.
 
-- **Tool: Umami Cloud.** The owner creates the account and shares the site ID (not a secret). Before building, check the current free-plan limits and data retention; export the data periodically if retention is short.
+- **Tool: Umami Cloud.** The owner creates the account and shares the site ID (not a secret). Before building, check the current free-plan limits and data retention; export the data periodically if retention is short. Done on 2026-10-29: site ID and limits (100,000 events a month, 6 months of data) in [`analytics.md`](analytics.md).
 - **Code:** one `track(event, data)` function in `src/lib/analytics.ts`, so the tool can be swapped without touching components. The Umami script loads only on the live site (not in local builds or Vercel previews).
-- **Events:**
+- **Events** (the original list; the built list, with the type, brand and share events added, is in [`analytics.md`](analytics.md)):
 
   | Event | Data | Answers |
   |---|---|---|

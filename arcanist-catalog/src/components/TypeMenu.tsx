@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { MenuType } from '@/lib/types';
 import { writeTypeToUrl } from '@/lib/productType';
+import { track } from '@/lib/analytics';
 import { useSelectedType } from '@/lib/useSelectedType';
 import { getDictionary, typeName, type Lang } from '@/i18n/dictionaries';
 import { DieIcon, FigureIcon, GridIcon, KeycapIcon, MenuIcon } from './icons';
@@ -64,6 +65,7 @@ export default function TypeMenu({ types, total, lang }: Props) {
   }, [open]);
 
   const choose = (type: string) => {
+    track('type_click', { type: type || 'all', from: 'menu' });
     writeTypeToUrl(type);
     setOpen(false);
     window.scrollTo({ top: 0 });
