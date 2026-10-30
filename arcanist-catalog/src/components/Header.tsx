@@ -1,6 +1,6 @@
-import { SITE, SOCIAL } from '@/lib/config';
+import { SITE } from '@/lib/config';
 import { getDictionary, type Lang } from '@/i18n/dictionaries';
-import { InstagramIcon } from './icons';
+import InstagramButton from './InstagramButton';
 import LanguageSwitch from './LanguageSwitch';
 import TypeMenu from './TypeMenu';
 import { getAllProducts, getMenuTypes } from '@/lib/catalog';
@@ -22,15 +22,7 @@ export default function Header({ lang }: { lang: Lang }) {
         </div>
         <div className="ml-auto flex items-center gap-2">
           <LanguageSwitch lang={lang} />
-          <a
-            href={SOCIAL.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t.instagramFollow}
-            className="grid place-items-center w-11 h-11 flex-shrink-0 rounded-card border-1.5 border-brand-line bg-white/[0.07] text-brand-lavender transition-colors duration-150 hover:border-brand-mint hover:text-white"
-          >
-            <InstagramIcon className="w-[18px] h-[18px]" />
-          </a>
+          <InstagramButton label={t.instagramFollow} />
         </div>
       </div>
     </header>

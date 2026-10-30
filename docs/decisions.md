@@ -244,3 +244,15 @@ The owner asked for a review of the live site; the agreed changes are on a claud
 **Not done:** a link preview per product. A pasted link shows the site's general preview; per-product previews need one small static page per product (a possible follow-up).
 
 **The "Enlace copiado" message sits at the top of the screen,** not at the bottom as drawn on the desktop board: at the bottom it covered the product view's WhatsApp button on phones.
+
+## 2026-10-29 · Usage analytics (second half of phase 6)
+
+**Umami Cloud, free plan, counting only on `www.arcanistsdice.com`** (`data-domains`), so previews, local builds and Claude Code's checks never use the 100,000 monthly events. Site ID, limits and the list of events: [`analytics.md`](analytics.md), which the owner asked to keep as the reference and update whenever tracking changes.
+
+**Page views are sent once per page load, with auto-tracking off.**
+- Why: the site rewrites the address on every search, type and opened product (`?q=`, `?type=`, `?p=`); Umami would count each one as a page view. The first view keeps the full address, so `utm_source` and shared links still show.
+- Alternative: Umami's option to drop the query string (it would also drop `utm_source`).
+
+**12 events,** the 2026-10-15 list plus `type_click`, `brand_click`, `share` and `photos` (built after it). `category_click` became `type_click` and `brand_click`; `photo_swipe` became `photos` (opening the photo grid). Searches count once typing stops for a second, with at least 2 letters, so each keystroke isn't an event.
+
+**Every event goes through `track()` in `src/lib/analytics.ts`;** it does nothing when the script isn't loaded, and never throws.

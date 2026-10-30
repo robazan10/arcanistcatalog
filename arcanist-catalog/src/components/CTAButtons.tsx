@@ -2,6 +2,7 @@
 
 import { whatsappLink } from '@/lib/config';
 import { useSelectedType } from '@/lib/useSelectedType';
+import { track } from '@/lib/analytics';
 import { getDictionary, type Lang } from '@/i18n/dictionaries';
 import { WhatsAppMark } from './icons';
 
@@ -13,6 +14,7 @@ export default function CTAButtons({ lang }: { lang: Lang }) {
     <div className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 sm:left-auto sm:right-6 sm:bottom-6">
       <a
         href={whatsappLink(t.whatsappTypeMessages[type] ?? t.whatsappMessage)}
+        onClick={() => track('whatsapp_click', { product: 'general', type: type || 'all', lang })}
         target="_blank"
         aria-label={t.whatsappCta}
         rel="noopener noreferrer"
