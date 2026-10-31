@@ -1,0 +1,312 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Maqueta: fotos completas</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Staatliches&display=swap" rel="stylesheet"><style>
+  :root {
+    --indigo:#2E3192; --deep:#1F2170; --violet:#A57FFF; --lavender:#D7CEEA;
+    --mint:#3FFFB1; --line:#5357C2; --field:#25277C; --panel:rgba(255,255,255,.07);
+    --grad:linear-gradient(90deg,#3FFFB1,#A57FFF);
+  }
+  * { box-sizing:border-box; margin:0; }
+  body { font-family:Nunito,system-ui,sans-serif; background:#15164f; color:#fff; padding:32px 16px; }
+  h1.page { font-family:Staatliches; font-weight:400; letter-spacing:.04em; text-align:center; font-size:30px; }
+  .intro { max-width:860px; margin:8px auto 28px; text-align:center; color:var(--lavender); font-size:14px; line-height:1.5; }
+  h2.sec { font-family:Staatliches; font-weight:400; letter-spacing:.04em; text-align:center; font-size:26px; margin:48px 0 6px; }
+  .secintro { max-width:860px; margin:0 auto 24px; text-align:center; color:var(--lavender); font-size:14px; line-height:1.5; }
+  .board { display:flex; gap:36px; flex-wrap:wrap; justify-content:center; align-items:flex-start; }
+  .col { width:410px; max-width:100%; }
+  .label { font-family:Staatliches; letter-spacing:.06em; color:var(--lavender); font-size:18px; margin-bottom:10px; text-align:center; }
+  .label.new { color:var(--mint); }
+  .phone { width:410px; max-width:100%; height:864px; border-radius:44px; border:10px solid #0b0c2c; overflow:hidden; position:relative;
+           background:radial-gradient(ellipse at top,#3a3db0 0%,#2E3192 40%,#1F2170 100%); }
+  .gtext { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* Page behind the sheet */
+  .behind { position:absolute; inset:0; padding:70px 16px; opacity:.5; }
+  .behind .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .behind .row div { aspect-ratio:1; border-radius:12px; background:var(--field); border:1.5px solid var(--line); }
+  .shade { position:absolute; inset:0; background:rgba(15,16,60,.6); }
+
+  /* Product view (bottom sheet) */
+  .sheet { position:absolute; left:0; right:0; bottom:0; top:44px; background:var(--field); border-top:1.5px solid var(--line);
+           border-radius:20px 20px 0 0; overflow:hidden; display:flex; flex-direction:column; }
+  .sheet .scroll { overflow:hidden; flex:1; }
+  .hero { position:relative; background:var(--deep); }
+  .hero img { width:100%; height:100%; display:block; }
+  .fit-cover img { object-fit:cover; }
+  .fit-contain img { object-fit:contain; }
+  .r-square { aspect-ratio:1; } .r-45 { aspect-ratio:4/5; } .r-32 { aspect-ratio:3/2; }
+  .x { position:absolute; top:10px; right:10px; width:36px; height:36px; border-radius:12px; border:1.5px solid var(--line);
+       background:rgba(31,33,112,.8); display:grid; place-items:center; font-size:20px; }
+  .pill { position:absolute; right:10px; bottom:10px; display:flex; align-items:center; gap:6px; border-radius:99px; border:1.5px solid var(--mint);
+          background:rgba(31,33,112,.85); color:var(--mint); font-size:12px; font-weight:800; padding:4px 10px; }
+  .strip { display:flex; gap:6px; padding:8px 16px 0; overflow:hidden; }
+  .strip div { flex:none; width:58px; height:58px; border-radius:10px; overflow:hidden; border:2px solid transparent; opacity:.6; }
+  .strip div.on { border-color:var(--mint); opacity:1; }
+  .strip img { width:100%; height:100%; object-fit:cover; display:block; }
+  .info { padding:14px 16px 0; }
+  .info h2 { font-family:Staatliches; font-weight:400; font-size:32px; line-height:1; letter-spacing:.02em; }
+  .badge { display:inline-block; margin-top:8px; font-size:11px; font-weight:700; border-radius:999px; padding:2px 8px;
+           background:rgba(165,127,255,.25); color:#CDB8FF; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .tags span { font-size:12px; color:var(--lavender); border:1.5px solid var(--line); border-radius:99px; padding:1px 8px; }
+  .tags .more { color:var(--mint); border-color:var(--mint); font-weight:700; }
+  .actions { padding:14px 16px 20px; display:flex; flex-direction:column; gap:10px; background:var(--field); border-top:1.5px solid rgba(83,87,194,.5); }
+  .btn { display:flex; align-items:center; justify-content:center; gap:8px; border-radius:12px; padding:12px; font-weight:800; font-size:15px; }
+  .btn.main { background:var(--grad); color:var(--indigo); }
+  .btn.sec { background:var(--panel); border:1.5px solid var(--line); font-weight:700; }
+
+  /* Cut marks: what today's square hides */
+  .cut { position:absolute; pointer-events:none; background:repeating-linear-gradient(45deg,rgba(255,122,154,.55) 0 6px,rgba(255,122,154,.2) 6px 12px); }
+  .cutlabel { position:absolute; left:50%; transform:translateX(-50%); font-size:11px; font-weight:800; color:#fff; background:#c2365a; border-radius:99px; padding:2px 8px; white-space:nowrap; }
+
+  /* "All photos" grid */
+  .roll { position:absolute; inset:0; background:var(--deep); display:flex; flex-direction:column; }
+  .rollbar { display:flex; align-items:center; gap:10px; padding:14px 16px; border-bottom:1.5px solid var(--line); background:rgba(31,33,112,.95); }
+  .rollbar .t p { font-family:Staatliches; font-size:22px; line-height:1; letter-spacing:.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rollbar .t small { color:var(--lavender); font-size:12px; }
+  .rollbar .x { position:static; margin-left:auto; flex:none; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; padding:3px; overflow:hidden; align-content:start; }
+  .grid3 div { position:relative; background:var(--field); overflow:hidden; }
+  .grid3 img { width:100%; height:100%; display:block; }
+  .grid3 .on::after { content:""; position:absolute; inset:0; border:3px solid var(--mint); }
+  .rollfoot { margin-top:auto; padding:12px 16px 20px; background:rgba(31,33,112,.95); border-top:1.5px solid var(--line); }
+
+  /* Catalog cards */
+  .page2 { position:absolute; inset:0; padding:16px; }
+  .cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+  .card { border-radius:12px; border:1.5px solid var(--line); overflow:hidden; background:rgba(255,255,255,.07); }
+  .card .ph { position:relative; aspect-ratio:1; background:var(--field); }
+  .card img { width:100%; height:100%; object-fit:cover; display:block; }
+  .card p { font-weight:800; font-size:14px; padding:8px 10px 2px; line-height:1.2; }
+  .card small { display:block; padding:0 10px 10px; color:var(--lavender); font-size:12px; }
+
+  /* Desktop */
+  .desk { width:1000px; max-width:100%; height:640px; border-radius:14px; border:10px solid #0b0c2c; overflow:hidden; position:relative;
+          background:radial-gradient(ellipse at top,#3a3db0 0%,#2E3192 40%,#1F2170 100%); }
+  .desk .bar { height:30px; background:#0b0c2c; color:var(--lavender); font-size:12px; display:flex; align-items:center; justify-content:center; }
+  .desk .behind { padding:50px 40px; }
+  .desk .behind .row { grid-template-columns:repeat(5,1fr); }
+  .win { position:absolute; left:50%; top:62px; transform:translateX(-50%); width:880px; height:540px; background:var(--field);
+         border:1.5px solid var(--line); border-radius:20px; overflow:hidden; display:flex; }
+  .win .media { width:60%; display:flex; flex-direction:column; background:var(--deep); }
+  .win .big { position:relative; flex:1; min-height:0; }
+  .win .big img { width:100%; height:100%; display:block; }
+  .win .strip { padding:8px 10px; }
+  .win .side { width:40%; display:flex; flex-direction:column; }
+  .win .side .info { padding:20px; }
+  .win .side .actions { margin-top:auto; padding:20px; border-top:0; }
+  .arrow { position:absolute; top:50%; transform:translateY(-50%); width:38px; height:38px; border-radius:99px; border:1.5px solid var(--line);
+           background:rgba(31,33,112,.8); display:grid; place-items:center; }
+
+  .notes { margin-top:14px; font-size:14px; line-height:1.5; color:var(--lavender); }
+  .notes li { margin:0 0 6px 18px; }
+  .notes b { color:#fff; }
+  .pros { color:var(--mint); } .cons { color:#FF7A9A; }
+  .summary { max-width:860px; margin:48px auto 0; padding:18px 20px; border:1.5px solid var(--line); border-radius:12px; background:var(--panel);
+             color:var(--lavender); font-size:14px; line-height:1.55; }
+  .summary h2 { font-family:Staatliches; font-weight:400; letter-spacing:.04em; color:#fff; font-size:22px; margin-bottom:6px; }
+  .summary li { margin:0 0 6px 18px; } .summary b { color:#fff; }
+</style></head><body>
+
+<h1 class="page gtext">Maqueta · fotos completas en la vista de producto</h1>
+<p class="intro">Hoy la vista de producto mete cada foto en un <b>cuadrado y la recorta</b> para llenarlo. Ninguna foto es cuadrada: las de figuras son 4:5 o 2:3 (altas) y las hojas de tamaño y las de keycaps son anchas, así que se pierden medidas y bordes. Propuesta: <b>(1)</b> mostrar siempre la foto completa, <b>(2)</b> marco con la forma de cada tipo (figuras 4:5, keycaps 3:2), <b>(3)</b> la cuadrícula "todas las fotos" también completa, <b>(4)</b> tarjetas del catálogo sin cambio. Fotos reales de Drive. Teléfono a 390px. Las franjas rosadas en "Hoy" marcan lo que el cuadrado corta.</p>
+
+<h2 class="sec gtext">1 + 2 · Figura, foto 4:5 (la mayoría)</h2>
+<p class="secintro">Zagreus · "Scaling": las medidas de largo y ancho están abajo y el título "SCALE" arriba.</p>
+<div class="board">
+  <div class="col">
+    <div class="label">Hoy · cuadrado recortado</div>
+    <div class="phone" data-panel="zagToday"></div>
+    <ul class="notes"><li class="cons">Se corta el 20% de la altura: "SCALE" arriba y "Length 208mm" / "Width 203mm" abajo.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label new">Propuesta · marco 4:5, foto completa</div>
+    <div class="phone" data-panel="zagNew"></div>
+    <ul class="notes">
+      <li>El marco de las figuras pasa a <b>4:5</b>: estas fotos lo llenan justo, <b>sin bordes</b> y sin cortes.</li>
+      <li class="cons">La foto mide ~490px de alto en vez de 390px: el nombre y las etiquetas bajan ~100px. Los botones siguen fijos abajo.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">1 + 2 · Figura, hoja de tamaño ancha</h2>
+<p class="secintro">Zoey · "Scaleparts": la hoja con escala, piezas y medidas, más ancha que alta.</p>
+<div class="board">
+  <div class="col">
+    <div class="label">Hoy · cuadrado recortado</div>
+    <div class="phone" data-panel="zoeScaleToday"></div>
+    <ul class="notes"><li class="cons">Se corta el 29% del ancho: "SCALE" a la izquierda y media columna de "PARTS" a la derecha.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label new">Propuesta · marco 4:5, foto completa</div>
+    <div class="phone" data-panel="zoeScaleNew"></div>
+    <ul class="notes">
+      <li>La hoja se ve <b>entera</b>, centrada, con fondo azul oscuro arriba y abajo.</li>
+      <li class="cons">Queda pequeña para leer las medidas en el teléfono. Para eso sirve el zoom a pantalla completa (idea aparte, abajo).</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">1 + 2 · Figura, foto 2:3 (Beautyshot)</h2>
+<p class="secintro">Zoey · "Beautyshot_01": la foto principal de muchas figuras NomNom, más alta que 4:5.</p>
+<div class="board">
+  <div class="col">
+    <div class="label">Hoy · cuadrado recortado</div>
+    <div class="phone" data-panel="zoeBeautyToday"></div>
+    <ul class="notes"><li class="cons">Se corta el 32% de la altura: cabeza y base de la figura.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label new">Propuesta · marco 4:5, foto completa</div>
+    <div class="phone" data-panel="zoeBeautyNew"></div>
+    <ul class="notes"><li>Figura completa, con <b>franjas finas</b> a los lados.</li></ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">1 + 2 · Keycaps, foto 3:2</h2>
+<p class="secintro">Hiko · KPop Demon Hunters: las fotos de keycaps son anchas.</p>
+<div class="board">
+  <div class="col">
+    <div class="label">Hoy · cuadrado recortado</div>
+    <div class="phone" data-panel="keyToday"></div>
+    <ul class="notes"><li class="cons">Se corta el 33% del ancho: teclas de los extremos.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label new">Propuesta · marco 3:2, foto completa</div>
+    <div class="phone" data-panel="keyNew"></div>
+    <ul class="notes">
+      <li>El marco de las keycaps pasa a <b>3:2</b>: la foto lo llena justo y se ve el juego completo.</li>
+      <li class="pros">La foto es más baja (~260px): el nombre, las etiquetas y los botones suben.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">3 · Cuadrícula "todas las fotos"</h2>
+<p class="secintro">El botón "▦ 13 fotos" abre la cuadrícula. Hoy cada casilla es cuadrada y recortada; la propuesta usa la forma del tipo y muestra cada foto completa.</p>
+<div class="board">
+  <div class="col">
+    <div class="label">Hoy · casillas cuadradas</div>
+    <div class="phone" data-panel="gridToday"></div>
+    <ul class="notes"><li class="cons">La hoja de tamaño (fila 3) y las Beautyshot pierden los bordes.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label new">Propuesta · casillas 4:5, foto completa</div>
+    <div class="phone" data-panel="gridNew"></div>
+    <ul class="notes">
+      <li>Casillas <b>4:5</b> en figuras (3:2 en keycaps), cada foto completa: la hoja de tamaño se reconoce de un vistazo.</li>
+      <li>Caben 4 filas en vez de 5 sin desplazar; el resto con scroll, como hoy.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">4 · Tarjetas del catálogo y tira de miniaturas: sin cambio</h2>
+<p class="secintro">Las tarjetas, las filas de la vista de lista y la tira de miniaturas bajo la foto siguen cuadradas y recortadas: son vistas previas pequeñas, y una cuadrícula con formas mezcladas se ve desordenada. Al abrir el producto se ve la foto completa.</p>
+<div class="board">
+  <div class="col">
+    <div class="label">Catálogo · igual que hoy</div>
+    <div class="phone" data-panel="cards"></div>
+    <ul class="notes">
+      <li>La tarjeta usa la portada (<code>Cover</code>). Si recorta mal, la solución es elegir una portada que funcione en cuadrado, no cambiar la tarjeta.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">Escritorio</h2>
+<p class="secintro">En escritorio la foto ocupa la columna izquierda de la ventana, que tiene un alto fijo. Ahí no cambia la forma del marco: solo se muestra la foto completa dentro de él (punto 1).</p>
+<div class="board">
+  <div>
+    <div class="label">Hoy · recortada</div>
+    <div class="desk" data-panel="deskToday"></div>
+  </div>
+  <div>
+    <div class="label new">Propuesta · foto completa</div>
+    <div class="desk" data-panel="deskNew"></div>
+    <ul class="notes" style="max-width:1000px">
+      <li>La foto entera, centrada, con fondo azul oscuro a los lados. Las flechas, la tira y el botón "▦ fotos" no cambian.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="summary">
+  <h2>Idea aparte (no incluida): zoom a pantalla completa</h2>
+  <ul>
+    <li>Tocar la foto grande la abriría a pantalla completa, con <b>pellizcar para ampliar</b>, para leer las medidas de las hojas de tamaño en el teléfono.</li>
+    <li>Es más trabajo; se puede hacer como segundo paso si se quiere.</li>
+  </ul>
+</div>
+
+<div class="summary">
+  <h2>Para aprobar</h2>
+  <ul>
+    <li><b>1.</b> Vista de producto: la foto siempre completa (sin recortar); el espacio que sobra queda en azul oscuro.</li>
+    <li><b>2.</b> Marco por tipo en el teléfono: <b>figuras 4:5</b>, <b>keycaps 3:2</b> (los demás tipos, cuadrado). En escritorio el marco sigue como hoy.</li>
+    <li><b>3.</b> Cuadrícula "todas las fotos": casillas con la forma del tipo y fotos completas.</li>
+    <li><b>4.</b> Tarjetas, filas de lista y tira de miniaturas: sin cambio.</li>
+  </ul>
+</div>
+
+<script>
+const G = id => `https://lh3.googleusercontent.com/d/${id}`;
+const img = (id, w) => `<img src="${G(id)}=w${w}" alt="">`;
+const ZAG = { scaling:"10dFVWFN4uuhJwnVsamwpNqqmUYI-GA96", ids:["1_rEWT-2E3b-GhOhFNPvKLDuJ9mIhLR55","10dFVWFN4uuhJwnVsamwpNqqmUYI-GA96","18XaWz8_JG0Aap-q72t35G9Oh7NivMPNN","1UNc7jBI5o9f7zutQCJzG1XvDmC6B2xuf","1CSgT1zLKwjJpwJjqWtQQYo5iIjh9BrgR","1Z2YFxvMaWd8Sy1VXbibnT_4BCjlAZc1U"] };
+const ZOE = ["15lsu2joYc3CzrnizfCmhPR6hFhWESNPE","1Z611VDa6FcX1g5GxA-wMOkiLQ57WgkhL","14m_8s9RAQX1OCeJ2yAbtBeDfEiHOwpxQ","1z41dhbFSgj99rWyaQotnuvNfnjavQNsY","1ghhlw1OfLDJyDpAPCSPz3GN_-bdPGLXT","1PErWOLfb5xrglRrrlLPix4zllM_K9xOU","1KGnaguJWIqQmv615zuLwFbjm1rHqo1h6","1oceQVoPrMxdpvtWKt6BH-fMUS7EKqTNN","11Lddv-unxcWiPhMJ9Onv17Iqzu1Pzram","11yaODpk19DwUg4xAVy0bhtEvte2CSKj9","1am2JYsrkZeg0TiL9NattnedRIzPqGEoo","1MOZKdKLxV2Jhn4_iiKFvAiWpXtunmbRQ","1kOsh-yd0ot-UBEZtD92uhFG-deH1wlmW"];
+const KEY = ["1368TqlWywu6qRhDpF-ywjoruRjFar51D","1lZJ-lQawImpl2kMWbhT2i1q904iWSJhr","1oNk6Jd-r5ctrJnaE8-TwzbNxmHFEzaZw","1VtSYhBQbVwRLcaXyVMBSBdVo48sfEVdV","1T5wBC9QdJjmZ2p2dc1vOJi2_JfOdjDDl","1K-N9__E8_iaFCZyWTTw5jnqF1O-pt1LK","1kVnZgJBWYM3LMotRCaUZ4nCNbHASdsq-","1RcIsr80nJDg4FCvC2DnpfbGpwKHk-GkY","1HuIUMJsz1SDhnpRZtbjEso605huS-ya3","1pR6rHL7_2wo06C8U0_cscshLQMJ7PhIQ","1fi1eaEu8W8weotqV0tqj99mjQi6UT_G2","15khGe0gOTwHBhbOSSmuAcT9zsxQPbWCQ","15eCatDwomILRixxS2KEov1zhhJl9eH8e"];
+
+const wa = '<svg width="17" height="17" viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg>';
+const gridIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>';
+const behind = '<div class="behind"><div class="row"><div></div><div></div><div></div><div></div></div></div><div class="shade"></div>';
+const waDot = `<span style="width:28px;height:28px;border-radius:99px;background:#2E3192;display:grid;place-items:center">${wa}</span>`;
+const actions = `<div class="actions"><div class="btn main">${waDot}Consultar este producto</div><div class="btn sec">↗ Compartir</div></div>`;
+const info = (name, badge, tags) => `<div class="info"><h2>${name}</h2><span class="badge">${badge}</span>
+  <div class="tags">${tags.map(t=>`<span>${t}</span>`).join('')}<span class="more">+8</span></div></div>`;
+const zagInfo = info('Zagreus - Hades', 'NomNom', ['hades','zagreus','videojuego','figura','dios']);
+const zoeInfo = info('Zoey - KPop Demon Hunters', 'NomNom', ['kpop demon hunters','zoey','huntrix','anime','figura']);
+const keyInfo = info('KPop Demon Hunters', 'Hiko', ['kpop demon hunters','huntrix','rumi','mira','zoey']);
+const strip = (ids, cur) => `<div class="strip">${ids.slice(0,6).map((id,i)=>`<div class="${i===cur?'on':''}">${img(id,200)}</div>`).join('')}</div>`;
+
+// Today's square with the cut areas marked; side = 'tb' (top/bottom) or 'lr' (left/right), pct = share of the photo hidden
+function cutMarks(side, pct) {
+  if (!pct) return '';
+  // Inside a square frame showing a cropped photo, the hidden part sits outside the frame; we mark the frame edges
+  // where the crop happens and say how much is lost.
+  const band = 18;
+  if (side === 'tb') return `<div class="cut" style="left:0;right:0;top:0;height:${band}px"></div><div class="cut" style="left:0;right:0;bottom:0;height:${band}px"></div>
+    <span class="cutlabel" style="top:24px">✂ se pierde ${pct}% arriba y abajo</span>`;
+  return `<div class="cut" style="top:0;bottom:0;left:0;width:${band}px"></div><div class="cut" style="top:0;bottom:0;right:0;width:${band}px"></div>
+    <span class="cutlabel" style="top:50px">✂ se pierde ${pct}% a los lados</span>`;
+}
+const pill = n => `<span class="pill">${gridIcon} ${n} fotos</span>`;
+const hero = (id, cls, extra='') => `<div class="hero ${cls}">${img(id,1000)}<span class="x">×</span>${extra}</div>`;
+const sheet = body => `${behind}<div class="sheet"><div class="scroll">${body}</div>${actions}</div>`;
+
+const panels = {
+  zagToday: sheet(hero(ZAG.scaling, 'r-square fit-cover', cutMarks('tb',20) + pill(6)) + strip(ZAG.ids,1) + zagInfo),
+  zagNew:   sheet(hero(ZAG.scaling, 'r-45 fit-contain', pill(6)) + strip(ZAG.ids,1) + zagInfo),
+  zoeScaleToday: sheet(hero(ZOE[8], 'r-square fit-cover', cutMarks('lr',29) + pill(13)) + strip(ZOE.slice(5),3) + zoeInfo),
+  zoeScaleNew:   sheet(hero(ZOE[8], 'r-45 fit-contain', pill(13)) + strip(ZOE.slice(5),3) + zoeInfo),
+  zoeBeautyToday: sheet(hero(ZOE[0], 'r-square fit-cover', cutMarks('tb',32) + pill(13)) + strip(ZOE,0) + zoeInfo),
+  zoeBeautyNew:   sheet(hero(ZOE[0], 'r-45 fit-contain', pill(13)) + strip(ZOE,0) + zoeInfo),
+  keyToday: sheet(hero(KEY[0], 'r-square fit-cover', cutMarks('lr',33) + pill(13)) + strip(KEY,0) + keyInfo),
+  keyNew:   sheet(hero(KEY[0], 'r-32 fit-contain', pill(13)) + strip(KEY,0) + keyInfo),
+};
+
+const roll = (ratio, fit) => `<div class="roll"><div class="rollbar"><div class="t"><p>Zoey - KPop Demon Hunters</p><small>13 fotos · toca una para verla en grande</small></div><span class="x">×</span></div>
+  <div class="grid3">${ZOE.map((id,i)=>`<div class="${i===0?'on':''}" style="aspect-ratio:${ratio}"><img src="${G(id)}=w300" alt="" style="object-fit:${fit}"></div>`).join('')}</div>
+  <div class="rollfoot"><div class="btn main">${waDot}Consultar este producto</div></div></div>`;
+panels.gridToday = roll('1', 'cover');
+panels.gridNew = roll('4/5', 'contain');
+
+const card = (id, name, sub) => `<div class="card"><div class="ph">${img(id,500)}</div><p>${name}</p><small>${sub}</small></div>`;
+panels.cards = `<div class="page2"><div style="font-family:Staatliches;font-size:28px">Figuras</div>
+  <div style="color:var(--lavender);font-size:13px">Figuras de anime, series y videojuegos, impresas en resina y pintadas a mano</div>
+  <div class="cards">${card(ZOE[0],'Zoey - KPop Demon Hunters','NomNom')}${card(ZAG.ids[3],'Zagreus - Hades','NomNom')}
+  ${card(ZOE[9],'Ejemplo con turntable','NomNom')}${card(ZOE[8],'Ejemplo con Scaleparts de portada','NomNom')}</div></div>`;
+
+const desk = fit => `<div class="bar">arcanistsdice.com/?p=nomnom-zagreus-hades</div>${behind}<div class="win">
+  <div class="media"><div class="big">${`<img src="${G(ZAG.scaling)}=w1000" alt="" style="object-fit:${fit}">`}<span class="arrow" style="left:12px">‹</span><span class="arrow" style="right:12px">›</span><span class="x">×</span>${pill(6)}</div>
+  <div class="strip" style="padding:8px 10px">${ZAG.ids.map((id,i)=>`<div class="${i===1?'on':''}">${img(id,200)}</div>`).join('')}</div></div>
+  <div class="side">${zagInfo}${actions}</div></div>`;
+panels.deskToday = desk('cover');
+panels.deskNew = desk('contain');
+
+for (const el of document.querySelectorAll('[data-panel]')) el.innerHTML = panels[el.dataset.panel];
+</script>
+</body></html>

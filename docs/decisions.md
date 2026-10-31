@@ -256,3 +256,15 @@ The owner asked for a review of the live site; the agreed changes are on a claud
 **12 events,** the 2026-10-15 list plus `type_click`, `brand_click`, `share` and `photos` (built after it). `category_click` became `type_click` and `brand_click`; `photo_swipe` became `photos` (opening the photo grid). Searches count once typing stops for a second, with at least 2 letters, so each keystroke isn't an event.
 
 **Every event goes through `track()` in `src/lib/analytics.ts`;** it does nothing when the script isn't loaded, and never throws.
+
+## 2026-10-30 · Whole photos in the product view
+
+**The product view shows every photo whole, inside a frame shaped for the product's type** (mockup: [`mockups/2026-10-30-full-photos.html`](mockups/2026-10-30-full-photos.html)). On phones figures get a 4:5 frame and keycaps 3:2; other types a square. On desktop the frame stays square beside the info. The photo grid uses the same frame shape. Cards, list rows and the thumbnail row stay square and cropped.
+- Why: the square frame cropped every photo to fill it, and none are square. Figure photos are 4:5 (Tanuki, most NomNom) or 2:3 (NomNom Beautyshot), keycap photos 3:2, and the NomNom size sheets ("Scaleparts") are wide; the crop cut 20–33% off and hid the measurements.
+- The frame shape is set per type in `arcanist-catalog/src/lib/photo-frames.json`, not measured from each photo: a fixed frame is known before the photo loads (no jump), and doesn't resize at every swipe when a product mixes shapes.
+- Alternatives: measure each photo in the browser on load (the layout jumps and the frame changes size at each swipe); store each photo's size in `catalog.json` from the script (no jump, but still a changing frame, for little gain); keep the square and only stop cropping (most figure photos would show smaller, with bands on the sides).
+- Cards stay cropped: they're small previews, and a grid of mixed shapes looks untidy. A card that crops badly is fixed by picking a better `Cover` in Drive.
+- The mockup is a plain HTML file with the real Drive photos rather than boards on the Design canvas, because the question was how those exact photos get cut. The owner chose it; the canvas stays as the record of the design review and share rounds.
+
+**The catalog script checks every photo's shape.** It reads each photo's size from Drive and lists in `docs/catalog-status.md` ("Photos that fill little of their frame") the ones that fill under 75% of their type's frame, with the share they fill. It reads the same `photo-frames.json` as the site.
+- Why: the owner asked for the size to be checked whenever new photos are added. Size sheets are expected there; a normal photo listed there may be worth cropping in Drive.
