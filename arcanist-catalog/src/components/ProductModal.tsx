@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react';
 import Image from 'next/image';
 import type { ProductSummary } from '@/lib/types';
 import { whatsappLink } from '@/lib/config';
 import type { Dictionary, Lang } from '@/i18n/dictionaries';
 import { productLink, shareLink } from '@/lib/share';
 import { track } from '@/lib/analytics';
-import { GRID_WIDTH, ROW_WIDTH, VIEWER_WIDTH, productDataUrl, sizedImage } from '@/lib/images';
+import { GRID_WIDTH, ROW_WIDTH, VIEWER_WIDTH, photoFrame, productDataUrl, sizedImage } from '@/lib/images';
 import { ArrowIcon, CheckIcon, GridIcon, ShareIcon, WhatsAppMark } from './icons';
 
 interface Props {
@@ -179,6 +179,8 @@ export default function ProductModal({ product, onClose, onTagClick, onCopied, t
           showGrid ? 'h-[92dvh] md:h-[min(600px,92dvh)] flex flex-col overflow-hidden' : 'overflow-y-auto'
         }`}
         onClick={e => e.stopPropagation()}
+        // Frame shape for the photos and the photo grid (figures 4/5, keycaps 3/2…); the whole photo shows inside it
+        style={{ '--photo-frame': photoFrame(product.type) } as CSSProperties}
       >
         <div className="h-[5px] w-10 rounded-full bg-brand-line mx-auto my-2 flex-shrink-0 md:hidden" aria-hidden="true" />
 
@@ -216,13 +218,13 @@ export default function ProductModal({ product, onClose, onTagClick, onCopied, t
                   key={url}
                   onClick={() => openPhoto(i)}
                   aria-label={t.imageOf(i + 1, total)}
-                  className="relative aspect-square bg-brand-deep"
+                  className="relative aspect-[var(--photo-frame)] bg-brand-deep"
                 >
                   <Image
                     src={sizedImage(url, GRID_WIDTH)}
                     alt=""
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     sizes="(max-width: 768px) 33vw, 150px"
                   />
                   {i === currentIndex && (
@@ -251,12 +253,13 @@ export default function ProductModal({ product, onClose, onTagClick, onCopied, t
                     className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-brand-deep"
                   >
                     {images.map((url, i) => (
-                      <div key={url} className="relative aspect-square w-full flex-none snap-center">
+                      // Phones: the type's frame shape; desktop keeps the square beside the details
+                      <div key={url} className="relative aspect-[var(--photo-frame)] md:aspect-square w-full flex-none snap-center">
                         <Image
                           src={sizedImage(url, VIEWER_WIDTH)}
                           alt={`${product.name} - ${t.imageOf(i + 1, total)}`}
                           fill
-                          className="object-cover"
+                          className="object-contain"
                           sizes="(max-width: 768px) 100vw, 60vw"
                           priority={i === 0}
                         />

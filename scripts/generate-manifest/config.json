@@ -3,5 +3,6 @@
   "serviceAccountKeyPath": "./service-account-key.json",
   "outputPath": "../../arcanist-catalog/src/data/catalog.json",
   "reportPath": "../../docs/catalog-status.md",
+  "photoFramesPath": "../../arcanist-catalog/src/lib/photo-frames.json",
   "setPublicPermissions": true
 }

@@ -9,6 +9,7 @@ Google Drive  My Drive/3D Arcanist/Images/<NN Type>/<Brand>/<Product>/   (meta.t
       │   scripts/generate-manifest  (run by hand, Drive API with a service account)
       │     · type from the 1st level (number = order), brand from the 2nd, product from the 3rd
       │     · reads meta.txt and lists photos; "cover" first, then name order
+      │     · checks each photo's shape against its type's frame (src/lib/photo-frames.json)
       │     · sets each photo to "anyone with the link can view" (not with --dry-run)
       ▼
 arcanist-catalog/src/data/catalog.json   +   docs/catalog-status.md
@@ -91,6 +92,8 @@ Server components render the page shell and pass plain data down. The client par
 | Product view | `=w1000` |
 | Product view: thumbnail row | `=w200` |
 | Product view: photo grid | `=w300` |
+
+The product view and its photo grid show each photo whole (`object-contain`) in a frame shaped per type: `arcanist-catalog/src/lib/photo-frames.json` (`"figures": "4/5"`, `"keycaps": "3/2"`; other types square), read by `photoFrame()` in `src/lib/images.ts` and set as the CSS variable `--photo-frame`. The catalog script reads the same file to list photos that fit their frame poorly in `catalog-status.md`. Cards, rows and thumbnails stay square and cropped (`object-cover`).
 
 `next/image` runs with `unoptimized: true` (static export), so resizing is entirely Google's. The grid lazy-loads; the product view shows the cover immediately, then the full list from `/data/products/<id>.json`.
 

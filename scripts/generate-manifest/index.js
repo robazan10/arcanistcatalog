@@ -12,6 +12,16 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif']);
 const FOLDER_MIME = 'application/vnd.google-apps.folder';
 
+// The site's photo frame per type ("4/5"), as width / height; other types are square
+const PHOTO_FRAMES = Object.fromEntries(
+  Object.entries(require(path.resolve(__dirname, config.photoFramesPath))).map(([type, shape]) => {
+    const [w, h] = shape.split('/').map(Number);
+    return [type, w / h];
+  })
+);
+// A photo that fills less than this share of its frame is listed in the report (big empty bands around it)
+const MIN_FRAME_FILL = 0.75;
+
 function slugify(str) {
   return str
     .toLowerCase()
@@ -31,7 +41,7 @@ async function listFolder(drive, folderId) {
   do {
     const res = await drive.files.list({
       q: `'${folderId}' in parents and trashed = false`,
-      fields: 'nextPageToken, files(id, name, mimeType)',
+      fields: 'nextPageToken, files(id, name, mimeType, imageMediaMetadata(width, height, rotation))',
       pageToken: pageToken || undefined,
       pageSize: 1000,
     });
@@ -124,6 +134,20 @@ async function processProductFolder(drive, folder, brandName, typeId) {
     console.warn(`    Warning: no "cover" image, using ${selectedImages[0].name}`);
   }
 
+  // The site shows the whole photo inside the type's frame; a much wider or taller photo leaves big bands around it
+  const frame = PHOTO_FRAMES[typeId] ?? 1;
+  const poorFit = [];
+  for (const img of selectedImages) {
+    const { width, height, rotation } = img.imageMediaMetadata || {};
+    if (!width || !height) continue;
+    const ratio = rotation % 2 ? height / width : width / height;
+    const fill = Math.min(ratio, frame) / Math.max(ratio, frame);
+    if (fill < MIN_FRAME_FILL) poorFit.push({ filename: img.name, fill });
+  }
+  if (poorFit.length) {
+    console.warn(`    Note: ${poorFit.length} photo(s) fill under ${MIN_FRAME_FILL * 100}% of the frame`);
+  }
+
   const images = [];
   for (const img of selectedImages) {
     if (config.setPublicPermissions !== false && !DRY_RUN) {
@@ -145,6 +169,8 @@ async function processProductFolder(drive, folder, brandName, typeId) {
     category: brandName,
     tags: meta.tags || [],
     images,
+    // For the report only; not written to catalog.json
+    poorFit,
   };
 }
 
@@ -238,7 +264,7 @@ async function main() {
 
   const manifest = {
     generatedAt: new Date().toISOString(),
-    products: products.map(({ typeName: _, ...p }) => p),
+    products: products.map(({ typeName: _, poorFit: __, ...p }) => p),
     types: types.map(({ id, name, order, productIds }) => ({
       id,
       name,
@@ -264,6 +290,7 @@ async function main() {
   );
   console.log(`Products:   ${products.length} (${withPhotos.length} with photos, ${products.length - withPhotos.length} without)`);
   console.log(`No cover:   ${withoutCover.length}`);
+  console.log(`Poor fit:   ${products.reduce((n, p) => n + p.poorFit.length, 0)} photo(s) (see the report)`);
   console.log(`Types:      ${types.map(t => `${t.name} (${t.productIds.length})`).join(', ')}`);
   console.log(`Categories: ${categoriesMap.size}`);
   console.log(`Tags:       ${tagsMap.size}`);

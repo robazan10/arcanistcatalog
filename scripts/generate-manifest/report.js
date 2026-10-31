@@ -33,6 +33,8 @@ function section(title, explanation, items, label) {
 function writeStatusReport({ generatedAt, products, skipped }, outputPath) {
   const withoutPhotos = products.filter(p => p.images.length === 0);
   const withoutCover = products.filter(p => p.images.length > 0 && !isCover(p.images[0].filename));
+  const poorFit = products.filter(p => p.poorFit.length > 0);
+  const poorFitPhotos = poorFit.reduce((n, p) => n + p.poorFit.length, 0);
 
   const report = [
     '# Catalog status',
@@ -44,6 +46,7 @@ function writeStatusReport({ generatedAt, products, skipped }, outputPath) {
       `| With photos | ${products.length - withoutPhotos.length} |`,
       `| Without photos ("Fotos pronto") | ${withoutPhotos.length} |`,
       `| With photos but no cover | ${withoutCover.length} |`,
+      `| Photos that fill little of their frame | ${poorFitPhotos} (in ${poorFit.length} products) |`,
       `| Folders skipped | ${skipped.length} |`,
     ].join('\n'),
     section(
@@ -57,6 +60,12 @@ function writeStatusReport({ generatedAt, products, skipped }, outputPath) {
       'Product folders with photos but no image named `cover` / `Cover`. The site uses the first photo by name, shown in parentheses.',
       withoutCover,
       p => `${p.name} (${p.images[0].filename})`
+    ),
+    section(
+      'Photos that fill little of their frame',
+      'The product view shows each photo whole inside a frame shaped for its type (`arcanist-catalog/src/lib/photo-frames.json`: figures 4:5, keycaps 3:2, others square). These photos are much wider or taller than that frame, so they show small with wide bands around them; the share of the frame they fill is in parentheses. Fine for a size or parts sheet; for a normal photo, consider cropping it in Drive.',
+      poorFit,
+      p => `${p.name}: ${p.poorFit.map(f => `${f.filename} (${Math.round(f.fill * 100)}%)`).join(', ')}`
     ),
     section(
       'Skipped folders',
