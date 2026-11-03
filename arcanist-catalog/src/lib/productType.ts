@@ -17,6 +17,7 @@ export function writeTypeToUrl(type: string, query = '') {
   else url.searchParams.delete(TYPE_PARAM);
   if (query) url.searchParams.set('q', query);
   else url.searchParams.delete('q');
+  url.searchParams.delete('new');
   if (url.href !== window.location.href) window.history.pushState(null, '', url);
   window.dispatchEvent(new Event(TYPE_EVENT));
 }

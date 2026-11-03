@@ -1,6 +1,7 @@
 const { getDriveClient } = require('./drive-client');
 const { parseMetaTxt } = require('./parser');
 const { writeStatusReport } = require('./report');
+const { readPreviousProducts, newSinceFor } = require('./new-products');
 const config = require('./config.json');
 const fs = require('fs');
 const os = require('os');
@@ -240,6 +241,15 @@ async function main() {
     else seen.set(p.id, `${p.brand}/${p.name}`);
   }
 
+  // Compared with the catalog in the repo, also on a dry run, so the list of new products can be reviewed first
+  const today = new Date().toLocaleDateString('en-CA');
+  const previousProducts = readPreviousProducts(path.resolve(__dirname, config.outputPath));
+  for (const p of products) {
+    const newSince = newSinceFor(p, previousProducts, today);
+    if (newSince) p.newSince = newSince;
+  }
+  const newThisRun = products.filter(p => p.newSince === today);
+
   // Category index
   const categoriesMap = new Map();
   for (const p of products) {
@@ -281,7 +291,7 @@ async function main() {
   fs.writeFileSync(outputPath, JSON.stringify(manifest, null, 2), 'utf8');
 
   const reportPath = DRY_RUN ? path.join(outDir, 'catalog-status.md') : path.resolve(__dirname, config.reportPath);
-  writeStatusReport({ generatedAt: manifest.generatedAt, products, skipped }, reportPath);
+  writeStatusReport({ generatedAt: manifest.generatedAt, products, skipped, newThisRun }, reportPath);
 
   console.log('\n=== Result ===');
   const withPhotos = products.filter(p => p.images.length > 0);
@@ -289,6 +299,7 @@ async function main() {
     p => path.parse(p.images[0].filename).name.toLowerCase() !== 'cover'
   );
   console.log(`Products:   ${products.length} (${withPhotos.length} with photos, ${products.length - withPhotos.length} without)`);
+  console.log(`New:        ${newThisRun.length}${newThisRun.length ? ` (${newThisRun.map(p => p.name).join(', ')})` : ''}`);
   console.log(`No cover:   ${withoutCover.length}`);
   console.log(`Poor fit:   ${products.reduce((n, p) => n + p.poorFit.length, 0)} photo(s) (see the report)`);
   console.log(`Types:      ${types.map(t => `${t.name} (${t.productIds.length})`).join(', ')}`);

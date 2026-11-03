@@ -1,0 +1,235 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Maqueta: etiqueta Nuevo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Staatliches&display=swap" rel="stylesheet"><style>
+  :root {
+    --indigo:#2E3192; --deep:#1F2170; --violet:#A57FFF; --lavender:#D7CEEA;
+    --mint:#3FFFB1; --line:#5357C2; --field:#25277C; --panel:rgba(255,255,255,.07);
+    --grad:linear-gradient(90deg,#3FFFB1,#A57FFF);
+  }
+  * { box-sizing:border-box; margin:0; }
+  body { font-family:Nunito,system-ui,sans-serif; background:#15164f; color:#fff; padding:32px 16px; }
+  h1.page { font-family:Staatliches; font-weight:400; letter-spacing:.04em; text-align:center; font-size:30px; }
+  .intro { max-width:860px; margin:8px auto 28px; text-align:center; color:var(--lavender); font-size:14px; line-height:1.5; }
+  h2.sec { font-family:Staatliches; font-weight:400; letter-spacing:.04em; text-align:center; font-size:26px; margin:48px 0 6px; }
+  .secintro { max-width:860px; margin:0 auto 24px; text-align:center; color:var(--lavender); font-size:14px; line-height:1.5; }
+  .board { display:flex; gap:36px; flex-wrap:wrap; justify-content:center; align-items:flex-start; }
+  .col, .board > div { max-width:100%; }
+  .col { width:410px; }
+  .label { font-family:Staatliches; letter-spacing:.06em; color:var(--lavender); font-size:18px; margin-bottom:10px; text-align:center; }
+  .phone { width:410px; max-width:100%; height:864px; border-radius:44px; border:10px solid #0b0c2c; overflow:hidden; position:relative;
+           background:radial-gradient(ellipse at top,#3a3db0 0%,#2E3192 40%,#1F2170 100%); }
+  .gtext { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* Header and top */
+  .head { display:flex; align-items:center; gap:10px; padding:12px 16px; border-bottom:1.5px solid rgba(83,87,194,.5); }
+  .iconbtn { flex:none; width:44px; height:44px; border-radius:12px; border:1.5px solid var(--line); background:var(--panel); display:grid; place-items:center; }
+  .brand { min-width:0; flex:1; }
+  .brand b { display:block; font-family:Staatliches; font-weight:400; font-size:20px; line-height:1; letter-spacing:.02em; }
+  .brand small { color:var(--lavender); font-size:12px; }
+  .lang { display:flex; border:1.5px solid var(--line); border-radius:99px; padding:2px; font-size:12px; font-weight:800; }
+  .lang span { padding:3px 8px; border-radius:99px; color:var(--lavender); }
+  .lang .on { background:var(--grad); color:var(--indigo); }
+  .top { display:flex; gap:10px; align-items:center; padding:14px 16px 0; }
+  .top img { width:64px; height:auto; flex:none; }
+  .top h1 { font-family:Staatliches; font-weight:400; font-size:34px; line-height:1; letter-spacing:.02em; }
+  .top p { color:var(--lavender); font-size:13px; line-height:1.3; margin-top:4px; }
+  .search { margin:12px 16px 0; height:44px; border-radius:12px; border:1.5px solid var(--line); background:var(--panel); display:flex; align-items:center; gap:8px; padding:0 12px; color:var(--lavender); font-size:14px; }
+
+  /* Chips */
+  .chips { display:flex; gap:8px; overflow:hidden; padding:12px 16px 0; }
+  .chip { flex:none; display:flex; align-items:center; gap:4px; height:38px; padding:0 14px; border-radius:99px; border:1.5px solid var(--line); background:var(--panel); font-size:14px; font-weight:700; }
+  .chip i { font-style:normal; font-weight:800; opacity:.7; }
+  .chip.on { background:var(--grad); color:var(--indigo); border-color:transparent; }
+  .chip.new { border-color:var(--mint); color:var(--mint); }
+  .chip.new.on { color:var(--indigo); border-color:transparent; }
+  .count { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 16px 0; font-size:14px; color:var(--lavender); }
+  .tools { display:flex; gap:8px; }
+  .tool { display:flex; align-items:center; gap:6px; height:40px; padding:0 12px; border-radius:12px; border:1.5px solid var(--line); background:var(--panel); color:#fff; font-size:13px; font-weight:700; }
+  .toggle { display:flex; padding:2px; border-radius:12px; border:1.5px solid var(--line); background:var(--panel); }
+  .toggle span { width:34px; height:34px; display:grid; place-items:center; border-radius:9px; }
+  .toggle .on { background:var(--grad); color:var(--indigo); }
+
+  /* Cards */
+  .cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:12px 16px 0; }
+  .card { border-radius:12px; border:1.5px solid var(--line); overflow:hidden; background:var(--panel); }
+  .ph { position:relative; aspect-ratio:1; background:var(--field); }
+  .ph img { width:100%; height:100%; object-fit:cover; display:block; }
+  .count-pill { position:absolute; right:6px; bottom:6px; border-radius:99px; border:1px solid var(--line); background:rgba(31,33,112,.8); font-size:11px; font-weight:700; padding:1px 7px; }
+  .new-badge { display:inline-block; border-radius:99px; background:var(--mint); color:var(--indigo); font-size:11px; font-weight:800; padding:2px 8px; }
+  .ph .new-badge { position:absolute; left:6px; top:6px; box-shadow:0 2px 8px rgba(10,10,50,.45); }
+  .card .tx { padding:8px 10px 10px; }
+  .card h3 { font-family:Staatliches; font-weight:400; font-size:19px; line-height:1.05; letter-spacing:.02em; min-height:2.1em; }
+  .badge { display:inline-block; margin-top:6px; font-size:11px; font-weight:700; border-radius:999px; padding:2px 8px; background:rgba(165,127,255,.25); color:#CDB8FF; }
+  .wa { position:absolute; left:16px; right:16px; bottom:18px; display:flex; align-items:center; justify-content:center; gap:8px; border-radius:14px; padding:12px; font-weight:800; font-size:15px; background:var(--grad); color:var(--indigo); box-shadow:0 8px 24px rgba(10,10,50,.45); }
+
+  /* List rows */
+  .rows { padding:12px 16px 0; display:flex; flex-direction:column; gap:8px; }
+  .row { display:flex; align-items:center; gap:10px; padding:8px; border-radius:12px; border:1.5px solid var(--line); background:var(--panel); }
+  .row img { flex:none; width:64px; height:64px; border-radius:10px; object-fit:cover; display:block; }
+  .row .t { min-width:0; flex:1; }
+  .row h3 { font-family:Staatliches; font-weight:400; font-size:18px; line-height:1.05; }
+  .row small { display:block; color:var(--lavender); font-size:12px; margin-top:3px; }
+
+  /* Product view */
+  .behind { position:absolute; inset:0; padding:70px 16px; opacity:.5; }
+  .behind div div { aspect-ratio:1; border-radius:12px; background:var(--field); border:1.5px solid var(--line); }
+  .behind > div { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .shade { position:absolute; inset:0; background:rgba(15,16,60,.6); }
+  .sheet { position:absolute; left:0; right:0; bottom:0; top:44px; background:var(--field); border-top:1.5px solid var(--line); border-radius:20px 20px 0 0; overflow:hidden; display:flex; flex-direction:column; }
+  .sheet .scroll { flex:1; overflow:hidden; }
+  .hero { position:relative; aspect-ratio:4/5; background:var(--deep); }
+  .hero img { width:100%; height:100%; object-fit:contain; display:block; }
+  .x { position:absolute; top:10px; right:10px; width:36px; height:36px; border-radius:12px; border:1.5px solid var(--line); background:rgba(31,33,112,.8); display:grid; place-items:center; font-size:20px; }
+  .info { padding:14px 16px 0; }
+  .info h2 { font-family:Staatliches; font-weight:400; font-size:32px; line-height:1; letter-spacing:.02em; }
+  .badges { display:flex; gap:6px; margin-top:8px; align-items:center; }
+  .badges .badge { margin-top:0; }
+  .actions { padding:14px 16px 20px; background:var(--field); }
+  .btn { display:flex; align-items:center; justify-content:center; gap:8px; border-radius:12px; padding:12px; font-weight:800; font-size:15px; background:var(--grad); color:var(--indigo); }
+
+  /* Desktop */
+  .desk { width:1000px; max-width:100%; height:560px; border-radius:14px; border:10px solid #0b0c2c; overflow:hidden; position:relative; background:radial-gradient(ellipse at top,#3a3db0 0%,#2E3192 40%,#1F2170 100%); padding:24px; }
+  .desk .chips { padding:0; }
+  .desk .deskrow { display:flex; justify-content:space-between; align-items:center; gap:16px; }
+  .desk .cards { grid-template-columns:repeat(5,1fr); padding:18px 0 0; }
+
+  .notes { margin-top:14px; font-size:14px; line-height:1.5; color:var(--lavender); }
+  .notes li { margin:0 0 6px 18px; }
+  .notes b, .summary b { color:#fff; }
+  .summary { max-width:860px; margin:40px auto 0; padding:18px 20px; border:1.5px solid var(--line); border-radius:12px; background:var(--panel); color:var(--lavender); font-size:14px; line-height:1.55; }
+  .summary h2 { font-family:Staatliches; font-weight:400; letter-spacing:.04em; color:#fff; font-size:22px; margin-bottom:6px; }
+  .summary li { margin:0 0 6px 18px; }
+  @media (max-width:440px) { .col,.phone { width:100%; } }
+</style></head><body>
+
+<h1 class="page gtext">Maqueta · etiqueta "Nuevo" y filtro "Nuevos"</h1>
+<p class="intro">Opción 2 acordada: una etiqueta automática en la tarjeta durante 30 días y un filtro con enlace para Instagram. Fotos reales de Drive; <b>qué productos aparecen como nuevos es solo un ejemplo</b>. Teléfono a 390px.</p>
+
+<h2 class="sec gtext">En el catálogo</h2>
+<p class="secintro">La etiqueta sólida en mint se distingue de "Fotos pronto" (translúcida, abajo a la izquierda) y queda legible sobre cualquier foto.</p>
+<div class="board">
+  <div class="col">
+    <div class="label">1 · "Todo" con novedades</div>
+    <div class="phone" data-panel="todo"></div>
+    <ul class="notes">
+      <li>El chip <b>"Nuevos 6"</b> va justo después de "Todo", con borde mint, para que se vea sin deslizar.</li>
+      <li>El orden A→Z no cambia.</li>
+      <li>Sin productos nuevos, el chip no aparece y la pantalla queda como hoy.</li>
+    </ul>
+  </div>
+  <div class="col">
+    <div class="label">2 · "Nuevos" seleccionado</div>
+    <div class="phone" data-panel="selected"></div>
+    <ul class="notes">
+      <li>Solo los productos nuevos, <b>los más recientes primero</b>.</li>
+      <li>La dirección queda en <b>/?new=1</b>, el enlace para Instagram. "Compartir" copia ese enlace.</li>
+      <li>Un enlace viejo sin productos nuevos abre el catálogo normal.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">Dentro de un tipo y en lista</h2>
+<div class="board">
+  <div class="col">
+    <div class="label">3 · Dentro de Figuras</div>
+    <div class="phone" data-panel="type"></div>
+    <ul class="notes"><li>El chip cuenta solo los nuevos de ese tipo (<b>/?type=figures&new=1</b>) y no aparece si ese tipo no tiene ninguno.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label">4 · Vista de lista</div>
+    <div class="phone" data-panel="list"></div>
+    <ul class="notes"><li>La etiqueta va junto a los datos de la fila, sin tapar la miniatura de 64px.</li></ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">Vista de producto e inglés</h2>
+<div class="board">
+  <div class="col">
+    <div class="label">5 · Vista de producto</div>
+    <div class="phone" data-panel="product"></div>
+    <ul class="notes"><li>La etiqueta acompaña a la marca, también al abrir un enlace directo <b>?p=</b>.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label">6 · English</div>
+    <div class="phone" data-panel="english"></div>
+    <ul class="notes"><li>"New" en etiqueta y chip; enlace <b>/en/?new=1</b>.</li></ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">Escritorio</h2>
+<div class="board">
+  <div>
+    <div class="label">7 · Catálogo en escritorio</div>
+    <div class="desk" data-panel="desktop"></div>
+  </div>
+</div>
+
+<div class="summary">
+  <h2>Para aprobar</h2>
+  <ul>
+    <li><b>Etiqueta:</b> "Nuevo" / "New", mint sólido, arriba a la izquierda de la foto en la tarjeta; junto a los datos en lista y vista de producto.</li>
+    <li><b>Chip:</b> "Nuevos N" / "New N" después de "Todo"; solo visible cuando hay productos nuevos.</li>
+    <li><b>Duración:</b> 30 días desde que el producto tiene su primera foto. La etiqueta se quita sola, sin otra publicación.</li>
+    <li><b>Qué cuenta:</b> un producto que no estaba, o uno que pasa de "Fotos pronto" a tener fotos. Más fotos o una portada nueva no cuentan.</li>
+    <li><b>Primera ejecución:</b> todo lo que ya tiene fotos queda como existente, sin etiqueta.</li>
+    <li><b>Menú lateral:</b> sin entrada "Nuevos", para no repetir el chip.</li>
+  </ul>
+</div>
+
+<script>
+const G = (id, w) => `https://lh3.googleusercontent.com/d/${id}=w${w}`;
+const P = {
+  agumon:{n:'Agumon',b:'Figura · Chibi',f:'1AnoymsnkB5COgOQOq3ME63CFvS3wVa-1',c:5},
+  momo:{n:'Momo',b:'Figura · Chibi',f:'1qKQ4jo0zWpyNedGtusJTR_m4F06B-Pjd',c:4},
+  zagreus:{n:'Zagreus - Hades',b:'Figura · Tamaño completo',f:'1UNc7jBI5o9f7zutQCJzG1XvDmC6B2xuf',c:6},
+  yuna:{n:'Yuna - Final Fantasy X',b:'Figura · Tamaño completo',f:'16aEXVT1SkjrKlR5tAGWEX60dKwRBiu_H',c:12},
+  koku:{n:'Kokushibo',b:'Figura · Busto',f:'1wSukTaSiY6knizB9SJr0aM5443sdO0s-',c:10},
+  kpop:{n:'KPop Demon Hunters',b:'Keycaps',f:'1368TqlWywu6qRhDpF-ywjoruRjFar51D',c:13},
+  hollow:{n:'Hollow Knight',b:'Keycaps',f:'15R4Ah1uMcd0JcJ4o8uR_RHX85DpZqFTk',c:7},
+  zelda:{n:'The Legend of Zelda',b:'Keycaps',f:'1oo364fQgFqR4SI-sd6oeslBMKSor89cy',c:36},
+};
+const menu = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+const insta = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.5"/><circle cx="17" cy="7" r=".8" fill="currentColor"/></svg>';
+const searchI = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+const share = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/></svg>';
+const grid = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>';
+const list = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="3.5" y="4" width="6" height="6" rx="1.5"/><rect x="3.5" y="14" width="6" height="6" rx="1.5"/><path d="M13 7h8M13 17h8"/></svg>';
+const waMark = '<span style="width:28px;height:28px;border-radius:99px;background:#2E3192;display:grid;place-items:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></span>';
+
+const LOGO = '../../arcanist-catalog/public/brand/logo-dark-bg.svg';
+const head = (en) => `<div class="head"><span class="iconbtn">${menu}</span><div class="brand"><b>Arcanist's Dice</b><small>El Salvador</small></div>
+  <div class="lang"><span class="${en?'':'on'}">ES</span><span class="${en?'on':''}">EN</span></div><span class="iconbtn">${insta}</span></div>`;
+const topBlock = (title, sub) => `<div class="top"><img loading="lazy" src="${LOGO}" alt=""><div><h1 class="gtext">${title}</h1><p>${sub}</p></div></div>`;
+const search = (en) => `<div class="search">${searchI}${en?'Search product, series or character…':'Buscar producto, serie o personaje…'}</div>`;
+const chips = items => `<div class="chips">${items.map(([t,n,c])=>`<span class="chip ${c||''}">${t} <i>${n}</i></span>`).join('')}</div>`;
+const countRow = (txt, en, view='grid') => `<div class="count"><span>${txt}</span><span class="tools"><span class="tool">${share}${en?'Share':'Compartir'}</span>
+  <span class="toggle"><span class="${view==='grid'?'on':''}">${grid}</span><span class="${view==='list'?'on':''}">${list}</span></span></span></div>`;
+const card = (p, isNew, label='Nuevo', badge) => `<div class="card"><div class="ph"><img loading="lazy" src="${G(p.f,500)}" alt="">${isNew?`<span class="new-badge">${label}</span>`:''}<span class="count-pill">▧ ${p.c}</span></div>
+  <div class="tx"><h3>${p.n}</h3><span class="badge">${badge||p.b}</span></div></div>`;
+const wa = (en) => `<div class="wa">${waMark}${en?'Message us on WhatsApp':'Escríbenos por WhatsApp'}</div>`;
+
+const panels = {
+  todo: `${head()}${topBlock('Catálogo','Figuras, keycaps y dados impresos en resina y pintados a mano')}${search()}
+    ${chips([['Todo',422,'on'],['Nuevos',6,'new'],['Figuras',355],['Keycaps',67]])}${countRow('422 productos')}
+    <div class="cards">${card(P.agumon,false)}${card(P.hollow,true)}${card(P.kpop,true)}${card(P.koku,false)}</div>${wa()}`,
+  selected: `${head()}${topBlock('Nuevos','Lo último que agregamos al catálogo')}${search()}
+    ${chips([['Todo',422],['Nuevos',6,'on'],['Figuras',355],['Keycaps',67]])}${countRow('6 productos nuevos')}
+    <div class="cards">${card(P.kpop,true)}${card(P.hollow,true)}${card(P.zelda,true)}${card(P.yuna,true)}</div>${wa()}`,
+  type: `${head()}${topBlock('Figuras','Figuras de anime, series y videojuegos, impresas en resina y pintadas a mano')}${search()}
+    ${chips([['Todas',355,'on'],['Nuevos',3,'new'],['NomNom',151],['Tanuki',204]])}${countRow('355 productos')}
+    <div class="cards">${card(P.agumon,false,'Nuevo','Tanuki · Chibi')}${card(P.koku,true,'Nuevo','Tanuki · Busto')}${card(P.momo,false,'Nuevo','Tanuki · Chibi')}${card(P.yuna,true,'Nuevo','NomNom · Tamaño completo')}</div>${wa()}`,
+  list: `${head()}${topBlock('Catálogo','Figuras, keycaps y dados impresos en resina y pintados a mano')}${search()}
+    ${chips([['Todo',422,'on'],['Nuevos',6,'new'],['Figuras',355],['Keycaps',67]])}${countRow('422 productos',false,'list')}
+    <div class="rows">${[[P.agumon,0],[P.hollow,1],[P.kpop,1],[P.koku,0]].map(([p,n])=>`<div class="row"><img loading="lazy" src="${G(p.f,200)}" alt=""><div class="t"><h3>${p.n}</h3><small>${p.b} · ${p.c} fotos</small>${n?'<span class="new-badge" style="margin-top:5px">Nuevo</span>':''}</div><span>›</span></div>`).join('')}</div>${wa()}`,
+  product: `<div class="behind"><div><div></div><div></div><div></div><div></div></div></div><div class="shade"></div>
+    <div class="sheet"><div class="scroll"><div class="hero"><img loading="lazy" src="${G(P.yuna.f,1000)}" alt=""><span class="x">×</span></div>
+    <div class="info"><h2>Yuna - Final Fantasy X</h2><div class="badges"><span class="badge">NomNom</span><span class="new-badge">Nuevo</span></div></div></div>
+    <div class="actions"><div class="btn">${waMark}Consultar este producto</div></div></div>`,
+  english: `${head(true)}${topBlock('Catalog','Figures, keycaps and dice, resin printed and hand painted')}${search(true)}
+    ${chips([['All',422,'on'],['New',6,'new'],['Figures',355],['Keycaps',67]])}${countRow('422 products',true)}
+    <div class="cards">${card(P.agumon,false,'New','Figure · Chibi')}${card(P.hollow,true,'New')}${card(P.kpop,true,'New')}${card(P.koku,false,'New','Figure · Bust')}</div>${wa(true)}`,
+  desktop: `<div class="deskrow">${chips([['Todo',422,'on'],['Nuevos',6,'new'],['Figuras',355],['Keycaps',67],['Dados','Pronto']])}<div class="tools"><span class="tool">${share}Compartir</span><span class="toggle"><span class="on">${grid}</span><span>${list}</span></span></div></div>
+    <div class="cards">${card(P.agumon,false)}${card(P.hollow,true)}${card(P.kpop,true)}${card(P.koku,false)}${card(P.yuna,true)}</div>`,
+};
+for (const el of document.querySelectorAll('[data-panel]')) el.innerHTML = panels[el.dataset.panel];
+</script>
+</body></html>

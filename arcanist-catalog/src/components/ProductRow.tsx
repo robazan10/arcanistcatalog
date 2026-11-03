@@ -8,13 +8,14 @@ interface Props {
   product: ProductSummary;
   // Type or brand, plus the model type (Figura · Busto)
   badge: string;
+  isNew?: boolean;
   alt?: boolean;
   t: Dictionary;
   onClick: (product: ProductSummary) => void;
 }
 
 // List view row: small cover, name, type or brand with the model type, and photo count
-export default function ProductRow({ product, badge, alt = false, t, onClick }: Props) {
+export default function ProductRow({ product, badge, isNew = false, alt = false, t, onClick }: Props) {
   return (
     <button
       onClick={() => onClick(product)}
@@ -45,6 +46,7 @@ export default function ProductRow({ product, badge, alt = false, t, onClick }: 
           ) : (
             <span className="badge-mint">{t.comingSoon}</span>
           )}
+          {isNew && <span className="badge-new">{t.newBadge}</span>}
         </div>
       </div>
 

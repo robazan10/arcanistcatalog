@@ -268,3 +268,21 @@ The owner asked for a review of the live site; the agreed changes are on a claud
 
 **The catalog script checks every photo's shape.** It reads each photo's size from Drive and lists in `docs/catalog-status.md` ("Photos that fill little of their frame") the ones that fill under 75% of their type's frame, with the share they fill. It reads the same `photo-frames.json` as the site.
 - Why: the owner asked for the size to be checked whenever new photos are added. Size sheets are expected there; a normal photo listed there may be worth cropping in Drive.
+
+## 2026-11-03 · "Nuevo" badge and "Nuevos" chip
+
+**Products that first got photos in the last 30 days show a "Nuevo" / "New" badge, and a "Nuevos" chip lists them with a link (`?new=1`) for Instagram** (mockup: [`mockups/2026-11-01-new-label.html`](mockups/2026-11-01-new-label.html); option 2 of 4 the owner compared).
+- Why: a badge alone is hard to find among 422 products; the chip gives one link to post with each batch.
+- Alternatives: the badge alone; also a "Fotos nuevas" badge when a product gets more photos (two labels to understand, and small additions don't deserve one); marking products by hand in `meta.txt` (manual, and easy to forget to remove).
+
+**New means a product first has photos:** one not in the previous catalog, or one that was "Fotos pronto". More photos or a new cover don't count, and an empty folder isn't new.
+- Why: an empty "Fotos pronto" card shouldn't be highlighted; for visitors, a keycap series getting its first photos is new.
+
+**The script gives each product a `newSince` date by comparing with the `catalog.json` in the repo;** the site checks it against today's date in the browser.
+- Why: the static site has no server, and the check in the browser removes the badge after 30 days without a deploy. A dry run compares too, so the list can be reviewed before a real run.
+- Not Drive's file dates: the folders were reorganized and the keycap series rebuilt in October 2026, so those dates don't show what's new to visitors.
+- Products in the catalog before this have no date, so the first run doesn't mark the whole site. With no previous catalog to compare with, nothing is marked.
+- A product renamed or moved to another brand counts as new, because its id changes; it appears in the run's list for review.
+
+**Full-screen zoom is agreed and comes in its own PR** (mockup: [`mockups/2026-11-01-photo-zoom.html`](mockups/2026-11-01-photo-zoom.html)): a viewer inside the site with a small zoom library. Alternatives: opening the photo in a new tab (leaves the site, clumsy in Instagram's browser); pinching inside the current frame (clashes with swiping and scrolling). The hint says "Puedes hacer zoom" / "You can zoom in", because it fits every gesture.
+

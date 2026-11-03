@@ -7,7 +7,8 @@ import ProductRow from './ProductRow';
 import ProductModal from './ProductModal';
 import { CheckIcon, GridIcon, ListIcon, SearchIcon, ShareIcon } from './icons';
 import { normalize, readQueryFromUrl, writeQueryToUrl } from '@/lib/search';
-import { writeTypeToUrl } from '@/lib/productType';
+import { TYPE_EVENT, writeTypeToUrl } from '@/lib/productType';
+import { isNewProduct, readNewFromUrl, writeNewToUrl } from '@/lib/newProducts';
 import { currentViewLink, readProductFromUrl, shareLink, writeProductToUrl } from '@/lib/share';
 import { track } from '@/lib/analytics';
 import { useSelectedType } from '@/lib/useSelectedType';
@@ -32,6 +33,23 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('todos');
   const [selectedProduct, setSelectedProduct] = useState<ProductSummary | null>(null);
+
+  // The "Nuevos" chip (?new=1), followed through the address like the type
+  const [newOnly, setNewOnly] = useState(false);
+  useEffect(() => {
+    const sync = () => setNewOnly(readNewFromUrl());
+    sync();
+    window.addEventListener('popstate', sync);
+    window.addEventListener(TYPE_EVENT, sync);
+    return () => {
+      window.removeEventListener('popstate', sync);
+      window.removeEventListener(TYPE_EVENT, sync);
+    };
+  }, []);
+  // Today's date is only known in the browser: the pages are built ahead of time
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => setNow(Date.now()), []);
+  const isNew = (p: ProductSummary) => now !== null && isNewProduct(p.newSince, now);
 
   const [view, setView] = useState<View>('grid');
   const searchRef = useRef<HTMLLabelElement>(null);
@@ -120,6 +138,8 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
     track('tag_click', { tag, product: selectedProduct?.id ?? '' });
     closeProduct();
     setActiveCategory('todos');
+    setNewOnly(false);
+    writeNewToUrl(false);
     if (activeType) writeTypeToUrl('', tag);
     else updateSearch(tag, { push: true });
     requestAnimationFrame(() => searchRef.current?.scrollIntoView({ block: 'start' }));
@@ -148,17 +168,29 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
       .sort((a, b) => order(a) - order(b));
   }, [categories, products, typeProducts, types]);
 
+  // The new products in the selected type; with none, the chip hides and an old ?new=1 link shows the catalog
+  const newCount = typeProducts.filter(({ product }) => isNew(product)).length;
+  const showNew = newOnly && newCount > 0;
+  useEffect(() => {
+    if (now === null || !newOnly || newCount > 0) return;
+    setNewOnly(false);
+    writeNewToUrl(false);
+  }, [now, newOnly, newCount]);
+
   const filteredProducts = useMemo(() => {
     const q = normalize(search.trim());
     const categoryIds = categories.find(c => c.id === activeCategory)?.productIds;
-    return typeProducts
+    const matches = typeProducts
       .filter(({ product, text }) => {
         const matchesSearch = !q || text.includes(q);
         const matchesCategory = activeCategory === 'todos' || categoryIds?.includes(product.id);
-        return matchesSearch && matchesCategory;
+        const matchesNew = !showNew || (now !== null && isNewProduct(product.newSince, now));
+        return matchesSearch && matchesCategory && matchesNew;
       })
       .map(({ product }) => product);
-  }, [typeProducts, search, activeCategory, categories]);
+    // Newest first; products from the same day stay A→Z
+    return showNew ? matches.sort((a, b) => (b.newSince ?? '').localeCompare(a.newSince ?? '')) : matches;
+  }, [typeProducts, search, activeCategory, categories, showNew, now]);
 
   // Analytics (docs/analytics.md): each opened product, and a search once typing stops for a second
   useEffect(() => {
@@ -201,12 +233,35 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
     return [first, models.join(' + ')].filter(Boolean).join(' · ');
   };
 
+  // The chips are one choice at a time: "Nuevos" replaces the brand, and the other way round
+  const chooseNew = (on: boolean) => {
+    if (on) track('new_click', { type: activeType?.id ?? 'all' });
+    setNewOnly(on);
+    writeNewToUrl(on, { push: true });
+  };
   const chipClass = (active: boolean) =>
     `flex-shrink-0 rounded-full px-3.5 py-2 text-sm font-bold border-1.5 transition-colors duration-150 ${
       active
         ? 'bg-brand-gradient bg-origin-border text-brand-indigo border-transparent'
         : 'bg-white/[0.07] text-brand-lavender border-brand-line hover:border-brand-mint'
     }`;
+
+  const newChip = newCount > 0 && (
+    <button
+      onClick={() => {
+        setActiveCategory('todos');
+        chooseNew(true);
+      }}
+      aria-pressed={showNew}
+      className={
+        showNew
+          ? chipClass(true)
+          : 'flex-shrink-0 rounded-full px-3.5 py-2 text-sm font-bold border-1.5 transition-colors duration-150 bg-white/[0.07] text-brand-mint border-brand-mint'
+      }
+    >
+      {t.newChip} <span className="font-extrabold opacity-70 ml-0.5">{newCount}</span>
+    </button>
+  );
 
   return (
     <>
@@ -222,9 +277,9 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
             className="w-16 sm:w-[90px] h-auto flex-shrink-0"
           />
           <div className="min-w-0">
-            <h1 className="text-gradient text-[32px] sm:text-5xl leading-none">{activeTypeName || t.heroTitle}</h1>
+            <h1 className="text-gradient text-[32px] sm:text-5xl leading-none">{activeTypeName || (showNew ? t.newTitle : t.heroTitle)}</h1>
             <p className="text-brand-lavender text-[13px] leading-snug sm:text-base mt-1 sm:mt-1.5">
-              {(activeType && t.typeSubtitles[activeType.id]) || t.heroSubtitle}
+              {(activeType && t.typeSubtitles[activeType.id]) || (showNew ? t.newSubtitle : t.heroSubtitle)}
             </p>
           </div>
         </div>
@@ -267,9 +322,10 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
             {/* On "Todo": the product types (same as the side menu). Inside a type: its brands, if more than one */}
             {showTypeChips ? (
               <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0 md:flex-wrap md:overflow-visible" role="group" aria-label={t.menuTitle}>
-                <button aria-pressed="true" className={chipClass(true)}>
+                <button onClick={() => chooseNew(false)} aria-pressed={!showNew} className={chipClass(!showNew)}>
                   {t.allTypes} <span className="font-extrabold opacity-70 ml-0.5">{products.length}</span>
                 </button>
+                {newChip}
                 {types.map(type => (
                   <button key={type.id} onClick={() => {
                       track('type_click', { type: type.id, from: 'chips' });
@@ -284,21 +340,26 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
                   </button>
                 ))}
               </div>
-            ) : typeChips.length > 1 ? (
+            ) : typeChips.length > 1 || newCount > 0 ? (
               <div className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0 md:flex-wrap md:overflow-visible" role="group" aria-label={t.categories}>
                 <button
-                  onClick={() => setActiveCategory('todos')}
-                  aria-pressed={activeCategory === 'todos'}
-                  className={chipClass(activeCategory === 'todos')}
+                  onClick={() => {
+                    setActiveCategory('todos');
+                    if (showNew) chooseNew(false);
+                  }}
+                  aria-pressed={activeCategory === 'todos' && !showNew}
+                  className={chipClass(activeCategory === 'todos' && !showNew)}
                 >
                   {activeType ? t.allBrands : t.all} <span className="font-extrabold opacity-70 ml-0.5">{typeProducts.length}</span>
                 </button>
-                {typeChips.map(cat => (
+                {newChip}
+                {typeChips.length > 1 && typeChips.map(cat => (
                   <button
                     key={cat.id}
                     onClick={() => {
                       track('brand_click', { brand: cat.name, type: activeType?.id ?? 'all' });
                       setActiveCategory(cat.id);
+                      if (showNew) chooseNew(false);
                     }}
                     aria-pressed={activeCategory === cat.id}
                     className={chipClass(activeCategory === cat.id)}
@@ -311,7 +372,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
 
             <div className="flex items-center justify-between md:justify-end gap-3">
               <p className="text-brand-lavender text-sm" aria-live="polite">
-                {t.productCount(filteredProducts.length, Boolean(isFiltering))}
+                {showNew ? t.newCount(filteredProducts.length) : t.productCount(filteredProducts.length, Boolean(isFiltering))}
               </p>
               <div className="flex items-center gap-2">
                 {/* Shares what's on screen: the type and the search */}
@@ -360,7 +421,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
           ) : view === 'list' ? (
             <div className="grid lg:grid-cols-2 gap-2 mt-3">
               {filteredProducts.map((product, i) => (
-                <ProductRow key={product.id} product={product} badge={badgeFor(product)} alt={i % 2 === 1} t={t} onClick={openProduct} />
+                <ProductRow key={product.id} product={product} badge={badgeFor(product)} isNew={isNew(product)} alt={i % 2 === 1} t={t} onClick={openProduct} />
               ))}
             </div>
           ) : (
@@ -370,6 +431,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
                   key={product.id}
                   product={product}
                   badge={badgeFor(product)}
+                  isNew={isNew(product)}
                   t={t}
                   // Checkerboard on the 2-column phone grid
                   alt={(i + Math.floor(i / 2)) % 2 === 1}
@@ -384,6 +446,7 @@ export default function CatalogClient({ products, categories, types, lang }: Pro
       {/* Product view */}
       <ProductModal
         product={selectedProduct}
+        isNew={selectedProduct ? isNew(selectedProduct) : false}
         onClose={closeProduct}
         onTagClick={searchTag}
         onCopied={showCopied}

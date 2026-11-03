@@ -10,6 +10,7 @@ Google Drive  My Drive/3D Arcanist/Images/<NN Type>/<Brand>/<Product>/   (meta.t
       │     · type from the 1st level (number = order), brand from the 2nd, product from the 3rd
       │     · reads meta.txt and lists photos; "cover" first, then name order
       │     · checks each photo's shape against its type's frame (src/lib/photo-frames.json)
+      │     · compares with the catalog in the repo to date new products (newSince)
       │     · sets each photo to "anyone with the link can view" (not with --dry-run)
       ▼
 arcanist-catalog/src/data/catalog.json   +   docs/catalog-status.md
@@ -20,7 +21,7 @@ next build (output: 'export')  →  arcanist-catalog/out/  →  Vercel  →  www
 
 - The Drive folder layout and `meta.txt` format are in [`drive-images-schema.md`](drive-images-schema.md). The script's root folder ID is in `scripts/generate-manifest/config.json`.
 - Photos are not copied anywhere: the site links to `https://lh3.googleusercontent.com/d/<file id>` and asks Google for a resized copy with `=w<width>`.
-- `catalog.json` is the source of truth for the site and its git history doubles as a log of catalog changes. Each product has `id` (brand + name), `name`, `type` (type id, e.g. `figures`), `brand`, `category` (= brand, used by the chips and badges), `tags` and `images`. Top-level lists: `types` (`id`, `name`, `order`, `productIds`; the side menu), `categories` and `tags`. A catalog without `types` (made before October 2026) still works: the site shows no menu.
+- `catalog.json` is the source of truth for the site and its git history doubles as a log of catalog changes. Each product has `id` (brand + name), `name`, `type` (type id, e.g. `figures`), `brand`, `category` (= brand, used by the chips and badges), `tags`, `images` and, for products that first got photos since November 2026, `newSince` (`YYYY-MM-DD`; rules in `scripts/generate-manifest/new-products.js`; the site counts 30 days from it in `src/lib/newProducts.ts`, in the browser). Top-level lists: `types` (`id`, `name`, `order`, `productIds`; the side menu), `categories` and `tags`. A catalog without `types` (made before October 2026) still works: the site shows no menu.
 - `node index.js --dry-run` reads Drive but changes no sharing and writes its `catalog.json` and `catalog-status.md` to a temp folder, to compare before a real run.
 
 ## Routes
@@ -33,7 +34,7 @@ next build (output: 'export')  →  arcanist-catalog/out/  →  Vercel  →  www
 | `/forge`, `/forge/*` | D4 Stat Forge, a separate Vercel project | `vercel.json` redirects and rewrites. Never add files under `/forge` here |
 | `/og-image.png`, `/favicon.ico`, `/icon.svg`, `/apple-icon.png` | Link preview and icons | `public/`, `src/app/` |
 
-`trailingSlash: true` makes the build write `/en/` as `en/index.html`. The search, the selected type and the open product go in the query string (`/?q=…`, `/?type=keycaps`, `/en/?type=keycaps&q=goku`, `/?p=tanuki-gojo`).
+`trailingSlash: true` makes the build write `/en/` as `en/index.html`. The search, the selected type and the open product go in the query string (`/?q=…`, `/?type=keycaps`, `/en/?type=keycaps&q=goku`, `/?p=tanuki-gojo`, `/?new=1`).
 
 ## Code layout (`arcanist-catalog/src`)
 

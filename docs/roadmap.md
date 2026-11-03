@@ -2,19 +2,20 @@
 
 What's done, what's next, and how to pick the work up. Decisions behind each step are in [`decisions.md`](decisions.md).
 
-## Next up / how to resume (2026-10-30)
+## Next up / how to resume (2026-11-03)
 
-- **State:** `main` has everything through PR #25 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos), the product view's thumbnail row and photo grid, the design review (compact top with the logo, type chips, badges), sharing (`?p=` product links, Compartir, the Consultar message with the link) and usage analytics (Umami, 12 events; [`analytics.md`](analytics.md)). The owner checked on 2026-10-30 that events, `share` included, arrive in Umami. Work in progress: `fix/full-photos` (the product view shows each photo whole in a frame per type, figures 4:5 and keycaps 3:2, instead of a cropped square; the catalog script lists photos that fit their frame poorly; checked at 390px in both languages and on desktop in a local build; mockup [`mockups/2026-10-30-full-photos.html`](mockups/2026-10-30-full-photos.html)).
+- **State:** `main` has everything through PR #26 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos), the product view's thumbnail row and photo grid, the design review (compact top with the logo, type chips, badges), sharing (`?p=` product links, Compartir, the Consultar message with the link), usage analytics (Umami; [`analytics.md`](analytics.md)) and whole photos in a frame per type. Work in progress: `feat/new-label` ("Nuevo" badge for 30 days, "Nuevos" chip, `?new=1`, script dates with `newSince`; checked with temporary dates at 390px in both languages and on desktop; mockup [`mockups/2026-11-01-new-label.html`](mockups/2026-11-01-new-label.html)).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** the owner merges the `fix/full-photos` PR and checks a NomNom product with a size sheet on a phone. The next real script run adds the "Photos that fill little of their frame" section to [`catalog-status.md`](catalog-status.md). The first analytics report comes after 2–4 weeks of data (mid to late November). In parallel, the owner picks a `Cover` per product in Drive following the cover guide, then a script run. A real run takes 12–14 minutes (it confirms sharing on every photo).
+- **Next step:** the owner merges the `feat/new-label` PR. No badge shows until something is new: the first one appears after the owner adds products or first photos and a real script run (ask first; `--dry-run` shows the list). That run also adds "Photos that fill little of their frame" to [`catalog-status.md`](catalog-status.md). Then build the full-screen zoom. The first analytics report comes after 2–4 weeks of data (mid to late November).
+- **To check:** Google answered 429 (too many requests) to the site's photos in Claude Code's browser pane on 2026-11-01 and 2026-11-03, sometimes after few requests. It went away by itself on 11-01 and the cause isn't known (Claude Code's test traffic is one candidate). The owner checks the live site on a phone with mobile data; if real visitors are affected, that comes before zoom, which asks for larger copies.
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
   2. Keycap photos for the other 56 series, and a `Cover` for every series (the 11 with photos have none yet, so each shows its first photo by file name); anything for `03 Dice/` and `04 Others/`.
   3. `meta.txt` for the myAnimate folders (Claude Code can draft them for review), covers, and figure photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)).
 - **Then, in order:**
   1. Phase 6: sharing (#24) and analytics (#25) are live. Then the first report.
-  2. Optional: tapping a photo opens it full screen with pinch-to-zoom, to read the size sheets on phones (proposed with the whole-photos change; not agreed yet).
+  2. Full-screen zoom (agreed on 2026-11-01; scope below).
 - **Decisions waiting on the owner:**
   - Chinese Rocks in the git history: buy a Typodermic web license or rewrite the history (see the backlog).
   - The English wording was accepted "for now"; review it in `arcanist-catalog/src/i18n/dictionaries.ts` whenever convenient.
@@ -31,7 +32,9 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | Compact top on phones | Logo 64px beside the title on phones; big logo kept on desktop | Done (#11) |
 | 4 · Side menu by type | Menu button and side panel by type, title per type, Dados "Próximamente", `?type=` | Done (#20) |
 | 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Done (#24, #25); first report pending |
-| Whole photos | Product view shows each photo whole in a frame per type; script checks photo shapes | Built on `fix/full-photos` |
+| Whole photos | Product view shows each photo whole in a frame per type; script checks photo shapes | Done (#26) |
+| "Nuevo" label | Badge for 30 days, "Nuevos" chip, `?new=1`, `newSince` from the script | Built on `feat/new-label` |
+| Full-screen zoom | Viewer inside the site with pinch-to-zoom | Agreed, mockup done; not built |
 
 ## Pull requests
 
@@ -62,7 +65,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#23](https://github.com/robazan10/arcanistcatalog/pull/23) | 2026-10-25 | Design review: compact top with the logo, type chips on "Todo", badges by type or brand, header and subtitle copy, WhatsApp pill on desktop |
 | [#24](https://github.com/robazan10/arcanistcatalog/pull/24) | 2026-10-28 | Sharing: `?p=` product links, Compartir (product and search), "Enlace copiado", Consultar message with type and link; Instagram button out of the product view |
 | [#25](https://github.com/robazan10/arcanistcatalog/pull/25) | 2026-10-30 | Usage analytics with Umami: script on the live domain only, 12 events; `docs/analytics.md` |
-| `fix/full-photos` | open | Whole photos in the product view, frame per type (figures 4:5, keycaps 3:2); script lists photos that fit poorly |
+| [#26](https://github.com/robazan10/arcanistcatalog/pull/26) | 2026-10-31 | Whole photos in the product view, frame per type (figures 4:5, keycaps 3:2); script lists photos that fit poorly |
+| `feat/new-label` | open | "Nuevo" badge and "Nuevos" chip with `?new=1`; script dates new products with `newSince` |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -107,7 +111,21 @@ Agreed on 2026-10-15; to start after phase 4. Goal: data to evaluate which produ
   - Later, optional: a link preview per product (one small static page per product with its cover as the preview image); today a pasted link shows the site's general preview.
 - **First report** after 2–4 weeks of data: products ranked by views and by WhatsApp clicks, and searches with no results.
 
+## Agreed scope: full-screen zoom
+
+Agreed on 2026-11-01; mockup: [`mockups/2026-11-01-photo-zoom.html`](mockups/2026-11-01-photo-zoom.html). In its own PR, after `feat/new-label`.
+
+- **Open:** tap or click the big photo; a small magnifier button at its bottom left shows it can be zoomed.
+- **Viewer:** the whole photo on the dark blue background, with "9 / 13" and a large ×. The phone's Back button and Escape close it, returning to that photo.
+- **Zoom:** pinch, double-tap, mouse wheel or − / + on desktop, up to 4×; dragging moves the zoomed photo. It loads `=w2000` when the viewer opens (0.2–1 MB per photo measured on 2026-11-01), so measurements stay sharp.
+- **Change photo:** swipe when not zoomed; arrows on desktop.
+- **Hint:** "Puedes hacer zoom" / "You can zoom in" with the magnifier, for a few seconds, the first time on that phone. Not on desktop, where − / + are visible.
+- **Analytics:** a `photo_zoom` event with the product, once per opening; add it to [`analytics.md`](analytics.md).
+- **Technical:** a small zoom library, chosen when building. PhotoSwipe needs each photo's size up front, which `catalog.json` doesn't have.
+
 ## Backlog
+
+- **Cards in a row can misalign:** a two-line badge ("Figura · Tamaño completo + Busto") makes its row taller, and the other card's content centers vertically in its button, so its photo sits a few pixels lower. Seen on 2026-11-03; it comes from the cards, not from the "Nuevo" label.
 
 - **Chinese Rocks in the git history:** the font files were deleted in #3 but are still in commit `2a28cc6` of this public repo. Fix: a Typodermic web license, or a history rewrite + force-push. Owner's decision; don't rewrite history without it.
 - **Covers:** 211 products with photos have no `Cover` image (200 figures, 11 keycap series); the card uses the first photo by name, sometimes `Scaleparts.jpg`.
