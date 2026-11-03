@@ -12,6 +12,7 @@ import { ArrowIcon, CheckIcon, GridIcon, ShareIcon, WhatsAppMark } from './icons
 
 interface Props {
   product: ProductSummary | null;
+  isNew: boolean;
   onClose: () => void;
   onTagClick: (tag: string) => void;
   // A link was copied (not shared through the phone's menu): the catalog shows the "Enlace copiado" message
@@ -25,7 +26,7 @@ const VISIBLE_TAGS = 5;
 // Photo lists already fetched in this visit, by product id
 const imageCache = new Map<string, string[]>();
 
-export default function ProductModal({ product, onClose, onTagClick, onCopied, t, lang }: Props) {
+export default function ProductModal({ product, isNew, onClose, onTagClick, onCopied, t, lang }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState<string[]>([]);
   const [showAllTags, setShowAllTags] = useState(false);
@@ -352,7 +353,10 @@ export default function ProductModal({ product, onClose, onTagClick, onCopied, t
                 <h2 id="product-title" className="text-[32px] leading-none">
                   {product.name}
                 </h2>
-                <span className="badge mt-2">{product.category}</span>
+                <div className="flex items-center gap-1.5 mt-2">
+                  <span className="badge">{product.category}</span>
+                  {isNew && <span className="badge-new">{t.newBadge}</span>}
+                </div>
                 {product.brand !== product.category && (
                   <p className="text-brand-lavender text-sm mt-2">
                     {t.brand}: <span className="text-white font-semibold">{product.brand}</span>

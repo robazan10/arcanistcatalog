@@ -28,9 +28,9 @@ function section(title, explanation, items, label) {
 /**
  * Writes a Markdown report of what still needs work in the Drive folders:
  * products without photos, products without a "cover" image, and skipped folders.
- * products: catalog products with a typeName; skipped: [{ type, brand, folder }]
+ * products: catalog products with a typeName; skipped: [{ type, brand, folder }]; newThisRun: products marked as new
  */
-function writeStatusReport({ generatedAt, products, skipped }, outputPath) {
+function writeStatusReport({ generatedAt, products, skipped, newThisRun }, outputPath) {
   const withoutPhotos = products.filter(p => p.images.length === 0);
   const withoutCover = products.filter(p => p.images.length > 0 && !isCover(p.images[0].filename));
   const poorFit = products.filter(p => p.poorFit.length > 0);
@@ -43,12 +43,19 @@ function writeStatusReport({ generatedAt, products, skipped }, outputPath) {
       '| | |',
       '|---|---|',
       `| Products in the catalog | ${products.length} |`,
+      `| New in this run | ${newThisRun.length} |`,
       `| With photos | ${products.length - withoutPhotos.length} |`,
       `| Without photos ("Fotos pronto") | ${withoutPhotos.length} |`,
       `| With photos but no cover | ${withoutCover.length} |`,
       `| Photos that fill little of their frame | ${poorFitPhotos} (in ${poorFit.length} products) |`,
       `| Folders skipped | ${skipped.length} |`,
     ].join('\n'),
+    section(
+      'New in this run',
+      'Products that first have photos in this run: the site shows them as "Nuevo" for 30 days. A product renamed or moved to another brand also appears here, because its id changes.',
+      newThisRun,
+      p => p.name
+    ),
     section(
       'Without photos',
       'Product folders with a `meta.txt` but no images. The site shows them as "Fotos pronto".',

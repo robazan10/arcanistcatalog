@@ -11,6 +11,8 @@ export interface Product {
   brand: string;
   category: string;
   tags: string[];
+  // The date it first had photos, from the catalog script; none for products from before this existed
+  newSince?: string;
   images: ProductImage[];
 }
 
@@ -59,4 +61,5 @@ export interface ProductSummary {
   tags: string[];
   cover: string | null;
   photoCount: number;
+  newSince: string | null;
 }

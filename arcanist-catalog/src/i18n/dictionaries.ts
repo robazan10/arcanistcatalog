@@ -67,6 +67,12 @@ const es = {
   menuLabel: (current?: string) => (current ? `Menú de productos, viendo ${current}` : 'Menú de productos'),
   menuTitle: 'Productos',
   allTypes: 'Todo',
+  // Products that first got photos in the last 30 days: the badge, the chip and its page
+  newBadge: 'Nuevo',
+  newChip: 'Nuevos',
+  newTitle: 'Nuevos',
+  newSubtitle: 'Lo último que agregamos al catálogo',
+  newCount: (n: number) => `${n} ${plural(n, 'producto nuevo', 'productos nuevos')}`,
   typeNames: { figures: 'Figuras', keycaps: 'Keycaps', dice: 'Dados', others: 'Otros' } as Record<string, string>,
   typeSubtitles: {
     figures: 'Figuras de anime, series y videojuegos, impresas en resina y pintadas a mano',
@@ -152,6 +158,11 @@ const en: Dictionary = {
   menuLabel: (current?: string) => (current ? `Product menu, showing ${current}` : 'Product menu'),
   menuTitle: 'Products',
   allTypes: 'All',
+  newBadge: 'New',
+  newChip: 'New',
+  newTitle: 'New',
+  newSubtitle: 'The latest additions to the catalog',
+  newCount: (n: number) => `${n} new ${plural(n, 'product', 'products')}`,
   typeNames: { figures: 'Figures', keycaps: 'Keycaps', dice: 'Dice', others: 'Others' },
   typeSubtitles: {
     figures: 'Anime, series and video game figures, resin printed and hand-painted',

@@ -1,0 +1,182 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Maqueta: zoom de fotos</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Staatliches&display=swap" rel="stylesheet"><style>
+  :root {
+    --indigo:#2E3192; --deep:#1F2170; --violet:#A57FFF; --lavender:#D7CEEA;
+    --mint:#3FFFB1; --line:#5357C2; --field:#25277C; --panel:rgba(255,255,255,.07);
+    --grad:linear-gradient(90deg,#3FFFB1,#A57FFF);
+  }
+  * { box-sizing:border-box; margin:0; }
+  body { font-family:Nunito,system-ui,sans-serif; background:#15164f; color:#fff; padding:32px 16px; }
+  h1.page { font-family:Staatliches; font-weight:400; letter-spacing:.04em; text-align:center; font-size:30px; }
+  .intro { max-width:860px; margin:8px auto 28px; text-align:center; color:var(--lavender); font-size:14px; line-height:1.5; }
+  h2.sec { font-family:Staatliches; font-weight:400; letter-spacing:.04em; text-align:center; font-size:26px; margin:48px 0 6px; }
+  .secintro { max-width:860px; margin:0 auto 24px; text-align:center; color:var(--lavender); font-size:14px; line-height:1.5; }
+  .board { display:flex; gap:36px; flex-wrap:wrap; justify-content:center; align-items:flex-start; }
+  .col, .board > div { max-width:100%; }
+  .col { width:410px; }
+  .label { font-family:Staatliches; letter-spacing:.06em; color:var(--lavender); font-size:18px; margin-bottom:10px; text-align:center; }
+  .phone { width:410px; max-width:100%; height:864px; border-radius:44px; border:10px solid #0b0c2c; overflow:hidden; position:relative;
+           background:radial-gradient(ellipse at top,#3a3db0 0%,#2E3192 40%,#1F2170 100%); }
+  .gtext { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* Product view */
+  .behind { position:absolute; inset:0; padding:70px 16px; opacity:.5; }
+  .behind > div { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .behind div div { aspect-ratio:1; border-radius:12px; background:var(--field); border:1.5px solid var(--line); }
+  .shade { position:absolute; inset:0; background:rgba(15,16,60,.6); }
+  .sheet { position:absolute; left:0; right:0; bottom:0; top:44px; background:var(--field); border-top:1.5px solid var(--line); border-radius:20px 20px 0 0; overflow:hidden; display:flex; flex-direction:column; }
+  .sheet .scroll { flex:1; overflow:hidden; }
+  .hero { position:relative; aspect-ratio:4/5; background:var(--deep); }
+  .hero img { width:100%; height:100%; object-fit:contain; display:block; }
+  .x { position:absolute; top:10px; right:10px; width:36px; height:36px; border-radius:12px; border:1.5px solid var(--line); background:rgba(31,33,112,.8); display:grid; place-items:center; font-size:20px; }
+  .pill { position:absolute; right:10px; bottom:10px; display:flex; align-items:center; gap:6px; border-radius:99px; border:1.5px solid var(--mint); background:rgba(31,33,112,.85); color:var(--mint); font-size:12px; font-weight:800; padding:4px 10px; }
+  .zoomhint { position:absolute; left:10px; bottom:10px; width:36px; height:36px; display:grid; place-items:center; border-radius:99px; border:1.5px solid var(--line); background:rgba(31,33,112,.85); }
+  .tap { position:absolute; left:50%; top:46%; width:64px; height:64px; margin:-32px; border-radius:99px; border:3px solid var(--mint); background:rgba(63,255,177,.2); }
+  .strip { display:flex; gap:6px; padding:8px 16px 0; overflow:hidden; }
+  .strip div { flex:none; width:58px; height:58px; border-radius:10px; overflow:hidden; border:2px solid transparent; opacity:.6; }
+  .strip .on { border-color:var(--mint); opacity:1; }
+  .strip img { width:100%; height:100%; object-fit:cover; display:block; }
+  .info { padding:14px 16px 0; }
+  .info h2 { font-family:Staatliches; font-weight:400; font-size:32px; line-height:1; letter-spacing:.02em; }
+  .badge { display:inline-block; margin-top:8px; font-size:11px; font-weight:700; border-radius:999px; padding:2px 8px; background:rgba(165,127,255,.25); color:#CDB8FF; }
+  .actions { padding:14px 16px 20px; background:var(--field); }
+  .btn { display:flex; align-items:center; justify-content:center; gap:8px; border-radius:12px; padding:12px; font-weight:800; font-size:15px; background:var(--grad); color:var(--indigo); }
+
+  /* Viewer */
+  .viewer { position:absolute; inset:0; background:var(--deep); overflow:hidden; }
+  .stage { position:absolute; inset:0; display:grid; place-items:center; overflow:hidden; }
+  .stage img { width:100%; height:100%; object-fit:contain; display:block; }
+  .vbar { position:absolute; left:0; right:0; top:0; display:flex; align-items:center; justify-content:space-between; padding:14px 14px 28px; background:linear-gradient(rgba(31,33,112,.9),transparent); }
+  .counter { border-radius:99px; border:1px solid var(--line); background:rgba(31,33,112,.85); font-size:13px; font-weight:800; padding:4px 12px; }
+  .vbar .x { position:static; width:44px; height:44px; font-size:24px; }
+  .hint { position:absolute; left:50%; bottom:32px; transform:translateX(-50%); display:flex; align-items:center; gap:6px; white-space:nowrap; border-radius:99px; border:1.5px solid var(--line); background:rgba(31,33,112,.92); font-size:13px; font-weight:700; padding:6px 14px; }
+  .zoomed { position:absolute; display:block; max-width:none; }
+  .zoomlevel { position:absolute; left:14px; bottom:32px; border-radius:99px; border:1.5px solid var(--mint); background:rgba(31,33,112,.92); color:var(--mint); font-size:13px; font-weight:800; padding:4px 12px; }
+  .swipe { position:absolute; inset:0; display:flex; gap:16px; transform:translateX(-52%); width:calc(200% + 16px); }
+  .swipe > div { flex:1; display:grid; place-items:center; }
+  .swipe img { width:100%; height:100%; object-fit:contain; display:block; }
+
+  /* Desktop */
+  .desk { width:1000px; max-width:100%; height:620px; border-radius:14px; border:10px solid #0b0c2c; overflow:hidden; position:relative; background:var(--deep); }
+  .desk .stage { padding:60px 80px; }
+  .arrow { position:absolute; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:99px; border:1.5px solid var(--line); background:rgba(31,33,112,.8); display:grid; place-items:center; font-size:22px; }
+  .zoomctl { position:absolute; left:50%; bottom:20px; transform:translateX(-50%); display:flex; align-items:center; border-radius:12px; border:1.5px solid var(--line); background:rgba(31,33,112,.92); font-weight:800; }
+  .zoomctl span { min-width:44px; height:44px; display:grid; place-items:center; padding:0 8px; }
+
+  .notes { margin-top:14px; font-size:14px; line-height:1.5; color:var(--lavender); }
+  .notes li { margin:0 0 6px 18px; }
+  .notes b, .summary b { color:#fff; }
+  .summary { max-width:860px; margin:40px auto 0; padding:18px 20px; border:1.5px solid var(--line); border-radius:12px; background:var(--panel); color:var(--lavender); font-size:14px; line-height:1.55; }
+  .summary h2 { font-family:Staatliches; font-weight:400; letter-spacing:.04em; color:#fff; font-size:22px; margin-bottom:6px; }
+  .summary li { margin:0 0 6px 18px; }
+  @media (max-width:440px) { .col,.phone { width:100%; } }
+</style></head><body>
+
+<h1 class="page gtext">Maqueta · fotos a pantalla completa con zoom</h1>
+<p class="intro">Opción A acordada: un visor dentro del sitio para leer las medidas de las hojas de tamaño y ver los detalles de las piezas. Fotos reales de Drive. Teléfono a 390px.</p>
+
+<h2 class="sec gtext">Abrir y ampliar</h2>
+<div class="board">
+  <div class="col">
+    <div class="label">1 · Vista de producto</div>
+    <div class="phone" data-panel="product"></div>
+    <ul class="notes">
+      <li><b>Tocar la foto</b> abre el visor. El círculo mint marca el toque; no se dibuja en el sitio.</li>
+      <li>Un pequeño <b>botón con lupa</b> abajo a la izquierda indica que se puede ampliar.</li>
+      <li>Deslizar de lado sigue cambiando de foto; "▦ 13 fotos" sigue igual.</li>
+    </ul>
+  </div>
+  <div class="col">
+    <div class="label">2 · Visor abierto</div>
+    <div class="phone" data-panel="open"></div>
+    <ul class="notes">
+      <li>La misma foto, completa, sobre fondo azul oscuro.</li>
+      <li>Arriba, <b>"9 / 13"</b> y <b>×</b> grande. El botón Atrás del teléfono también cierra y vuelve a esta foto.</li>
+      <li>El aviso <b>"Puedes hacer zoom"</b>, con la lupa, se muestra unos segundos la primera vez, y no se repite en ese teléfono.</li>
+    </ul>
+  </div>
+  <div class="col">
+    <div class="label">3 · Ampliada</div>
+    <div class="phone" data-panel="zoomed"></div>
+    <ul class="notes">
+      <li><b>Pellizcar o tocar dos veces</b> amplía; arrastrar mueve la foto. Se puede llegar hasta 4×.</li>
+      <li>Al ampliar se carga una copia mayor (<b>=w2000</b>), para que las medidas se lean nítidas. Pesa de 0.2 a 1 MB por foto y solo se pide al abrir el visor.</li>
+      <li>Otro doble toque vuelve a la foto completa. Ampliada, arrastrar mueve la foto en vez de cambiarla.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">Cambiar de foto y fotos anchas</h2>
+<div class="board">
+  <div class="col">
+    <div class="label">4 · Deslizar a la siguiente</div>
+    <div class="phone" data-panel="swipe"></div>
+    <ul class="notes"><li>Sin ampliar, deslizar pasa a la foto siguiente o anterior, y el contador cambia. Al cerrar, la vista de producto queda en esa foto.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label">5 · Keycaps (foto ancha)</div>
+    <div class="phone" data-panel="keycap"></div>
+    <ul class="notes"><li>La foto ocupa todo el ancho. Si el teléfono se gira, se ve más grande sin ampliar.</li></ul>
+  </div>
+  <div class="col">
+    <div class="label">6 · English</div>
+    <div class="phone" data-panel="english"></div>
+    <ul class="notes"><li>"You can zoom in"; los textos van en el diccionario en ambos idiomas.</li></ul>
+  </div>
+</div>
+
+<h2 class="sec gtext">Escritorio</h2>
+<div class="board">
+  <div>
+    <div class="label">7 · Visor en escritorio</div>
+    <div class="desk" data-panel="desktop"></div>
+    <ul class="notes" style="max-width:1000px">
+      <li><b>Clic</b> en la foto abre el visor; flechas en pantalla o del teclado cambian de foto; Escape cierra.</li>
+      <li>La rueda del ratón o los botones <b>− / +</b> amplían; arrastrar mueve la foto.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="summary">
+  <h2>Para aprobar</h2>
+  <ul>
+    <li><b>Abrir:</b> tocar o hacer clic en la foto, con un botón de lupa como indicación.</li>
+    <li><b>Visor:</b> fondo azul oscuro, contador y ×; Atrás del teléfono y Escape cierran.</li>
+    <li><b>Ampliar:</b> pellizco, doble toque, rueda o − / +, hasta 4×, con copia <b>=w2000</b> al abrir el visor.</li>
+    <li><b>Cambiar de foto:</b> deslizar sin ampliar; flechas en escritorio.</li>
+    <li><b>Aviso:</b> "Puedes hacer zoom" / "You can zoom in", con la lupa, solo la primera vez en teléfonos. En escritorio no hace falta: se ven los botones − / +.</li>
+    <li><b>Medición:</b> nuevo evento <b>photo_zoom</b> en Umami, con el producto, una vez por apertura del visor.</li>
+    <li><b>Técnica:</b> una biblioteca pequeña para los gestos, en su propio PR, separado de la etiqueta "Nuevo".</li>
+  </ul>
+</div>
+
+<script>
+const G = (id, w) => `https://lh3.googleusercontent.com/d/${id}=w${w}`;
+const SHEET = '11Lddv-unxcWiPhMJ9Onv17Iqzu1Pzram';
+const NEXT = '11yaODpk19DwUg4xAVy0bhtEvte2CSKj9';
+const KEY = '1368TqlWywu6qRhDpF-ywjoruRjFar51D';
+const STRIP = ['1oceQVoPrMxdpvtWKt6BH-fMUS7EKqTNN','1KGnaguJWIqQmv615zuLwFbjm1rHqo1h6',SHEET,NEXT,'1am2JYsrkZeg0TiL9NattnedRIzPqGEoo','1MOZKdKLxV2Jhn4_iiKFvAiWpXtunmbRQ'];
+const gridIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>';
+const lens = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg>';
+const waMark = '<span style="width:28px;height:28px;border-radius:99px;background:#2E3192;display:grid;place-items:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="#25D366"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></span>';
+const bar = n => `<div class="vbar"><span class="counter">${n}</span><span class="x">×</span></div>`;
+const whole = id => `<div class="stage"><img loading="lazy" src="${G(id,2000)}" alt=""></div>`;
+
+const panels = {
+  product: `<div class="behind"><div><div></div><div></div><div></div><div></div></div></div><div class="shade"></div>
+    <div class="sheet"><div class="scroll"><div class="hero"><img loading="lazy" src="${G(SHEET,1000)}" alt=""><span class="x">×</span><span class="zoomhint">${lens}</span><span class="pill">${gridIcon} 13 fotos</span><span class="tap"></span></div>
+    <div class="strip">${STRIP.map((id,i)=>`<div class="${i===2?'on':''}"><img loading="lazy" src="${G(id,200)}" alt=""></div>`).join('')}</div>
+    <div class="info"><h2>Zoey - KPop Demon Hunters</h2><span class="badge">NomNom</span></div></div>
+    <div class="actions"><div class="btn">${waMark}Consultar este producto</div></div></div>`,
+  open: `<div class="viewer">${whole(SHEET)}${bar('9 / 13')}<span class="hint">${lens}Puedes hacer zoom</span></div>`,
+  // About 3x on the size sheet's top left, where the measurements are
+  zoomed: `<div class="viewer"><img loading="lazy" class="zoomed" src="${G(SHEET,2000)}" alt="" style="width:1170px;left:-20px;top:240px">${bar('9 / 13')}<span class="zoomlevel">3×</span></div>`,
+  swipe: `<div class="viewer"><div class="swipe"><div><img loading="lazy" src="${G(SHEET,2000)}" alt=""></div><div><img loading="lazy" src="${G(NEXT,1000)}" alt=""></div></div>${bar('10 / 13')}</div>`,
+  keycap: `<div class="viewer">${whole(KEY)}${bar('1 / 13')}</div>`,
+  english: `<div class="viewer">${whole(SHEET)}${bar('9 / 13')}<span class="hint">${lens}You can zoom in</span></div>`,
+  desktop: `${whole(SHEET)}<span class="x" style="top:16px;right:16px;width:44px;height:44px;font-size:24px">×</span><span class="counter" style="position:absolute;top:24px;left:20px">9 / 13</span>
+    <span class="arrow" style="left:16px">‹</span><span class="arrow" style="right:16px">›</span><div class="zoomctl"><span>−</span><span>100%</span><span>+</span></div>`,
+};
+for (const el of document.querySelectorAll('[data-panel]')) el.innerHTML = panels[el.dataset.panel];
+</script>
+</body></html>

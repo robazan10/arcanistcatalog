@@ -25,6 +25,7 @@ export function getProductSummaries(): ProductSummary[] {
     tags: p.tags,
     cover: p.images[0]?.url ?? null,
     photoCount: p.images.length,
+    newSince: p.newSince ?? null,
   }));
   return [...summaries.filter(p => p.cover), ...summaries.filter(p => !p.cover)];
 }

@@ -8,12 +8,13 @@ interface Props {
   product: ProductSummary;
   // Type or brand, plus the model type (Figura · Busto)
   badge: string;
+  isNew?: boolean;
   alt?: boolean;
   t: Dictionary;
   onClick: (product: ProductSummary) => void;
 }
 
-export default function ProductCard({ product, badge, alt = false, t, onClick }: Props) {
+export default function ProductCard({ product, badge, isNew = false, alt = false, t, onClick }: Props) {
   return (
     <button
       onClick={() => onClick(product)}
@@ -36,6 +37,7 @@ export default function ProductCard({ product, badge, alt = false, t, onClick }:
             <img src="/brand/isotype-white.svg" alt="" className="w-[46%] h-auto opacity-30" />
           </div>
         )}
+        {isNew && <span className="badge-new absolute top-1.5 left-1.5 shadow-[0_2px_8px_rgba(10,10,50,0.45)]">{t.newBadge}</span>}
         {product.photoCount === 0 ? (
           <span className="badge-mint absolute bottom-1.5 left-1.5">{t.comingSoon}</span>
         ) : (
