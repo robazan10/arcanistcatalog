@@ -93,6 +93,7 @@ Server components render the page shell and pass plain data down. The client par
 | Product view | `=w1000` |
 | Product view: thumbnail row | `=w200` |
 | Product view: photo grid | `=w300` |
+| Full-screen viewer | `=w2000`, or `=w1000` if Google refuses it; only the open photo and its neighbors |
 
 The product view and its photo grid show each photo whole (`object-contain`) in a frame shaped per type: `arcanist-catalog/src/lib/photo-frames.json` (`"figures": "4/5"`, `"keycaps": "3/2"`; other types square), read by `photoFrame()` in `src/lib/images.ts` and set as the CSS variable `--photo-frame`. The catalog script reads the same file to list photos that fit their frame poorly in `catalog-status.md`. Cards, rows and thumbnails stay square and cropped (`object-cover`).
 
@@ -100,4 +101,4 @@ The product view and its photo grid show each photo whole (`object-contain`) in 
 
 ## Stack
 
-Next.js 15 (App Router, static export), React 19, TypeScript, Tailwind 3 with the brand tokens from [`brand-ui.md`](brand-ui.md), fonts self-hosted by `next/font` (Staatliches, Nunito). The script is Node with `googleapis`. Hosting: Vercel, building `main` with the command in `vercel.json`.
+Next.js 15 (App Router, static export), React 19, TypeScript, Tailwind 3 with the brand tokens from [`brand-ui.md`](brand-ui.md), fonts self-hosted by `next/font` (Staatliches, Nunito). The full-screen viewer is `yet-another-react-lightbox` with its Zoom plugin (MIT), in `src/components/PhotoViewer.tsx`, loaded with `next/dynamic` only when a visitor opens it, so it doesn't add to the first page load. The script is Node with `googleapis`. Hosting: Vercel, building `main` with the command in `vercel.json`.

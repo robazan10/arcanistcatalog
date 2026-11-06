@@ -286,3 +286,17 @@ The owner asked for a review of the live site; the agreed changes are on a claud
 
 **Full-screen zoom is agreed and comes in its own PR** (mockup: [`mockups/2026-11-01-photo-zoom.html`](mockups/2026-11-01-photo-zoom.html)): a viewer inside the site with a small zoom library. Alternatives: opening the photo in a new tab (leaves the site, clumsy in Instagram's browser); pinching inside the current frame (clashes with swiping and scrolling). The hint says "Puedes hacer zoom" / "You can zoom in", because it fits every gesture.
 
+## 2026-11-06 · Full-screen zoom, as built
+
+**The viewer is `yet-another-react-lightbox` with its Zoom plugin,** loaded only when a visitor opens it (agreed scope in [`roadmap.md`](roadmap.md), mockup [`mockups/2026-11-01-photo-zoom.html`](mockups/2026-11-01-photo-zoom.html)).
+- Why: it covers the whole viewer (swiping, zoom, keyboard) and supports React 19, with no other packages; about 250 KB unpacked, off the first page load.
+- Alternatives: `react-zoom-pan-pinch` (zoom only, so the viewer would be built by hand; 1.2 MB unpacked); PhotoSwipe (needs each photo's size up front, which `catalog.json` doesn't have).
+
+**Zoom goes up to the photo's full size,** not a fixed 4×: the library stops when the photo's pixels are full size on the screen. With `=w2000` copies that is about 3.5–5× on a phone and about 3× in a desktop window.
+
+**Dropped from the mockup:** the "3×" and "100%" zoom labels (the gesture shows the zoom) and the centered − / + bar on desktop (the library's buttons sit in the top bar). The hint shows only on phones, where − / + aren't shown.
+
+**The viewer gets its own Back step,** so the phone's Back button closes it and not the product view. A large copy that Google refuses falls back to `=w1000`, and only the open photo and its neighbors ask for large copies, to keep requests low.
+
+**Gotchas found while building:** the viewer is drawn over the page, but React still passes its clicks up to the product view's backdrop, which closed the product view on any click inside the viewer; the viewer's wrapper stops them. And the library starts over at its `index` whenever it gets a new list of slides, so the list is kept stable (`useMemo`).
+
