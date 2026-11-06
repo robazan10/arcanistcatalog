@@ -2,13 +2,17 @@
 
 import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import type { ProductSummary } from '@/lib/types';
 import { whatsappLink } from '@/lib/config';
 import type { Dictionary, Lang } from '@/i18n/dictionaries';
 import { productLink, shareLink } from '@/lib/share';
 import { track } from '@/lib/analytics';
 import { GRID_WIDTH, ROW_WIDTH, VIEWER_WIDTH, photoFrame, productDataUrl, sizedImage } from '@/lib/images';
-import { ArrowIcon, CheckIcon, GridIcon, ShareIcon, WhatsAppMark } from './icons';
+import { ArrowIcon, CheckIcon, GridIcon, ShareIcon, WhatsAppMark, ZoomIcon } from './icons';
+
+// The full-screen viewer and its zoom library load only when a visitor opens a photo
+const PhotoViewer = dynamic(() => import('./PhotoViewer'), { ssr: false });
 
 interface Props {
   product: ProductSummary | null;
@@ -34,6 +38,9 @@ export default function ProductModal({ product, isNew, onClose, onTagClick, onCo
   const [showGrid, setShowGrid] = useState(false);
   // "✓ Copiado" on the share button for a moment after copying
   const [copied, setCopied] = useState(false);
+  // The photo open in the full-screen viewer, if any
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+  const viewerCloseIndex = useRef(0);
   const galleryRef = useRef<HTMLDivElement>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -58,6 +65,7 @@ export default function ProductModal({ product, isNew, onClose, onTagClick, onCo
     setShowAllTags(false);
     setShowGrid(false);
     setCopied(false);
+    setViewerIndex(null);
     if (!product?.cover) {
       setImages([]);
       return;
@@ -104,6 +112,34 @@ export default function ProductModal({ product, isNew, onClose, onTagClick, onCo
 
   const closeGrid = useCallback(() => openPhoto(currentIndex), [openPhoto, currentIndex]);
 
+  // The viewer gets its own Back step, so the phone's Back button closes it and not the product view
+  const openViewer = (i: number) => {
+    if (!product) return;
+    track('photo_zoom', { product: product.id, photos: product.photoCount });
+    viewerCloseIndex.current = i;
+    window.history.pushState({ photoViewer: true }, '', window.location.href);
+    setViewerIndex(i);
+  };
+  const closeViewer = (i: number) => {
+    viewerCloseIndex.current = i;
+    if (window.history.state?.photoViewer) window.history.back();
+    else setViewerIndex(null);
+  };
+  const viewerOpen = viewerIndex !== null;
+  useEffect(() => {
+    if (!viewerOpen) return;
+    // Closing returns to the photo that was on screen
+    const onPop = () => {
+      setViewerIndex(null);
+      const i = viewerCloseIndex.current;
+      const el = galleryRef.current;
+      el?.scrollTo({ left: i * el.clientWidth });
+      setCurrentIndex(i);
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [viewerOpen]);
+
   useEffect(() => {
     if (showGrid) backRef.current?.focus();
   }, [showGrid]);
@@ -120,6 +156,8 @@ export default function ProductModal({ product, isNew, onClose, onTagClick, onCo
     if (!product) return;
     const lastIndex = images.length - 1;
     const handleKey = (e: KeyboardEvent) => {
+      // The viewer handles its own keys (Escape closes only the viewer)
+      if (viewerOpen) return;
       // In the grid, Escape goes back to the photo; the arrows belong to the gallery
       if (showGrid) {
         if (e.key === 'Escape') closeGrid();
@@ -131,7 +169,7 @@ export default function ProductModal({ product, isNew, onClose, onTagClick, onCo
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [product, images, onClose, goTo, showGrid, closeGrid]);
+  }, [product, images, onClose, goTo, showGrid, closeGrid, viewerOpen]);
 
   if (!product) return null;
 
@@ -255,7 +293,11 @@ export default function ProductModal({ product, isNew, onClose, onTagClick, onCo
                   >
                     {images.map((url, i) => (
                       // Phones: the type's frame shape; desktop keeps the square beside the details
-                      <div key={url} className="relative aspect-[var(--photo-frame)] md:aspect-square w-full flex-none snap-center">
+                      <div
+                        key={url}
+                        onClick={() => openViewer(i)}
+                        className="relative aspect-[var(--photo-frame)] md:aspect-square w-full flex-none snap-center cursor-zoom-in"
+                      >
                         <Image
                           src={sizedImage(url, VIEWER_WIDTH)}
                           alt={`${product.name} - ${t.imageOf(i + 1, total)}`}
@@ -269,6 +311,15 @@ export default function ProductModal({ product, isNew, onClose, onTagClick, onCo
                   </div>
 
                   {closeButton}
+
+                  <button
+                    onClick={() => openViewer(currentIndex)}
+                    aria-label={t.openViewer}
+                    title={t.openViewer}
+                    className="absolute bottom-2.5 left-2.5 grid place-items-center w-9 h-9 rounded-full border-1.5 border-brand-line bg-brand-deep/85 transition-colors duration-150 hover:border-brand-mint"
+                  >
+                    <ZoomIcon />
+                  </button>
 
                   {hasMany && (
                     <>
@@ -404,6 +455,12 @@ export default function ProductModal({ product, isNew, onClose, onTagClick, onCo
           </>
         )}
       </div>
+      {viewerIndex !== null && (
+        // The viewer is drawn over the page, but React still passes its clicks up to the backdrop, which closes the product
+        <div onClick={e => e.stopPropagation()}>
+          <PhotoViewer images={images} index={viewerIndex} alt={product.name} onClose={closeViewer} t={t} />
+        </div>
+      )}
     </div>
   );
 }

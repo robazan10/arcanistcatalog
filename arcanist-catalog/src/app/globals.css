@@ -76,6 +76,12 @@
     @apply inline-block rounded-full bg-brand-mint px-2 py-0.5 text-[11px] font-extrabold text-brand-indigo;
   }
 
+  /* Full-screen photo viewer (yet-another-react-lightbox): the brand's dark blue */
+  .photo-viewer {
+    --yarl__color_backdrop: theme('colors.brand.deep');
+    --yarl__container_background_color: theme('colors.brand.deep');
+  }
+
   /* Striped placeholder for products still waiting for photos */
   .bg-coming-soon {
     background: repeating-linear-gradient(135deg, #25277c 0 14px, #2a2c86 14px 28px);

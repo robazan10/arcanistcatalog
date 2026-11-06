@@ -36,6 +36,7 @@ Data values are short strings or numbers. Product ids are brand + name (`hiko-de
 | `tag_click` | A tag in a product view | `tag`, `product` | Interest by series and character |
 | `photos` | The "19 fotos" photo grid opens | `product`, `photos` | Products whose photos get looked at |
 | `instagram_click` | The Instagram button in the header | — | Interest in the Instagram account |
+| `photo_zoom` | The full-screen viewer opens (a tap on the photo or the magnifier button) | `product`, `photos` | Products whose details people look at closely |
 | `new_click` | The "Nuevos" chip | `type` (or `all`) | Interest in what's new; compare with posts on Instagram |
 | `language_switch` | ES \| EN | `to` | How many use English |
 | `view_toggle` | Grid / list | `view` | Which view people prefer |

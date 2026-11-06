@@ -6,6 +6,8 @@ export const VIEWER_WIDTH = 1000;
 export const ROW_WIDTH = 200;
 // Tiles in the product's photo grid (3 columns on phones, 6 on desktop)
 export const GRID_WIDTH = 300;
+// The full-screen viewer, so zoomed-in measurements stay sharp; only asked for when it opens
+export const ZOOM_WIDTH = 2000;
 
 export function sizedImage(url: string, width: number): string {
   return `${url}=w${width}`;
