@@ -73,7 +73,7 @@ tags=fullsize,tamaño completo,bust,busto,satoru gojo,gojo,jujutsu kaisen,jjk,st
 - NomNom keeps its original descriptive names (`<Character> - <Series>`, chibis prefixed `Chibi ...`).
 
 ## Changes made on 2026-11-13
-Done by Claude Code through the synced folder, with the owner's approval. Moves keep their Drive IDs; nothing was deleted.
+Done by Claude Code through the synced folder, with the owner's approval. Moves keep their Drive IDs.
 
 1. The owner added `01 Figures/Chibistation/` with 455 photos in 58 folders grouped by render batch (`Imagem`, `Render`, `Render Gran`, `RENDER GRANMESTER`, `Render_GranMaster`, `LEGACY`, `LEGACY 2`, …), with no `meta.txt` or `Cover`.
 2. Made 50 character folders (49 new; `Guts` already had its own) and moved every photo into its character's folder. Each folder got a `meta.txt` with `name=`, `category=Chibistation`, `brand=Chibistation` (the owner asked for both, as on the Hiko keycaps) and bilingual `tags=`.
@@ -81,7 +81,7 @@ Done by Claude Code through the synced folder, with the owner's approval. Moves 
 4. **Keychains and frames** went to their characters. The three keychain posters, two keychain photos with several heads and two picture-frame photos were copied into each character they show: 9 shared photos, 24 copies, so the folder now holds 479 photos.
 5. **Characters with few renders** became products too: Freeza, Radamanthys, Zoro, Power and Hashirama (from `RENDER GRANMESTER/RENDERS`), Capricorn Shura, Aira Shiratori and Invincible (from `LEGACY/RENDERS`), and Sung Jin-Woo (the 8 renders in `LEGACY 2/renders`, confirmed by the owner).
 6. `Imagem/Render Eris` is **Eris Greyrat** from Mushoku Tensei (named on the render), not Saint Seiya's Eris.
-7. Left for the owner to delete: `Render/Render Ace 2` (a byte-for-byte copy of the Ace renders) and the batch folders the moves left empty (only `.DS_Store` files remain).
+7. Then, at the owner's request, moved the 22 batch folders the moves had emptied to Drive's trash (restorable for 30 days). Only `.DS_Store` files and `Render/Render Ace 2` were left in them; `Render Ace 2` was a byte-for-byte copy of the Ace renders, checked again just before. `Chibistation/` now holds only the 50 character folders.
 
 ## Changes made on 2026-10-22
 Done by Claude Code through the synced folder, with the owner's approval (moves and new files only; nothing deleted).
@@ -678,7 +678,6 @@ All have photos; none has a `Cover` yet.
 - The 67 keycap series in `02 Keycaps/Hiko/` have no photos yet (the earlier ones are in `Keycaps archive/Hiko/`); they show "Fotos pronto" on the site until the owner adds photos and a `Cover`.
 - The myAnimate folders have no `Cover` image yet.
 - The 50 Chibistation folders have no `Cover` yet, so each card shows its first photo by file name.
-- `01 Figures/Chibistation/` still holds `Render/Render Ace 2` (duplicate) and the empty batch folders from before 2026-11-13, for the owner to delete.
 - `Images/Keycaps/` is a leftover (a duplicate photo and empty folders) for the owner to delete.
 - Folders marked † have no images yet. Code reading these folders should tolerate a character folder that contains only meta.txt.
 - A few folder names keep typos from the source list on purpose (e.g. `Ayla - Crono Trigger`, `Malthael - Diablo 3 Repeaer of Souls`); tags use the correct spelling.
