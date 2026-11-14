@@ -300,3 +300,19 @@ The owner asked for a review of the live site; the agreed changes are on a claud
 
 **Gotchas found while building:** the viewer is drawn over the page, but React still passes its clicks up to the product view's backdrop, which closed the product view on any click inside the viewer; the viewer's wrapper stops them. And the library starts over at its `index` whenever it gets a new list of slides, so the list is kept stable (`useMemo`).
 
+
+## 2026-11-13 · Chibistation figures sorted by character
+
+**`01 Figures/Chibistation/` has one product per character** (50 folders), like Tanuki and NomNom. Details and the full list are in [`drive-images-schema.md`](drive-images-schema.md).
+- Why: visitors look for a character, and the owner's folders were grouped by render batch, which the script would have shown as products called "Imagem" or "Render Gran".
+
+**A character's Baby Chibi, keychain and picture-frame photos go in its folder**, tagged `baby chibi,bebé`, `keychain,llavero` or `picture frame,cuadro`. The one exception is Baby Chibi Deadpool & Juggernaut, which has its own folder.
+- Why: one place per character, and tag search still finds every keychain or Baby Chibi.
+- Alternatives: separate products for Baby Chibis, keychains and frames, or putting keychains and frames in `04 Others/`. Both would scatter one character across several cards.
+
+**A photo that shows several characters is copied into each of them, and each character keeps only the one or two best group shots.** Each Baby Chibi set had a single group shot, so every Baby Chibi character got one.
+- Why: a Drive file sits in one folder, and a long run of shared group photos would bury the character's own photos.
+
+**Characters with only one or two renders are still products:** Freeza, Radamanthys, Zoro, Power, Hashirama, Capricorn Shura, Aira Shiratori and Invincible.
+
+**Chibistation's `meta.txt` files keep `category=` and `brand=` (both `Chibistation`),** at the owner's request, as on the Hiko keycaps. The script doesn't need them, because it reads type and brand from the folders.

@@ -2,20 +2,21 @@
 
 What's done, what's next, and how to pick the work up. Decisions behind each step are in [`decisions.md`](decisions.md).
 
-## Next up / how to resume (2026-11-06)
+## Next up / how to resume (2026-11-13)
 
-- **State:** `main` has everything through PR #27 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos), the product view's thumbnail row and photo grid, the design review (compact top with the logo, type chips, badges), sharing (`?p=` product links, Compartir, the Consultar message with the link), usage analytics (Umami; [`analytics.md`](analytics.md)) whole photos in a frame per type, and the "Nuevo" badge and "Nuevos" chip (no product has a date yet). Work in progress: `feat/photo-zoom` (full-screen viewer with zoom; checked in the browser pane at 390px and desktop width, in both languages: opening, zoom with +, swiping, arrows, ×, Escape and Back; pinching only works on a real phone).
+- **State:** `main` has everything through PR #28 and is live at www.arcanistsdice.com: phase 4 (side menu by type, Dados "Próximamente"), the 67 keycap series (11 with photos), the product view's thumbnail row and photo grid, the design review (compact top with the logo, type chips, badges), sharing (`?p=` product links, Compartir, the Consultar message with the link), usage analytics (Umami; [`analytics.md`](analytics.md)) whole photos in a frame per type, the "Nuevo" badge and "Nuevos" chip (no product has a date yet), and the full-screen photo viewer with zoom (#28). Work in progress: `docs/chibistation` (docs for the Chibistation figures sorted in Drive).
 - **Drive reorganized on 2026-10-21** (by Claude Code, verified against Drive's server): `01 Figures/` (NomNom, Tanuki, myAnimate), `02 Keycaps/Hiko/`, `03 Dice/` and `04 Others/` empty. Details in [`drive-images-schema.md`](drive-images-schema.md). The old `Images/Keycaps/` folder is a leftover for the owner to delete.
 - **Keycap series rebuilt on 2026-10-22** (by Claude Code, owner's approval): `02 Keycaps/Hiko/` has 67 series folders, one per franchise or Hiko theme the owner has models for, each with only a `meta.txt` (tags from the model file names). The earlier 32 series and their 85 photos moved to `3D Arcanist/Keycaps archive/Hiko/`, outside `Images/`.
-- **Next step:** the owner tries the viewer on a phone from the `feat/photo-zoom` Vercel preview (pinch, double-tap, swipe, Back) and checks the live site's photos on mobile data (see "To check"), then merges. The next real script run waits until the owner adds more photos (decided on 2026-11-03): the dry run on 11-03 listed 27 new products and the missing Tanuki "Deadpool" folder, which the owner checks first. The first analytics report comes after 2–4 weeks of data (mid to late November).
-- **To check:** Google answered 429 (too many requests) to the site's photos in Claude Code's browser pane on 2026-11-01 and 2026-11-03, sometimes after few requests. It went away by itself on 11-01 and the cause isn't known (Claude Code's test traffic is one candidate). The owner checks the live site on a phone with mobile data; if real visitors are affected, that comes before zoom, which asks for larger copies.
+- **Chibistation sorted on 2026-11-13** (by Claude Code, owner's approval): the owner's new `01 Figures/Chibistation/` folder, grouped by render batch, became 50 character folders with `meta.txt`, and the emptied batch folders went to Drive's trash. Each character's Baby Chibi, keychain and frame photos are in its folder. It isn't on the site until the next real run. Details in [`drive-images-schema.md`](drive-images-schema.md).
+- **Next step:** the owner merges the `docs/chibistation` PR and checks the live site's photos on mobile data (see "To check"). The next real script run (which also brings in the 50 Chibistation figures) waits until the owner adds more photos (decided on 2026-11-03): the dry run on 11-03 listed 27 new products and the missing Tanuki "Deadpool" folder, which the owner checks first. The first analytics report comes after 2–4 weeks of data (mid to late November).
+- **To check:** Google answered 429 (too many requests) to the site's photos in Claude Code's browser pane on 2026-11-01 and 2026-11-03, sometimes after few requests. It went away by itself on 11-01 and the cause isn't known (Claude Code's test traffic is one candidate). The owner checks the live site on a phone with mobile data; if real visitors are affected, that comes first, since zoom (#28) asks for larger copies.
 - **The owner's remaining Drive work** (in parallel):
   1. Delete the leftover `Images/Keycaps/` folder.
   2. Keycap photos for the other 56 series, and a `Cover` for every series (the 11 with photos have none yet, so each shows its first photo by file name); anything for `03 Dice/` and `04 Others/`.
-  3. `meta.txt` for the myAnimate folders (Claude Code can draft them for review), covers, and figure photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)).
+  3. Chibistation: add a `Cover` to each of the 50 characters.
+  4. `meta.txt` for the myAnimate folders (Claude Code can draft them for review), covers, and figure photos (147 figures without any, 202 without a `Cover`; lists in [`catalog-status.md`](catalog-status.md)).
 - **Then, in order:**
   1. Phase 6: sharing (#24) and analytics (#25) are live. Then the first report.
-  2. Full-screen zoom: built on `feat/photo-zoom` (scope below).
 - **Decisions waiting on the owner:**
   - Chinese Rocks in the git history: buy a Typodermic web license or rewrite the history (see the backlog).
   - The English wording was accepted "for now"; review it in `arcanist-catalog/src/i18n/dictionaries.ts` whenever convenient.
@@ -34,7 +35,7 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | 6 · Usage analytics and sharing | Umami events (views, WhatsApp clicks per product, searches…), `?p=` product links, share buttons | Done (#24, #25); first report pending |
 | Whole photos | Product view shows each photo whole in a frame per type; script checks photo shapes | Done (#26) |
 | "Nuevo" label | Badge for 30 days, "Nuevos" chip, `?new=1`, `newSince` from the script | Done (#27); first dates with the next real run |
-| Full-screen zoom | Viewer inside the site with pinch-to-zoom | Built on `feat/photo-zoom` |
+| Full-screen zoom | Viewer inside the site with pinch-to-zoom | Done (#28) |
 
 ## Pull requests
 
@@ -67,7 +68,8 @@ What's done, what's next, and how to pick the work up. Decisions behind each ste
 | [#25](https://github.com/robazan10/arcanistcatalog/pull/25) | 2026-10-30 | Usage analytics with Umami: script on the live domain only, 12 events; `docs/analytics.md` |
 | [#26](https://github.com/robazan10/arcanistcatalog/pull/26) | 2026-10-31 | Whole photos in the product view, frame per type (figures 4:5, keycaps 3:2); script lists photos that fit poorly |
 | [#27](https://github.com/robazan10/arcanistcatalog/pull/27) | 2026-11-03 | "Nuevo" badge and "Nuevos" chip with `?new=1`; script dates new products with `newSince` |
-| `feat/photo-zoom` | open | Full-screen photo viewer with zoom (`yet-another-react-lightbox`), `photo_zoom` event |
+| [#28](https://github.com/robazan10/arcanistcatalog/pull/28) | 2026-11-06 | Full-screen photo viewer with zoom (`yet-another-react-lightbox`), `photo_zoom` event |
+| `docs/chibistation` | open | Docs for the Chibistation figures sorted in Drive (50 character folders) |
 
 ## Agreed scope: phase 4 · side menu by type
 
@@ -114,7 +116,7 @@ Agreed on 2026-10-15; to start after phase 4. Goal: data to evaluate which produ
 
 ## Agreed scope: full-screen zoom
 
-Agreed on 2026-11-01; mockup: [`mockups/2026-11-01-photo-zoom.html`](mockups/2026-11-01-photo-zoom.html). Built on `feat/photo-zoom` (2026-11-06); what changed while building is in [`decisions.md`](decisions.md).
+Agreed on 2026-11-01; mockup: [`mockups/2026-11-01-photo-zoom.html`](mockups/2026-11-01-photo-zoom.html). Built on `feat/photo-zoom` and merged in #28 (2026-11-06); what changed while building is in [`decisions.md`](decisions.md).
 
 - **Open:** tap or click the big photo; a small magnifier button at its bottom left shows it can be zoomed.
 - **Viewer:** the whole photo on the dark blue background, with "9 / 13" and a large ×. The phone's Back button and Escape close it, returning to that photo.

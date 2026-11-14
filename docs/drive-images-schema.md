@@ -1,7 +1,7 @@
 # 3D Arcanist — `Images` folder schema & change log
 
 Context for any Claude Code session working on the project that reads these Google Drive folders.
-Last changed: 2026-10-22 (keycap series rebuilt from the owned models, with `meta.txt`; see "Changes made on 2026-10-22"). Before that: 2026-10-21 (type folders added, keycaps sorted by series) and 2026-10-09 (Cowork session). Synced to the Mac via Google Drive for desktop (streaming mode).
+Last changed: 2026-11-13 (Chibistation sorted into 50 character folders, with `meta.txt`; see "Changes made on 2026-11-13"). Before that: 2026-10-22 (keycap series rebuilt from the owned models), 2026-10-21 (type folders added, keycaps sorted by series) and 2026-10-09 (Cowork session). Synced to the Mac via Google Drive for desktop (streaming mode).
 
 ## Location
 - macOS path: `/Users/arcanist/Library/CloudStorage/GoogleDrive-<account>/My Drive/3D Arcanist/Images`
@@ -12,6 +12,8 @@ Last changed: 2026-10-22 (keycap series rebuilt from the owned models, with `met
 ```
 Images/
 ├── 01 Figures/
+│   ├── Chibistation/              50 product folders (chibis, plus their Baby Chibi, keychain and frame photos)
+│   │   └── Gundam RX-78-2/
 │   ├── NomNom/                    151 product folders
 │   │   └── Zoey - KPop Demon Hunters/   meta.txt + Cover.jpg + photos
 │   ├── Tanuki/                    204 product folders
@@ -30,11 +32,12 @@ Images/
 - **The catalog script reads these three levels** (since the `feat/script-three-levels` PR, 2026-10-21): the type from the first level, the brand from the second. Every photo kept its Drive ID and sharing in the move, so the live site was never affected. Run `node index.js --dry-run` to see what a run would produce without changing anything.
 - **Type folders are named in English,** with a number prefix (`01 `, `02 `…) that sets the menu order; the script hides the number. A type folder without a number goes last, with a warning; two folders with the same type name (like the leftover `Keycaps`) are merged into one type, with a warning. The site shows each type in the visitor's language through `src/i18n/dictionaries.ts` (Figures → "Figuras" on `/`); a type without a translation shows its folder name as is.
 - **New types** are added by creating a folder at the first level (for example `05 Deckboxes`). A more specific name reads better in the menu than "Others".
-- **Brand folders** keep the designer or studio name (Tanuki, NomNom, myAnimate, Hiko). The shop's own products go under `Arcanist's Dice`, so every product has a brand.
+- **Brand folders** keep the designer or studio name (Tanuki, NomNom, myAnimate, Chibistation, Hiko). The shop's own products go under `Arcanist's Dice`, so every product has a brand.
 - **Product folders:** `meta.txt` (`name=`, `tags=`), a `Cover` image and the photos directly inside; subfolders are ignored. `category=` and `brand=` are no longer needed because the folders give them; existing `meta.txt` files keep working, and the script warns when they don't match the folders (the folder wins).
 - **Photo shapes:** the product view shows each photo whole in a frame shaped for its type, so figure photos fit best at 4:5 (portrait, like the Tanuki and most NomNom photos) and keycap photos at 3:2 (landscape). Other shapes still show whole, just smaller with bands around them; after each run, `docs/catalog-status.md` lists photos that fill under 75% of their frame. The `Cover` is also shown square and cropped on the catalog card, so the piece should sit in its middle.
 - **"Nuevo" on the site:** a product shows it for 30 days from the run that first finds it with photos, so adding its first photos and running the script is all it takes. More photos or a new `Cover` don't count. **Renaming a product's `name=` or moving it to another brand makes it "new"** again, because its ID changes; each run lists its new products in `docs/catalog-status.md` for review.
 - **Keycaps are one product per series, anime, movie or game** (owner's choice, 2026-10-21): `02 Keycaps/Hiko/Demon Slayer/` holds every Demon Slayer keycap. Photo file names keep the character names; the characters go in `tags=` so searching a character still finds the series.
+- **Chibistation: one product per character** (owner's choice, 2026-11-13). The character's Baby Chibi, keychain and picture-frame photos go in the same folder, tagged `baby chibi,bebé`, `keychain,llavero` or `picture frame,cuadro`. A photo that shows several characters (a group shot or a keychain poster) is copied into each of them; each character keeps only the one or two best group shots. A character with only one or two renders is still a product.
 - **Product IDs stay brand + name** (`tanuki-voldemort`, `hiko-demon-slayer`), so they don't change when a product moves between types; the script warns if two products ever get the same ID.
 - **Keep the root:** `Images/` itself stays where it is (its ID is `rootFolderId` and it's shared with the script's service account; folders created inside inherit that).
 - `3D Arcanist/Hiko Keycaps/` (outside `Images/`) holds Hiko's model files (`.stl`, `.rar`) for printing, not catalog photos; it stays out of the catalog. The owner's working copy of the models is on the Mac at `Desktop/Arcanist's Dice/3D Models/Hiko Keycaps/`; the keycap series and their tags were built from it.
@@ -68,6 +71,17 @@ tags=fullsize,tamaño completo,bust,busto,satoru gojo,gojo,jujutsu kaisen,jjk,st
 - Characters `: / \ ? * " < > |` are never used in names (`:` → ` - `, `/` → `-`).
 - Exception: when a chibi/toon shares a name with a full model, the variant word is kept: `Batman Toon`, `Deadpool Toon`, `Frieren Chibi`, `Goku Chibi`.
 - NomNom keeps its original descriptive names (`<Character> - <Series>`, chibis prefixed `Chibi ...`).
+
+## Changes made on 2026-11-13
+Done by Claude Code through the synced folder, with the owner's approval. Moves keep their Drive IDs.
+
+1. The owner added `01 Figures/Chibistation/` with 455 photos in 58 folders grouped by render batch (`Imagem`, `Render`, `Render Gran`, `RENDER GRANMESTER`, `Render_GranMaster`, `LEGACY`, `LEGACY 2`, …), with no `meta.txt` or `Cover`.
+2. Made 50 character folders (49 new; `Guts` already had its own) and moved every photo into its character's folder. Each folder got a `meta.txt` with `name=`, `category=Chibistation`, `brand=Chibistation` (the owner asked for both, as on the Hiko keycaps) and bilingual `tags=`.
+3. **Baby Chibi:** `Render Babychibi 2` (Android 16, Phoenix Ikki, Tanjiro, Pyramid Head) and `Render/Renderbaby` (Ace, Dr. Doom, Orochimaru, Tanya) each held one group shot plus 2–3 photos of each Baby Chibi, a different sculpt from the regular render. Each Baby Chibi photo went to its character, and the group shot was copied to all four. `Render Babychibi` (Baby Chibi Deadpool & Juggernaut) is its own product, apart from `Deadpool vs Juggernaut`.
+4. **Keychains and frames** went to their characters. The three keychain posters, two keychain photos with several heads and two picture-frame photos were copied into each character they show: 9 shared photos, 24 copies, so the folder now holds 479 photos.
+5. **Characters with few renders** became products too: Freeza, Radamanthys, Zoro, Power and Hashirama (from `RENDER GRANMESTER/RENDERS`), Capricorn Shura, Aira Shiratori and Invincible (from `LEGACY/RENDERS`), and Sung Jin-Woo (the 8 renders in `LEGACY 2/renders`, confirmed by the owner).
+6. `Imagem/Render Eris` is **Eris Greyrat** from Mushoku Tensei (named on the render), not Saint Seiya's Eris.
+7. Then, at the owner's request, moved the 22 batch folders the moves had emptied to Drive's trash (restorable for 30 days). Only `.DS_Store` files and `Render/Render Ace 2` were left in them; `Render Ace 2` was a byte-for-byte copy of the Ace renders, checked again just before. `Chibistation/` now holds only the 50 character folders.
 
 ## Changes made on 2026-10-22
 Done by Claude Code through the synced folder, with the owner's approval (moves and new files only; nothing deleted).
@@ -246,6 +260,59 @@ Several keycap photos are Hiko's promotional renders (Patreon logo or "HIKO" wat
 
 ## Current folders
 NomNom and Tanuki are now under `01 Figures/` (see the structure above). Every folder has a meta.txt. Folders marked † were created empty (meta.txt only) and are waiting for images.
+
+### Chibistation (50)
+All have photos; none has a `Cover` yet.
+- Ace
+- Aira Shiratori
+- Akuma
+- All Might
+- Android 16
+- Android 17
+- Android 18
+- Baby Chibi Deadpool & Juggernaut
+- Capricorn Shura
+- Deadpool vs Juggernaut
+- Doflamingo
+- Donatello
+- Dr. Doom
+- Eris Greyrat
+- Freeza
+- Gemini Saga
+- Griffith
+- Grimmjow
+- Gundam RX-78-2
+- Guts
+- Hashirama
+- He-Man
+- Invincible
+- Jiraiya
+- Jurassic Raptor
+- Kakashi
+- Kenpachi Zaraki
+- Leonardo
+- Magneto
+- Metabee
+- Noelle
+- Orochimaru
+- Phoenix Ikki
+- Power
+- Pyramid Head
+- Radamanthys
+- Sagittarius Aiolos
+- Sakuragi
+- Scorpio Milo
+- Sephiroth
+- Skeletor
+- Spider-Man
+- Storm
+- Sung Jin-Woo
+- Super Vegeta
+- Tanjiro
+- Tanya
+- Tsunade
+- White Ranger
+- Zoro
 
 ### NomNom (151)
 - A friend by the water - Chibi NomNom Original †
@@ -610,6 +677,7 @@ NomNom and Tanuki are now under `01 Figures/` (see the structure above). Every f
 - `01 Figures/myAnimate/` (31 folders) has no meta.txt yet.
 - The 67 keycap series in `02 Keycaps/Hiko/` have no photos yet (the earlier ones are in `Keycaps archive/Hiko/`); they show "Fotos pronto" on the site until the owner adds photos and a `Cover`.
 - The myAnimate folders have no `Cover` image yet.
+- The 50 Chibistation folders have no `Cover` yet, so each card shows its first photo by file name.
 - `Images/Keycaps/` is a leftover (a duplicate photo and empty folders) for the owner to delete.
 - Folders marked † have no images yet. Code reading these folders should tolerate a character folder that contains only meta.txt.
 - A few folder names keep typos from the source list on purpose (e.g. `Ayla - Crono Trigger`, `Malthael - Diablo 3 Repeaer of Souls`); tags use the correct spelling.
